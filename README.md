@@ -6,15 +6,16 @@ This project is inspired by the world-famous Wolfenstein 3D game, which
 was the first FPS ever. It allowed us to explore ray-casting. The goal is to
 make a dynamic view inside a maze, in which you’ll have to find your way.
 
-Program name:       cub3D
-Makefile:       	all, clean, fclean, re, bonus
-Arguments:      	a map in format *.cub
-External functs:    • open, close, read, write, printf, malloc, free, perror, strerror, exit
-                    • All functions of the math library (-lm man man 3 math)
-                    • All functions of the MinilibX
-Libft authorized:	Yes
+Program name:       	<pre>cub3D</pre>
+Makefile:       	<pre>all, clean, fclean, re, bonus</pre>
+Arguments:      	<pre>a map in format *.cub</pre>
+External functions:	<pre>• open, close, read, write, printf, malloc, free, perror, strerror, exit
+			• All functions of the math library (-lm man man 3 math)
+   			• All functions of the MinilibX</pre>
+Libft authorized:	<pre>Yes</pre>
 
 The constraints are as follows:
+
 	• You must use the miniLibX. Either the version that is available on the operating
 	system, or from its sources. If you choose to work with the sources, you will
 	need to apply the same rules for your libft as those written above in Common
