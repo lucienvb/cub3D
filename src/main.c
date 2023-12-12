@@ -1,9 +1,14 @@
-#include <stdio.h>
+#include "../include/cubed.h"
 
-// test push
-
-int main(void)
+int main(int argc, char **argv)
 {
-    printf("Hello world!");
+    t_cubed     cubed;
+    t_mlx       mlx;
+    t_screen    screen;
+
+    error_handling(argc, argv);
+    initialization(&cubed, &mlx, &screen, argv[1]);
+    // printf("%i\n", )
+    // initialization();
     return (0);
 }

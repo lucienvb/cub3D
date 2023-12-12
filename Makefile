@@ -2,14 +2,13 @@ include makerc/colors.mk
 
 ################################################################################
 
-NAME			:= cub3D
+NAME			:= cubed
 SRC_DIR			:= src
 BUILD_DIR		:= build
 MAIN			:= main.c
-INCLUDE_DIR		:= include
 RM				:= rm -rvf
 
-HEADERS			= $(INCLUDE_DIR)/cub3D.h
+HEADERS			= include/cubed.h
 CC				= gcc
 
 ################################################################################
@@ -28,13 +27,13 @@ endif
 ################################################################################
 
 # Source files
-SRC = \
+SRC =	setup/error.handling.c \
 
 
 ################################################################################
 
 # Object files
-OBJS       = $(addprefix $(BUILD_DIR)/, $(SRC:%.c=%.o))
+OBJS       = $(addprefix $(BUILD_DIR)/, $(SRC:$(SRC_DIR)/%.c=%.o))
 MAIN_OBJ   = $(addprefix $(BUILD_DIR)/, $(MAIN:%.c=%.o))
 
 ################################################################################
@@ -47,7 +46,7 @@ $(NAME): $(OBJS) $(MAIN_OBJ)
 	$(CC) $(CFLAGS) $^ $(INCLUDE_FLAGS) -o $(NAME)
 	@printf "$(BLUE_FG)$(NAME)$(RESET_COLOR) created\n"
 
-$(MAIN_OBJ) $(OBJS): $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c | $(HEADER)
+$(MAIN_OBJ) $(OBJS): $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c | $(HEADERS)
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $(INCLUDE_FLAGS) -c $< -o $@
 

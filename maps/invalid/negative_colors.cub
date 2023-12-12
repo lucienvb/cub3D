@@ -1,0 +1,21 @@
+NO ./pictures/other_textures/diamond.png
+
+
+
+SO ./pictures/other_textures/diamond.png
+
+
+
+WE ./pictures/other_textures/diamond.png
+
+
+EA ./pictures/other_textures/diamond.png
+
+F -300,100,0
+C 225,-30,0
+
+111111
+100101
+101001
+1000S1
+111111
