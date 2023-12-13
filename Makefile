@@ -13,7 +13,6 @@ CC				= gcc
 
 ################################################################################
 
-
 # Includes
 INCLUDES	= -I ./libft -I ./libft/ft_printf
 
@@ -66,12 +65,6 @@ $(MAIN_OBJ) $(OBJS): $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c | $(HEADERS)
 	$(CC) $(CFLAGS) $(INCLUDE_FLAGS) -c $< -o $@
 
 ################################################################################
-
-submodule:
-		git submodule add git@github.com:Chavert-ter-Maat/libft.git libft;
-		
-submodule_update:
-		git submodule update --remote --merge libft;
 
 clean:
 	@$(RM) $(OBJS) $(MAIN_OBJ)
