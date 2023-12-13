@@ -2,7 +2,7 @@ include makerc/colors.mk
 
 ################################################################################
 
-NAME			:= cubed
+NAME			:= cub3d
 SRC_DIR			:= src
 BUILD_DIR		:= build
 MAIN			:= main.c
@@ -27,7 +27,10 @@ endif
 ################################################################################
 
 # Source files
-SRC =	setup/error.handling.c \
+SRC =	setup/input_error_handling.c \
+	setup/input_initialization.c \
+	setup/input_parsing.c \
+
 
 
 ################################################################################

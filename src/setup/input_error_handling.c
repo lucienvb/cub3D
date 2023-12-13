@@ -1,4 +1,4 @@
-#include "../../include/cubed.h"
+#include "cubed.h"
 #include <string.h> //remove
 
 void    print_input_info(void) // change to ft_printf
@@ -26,7 +26,7 @@ int check_file_type(char *argv)
 }
 
 
-void    error_handling(int argc, char **argv)
+int   error_handling(int argc, char **argv)
 {
 	if (argc != 2 || !*argv[1] || (strcmp(argv[1], " ") == FOUND)) //change to ft_strcmp!!
 	{
@@ -35,7 +35,7 @@ void    error_handling(int argc, char **argv)
 	}
 	if (check_file_type(argv[1]) == FAILURE)
 	{
-		printf("wrong file type");
+		printf("wrong file type"); // change to ft_printf
 		exit(EXIT_FAILURE);
 	}
 }

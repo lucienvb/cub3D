@@ -1,4 +1,4 @@
-#include "../../include/cubed.h"
+#include "cubed.h"
 #include <string.h>
 
 // check if everything is initialized correctly
