@@ -1,18 +1,21 @@
-#include "cubed.h"
+#include "../../include/cubed.h"
 #include <fcntl.h>
 
-char **cub_to_buffer(char *argv)
+int	open_cub_file(char *argv)
 {
-	char	**buffer;
-	int		bytes_read;
 	int		fd;
 
-	fd = open(argv[1], O_RDONLY);
+	fd = open(argv, O_RDONLY);
 	if (fd == -1)
 	{
 		perror("failed to open .cub");
-		return (NULL);
+		return (CRASH);
 	}
+	return (fd);
+}
+char **read_cub_file(int fd)
+{
+	
 	bytes_read = read(fd, buffer, sizeof(buffer));
 	if (bytes_read == -1)
 	{
@@ -27,12 +30,14 @@ char **cub_to_buffer(char *argv)
 	return (buffer);
 }
 
-int	input_parsing(t_cubed cubed, char *argv)
+int	input_parsing(t_cubed *cubed, char *argv)
 {
 	char	**buffer;
+	int		fd;
 	int index = 0;
 
-	buffer = cub_to_buffer(argv);
+	fd = open_cub_file(argv);
+	buffer = read_cub_file(fd);
 	if (buffer == NULL)
 		return (FAILURE);
 	while(buffer[index])
@@ -40,4 +45,6 @@ int	input_parsing(t_cubed cubed, char *argv)
 		printf("%s", buffer[index]);
 		index++;
 	}
+	close(fd);
+	return (SUCCESS);
 }

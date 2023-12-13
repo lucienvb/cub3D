@@ -14,6 +14,7 @@
 # define FOUND			0
 # define TRUE			1
 # define FALSE			0
+# define CRASH			-1
 # define SCREEN_WIDTH	640
 # define SCREEN_HEIGHT	480
 
@@ -25,6 +26,7 @@
 	
 typedef struct s_mlx
 {
+	int	i;
 	// mlx_texture_t	*n_texture;
 	// mlx_texture_t	*e_texture;
 	// mlx_texture_t	*s_texture;
@@ -33,7 +35,7 @@ typedef struct s_mlx
 
 typedef struct s_screen
 {
-	
+	int	i;
 } t_screen;
 
 typedef struct s_cubed
@@ -52,8 +54,8 @@ typedef struct s_cubed
 } t_cubed;
 
 // src/setup
-void	error_handling(int argc, char **argv);
-void	initialization(t_cubed *cubed, t_mlx *mlx, t_screen *screen, char *argv);
-int		input_parsing();
+void	input_error_handling(int argc, char **argv);
+void	input_initialization(t_cubed *cubed, t_mlx *mlx, t_screen *screen, char *argv);
+int		input_parsing(t_cubed *cubed, char *argv);
 
 #endif

@@ -1,4 +1,4 @@
-#include "cubed.h"
+#include "../../include/cubed.h"
 #include <string.h>
 
 // check if everything is initialized correctly
@@ -31,7 +31,7 @@ void    init_screen(t_screen *screen)
 	bzero(screen, sizeof(*screen));
 }
 
-void	initialization(t_cubed *cubed, t_mlx *mlx, t_screen *screen, char *argv)
+void	input_initialization(t_cubed *cubed, t_mlx *mlx, t_screen *screen, char *argv)
 {
 	init_cubed(cubed, mlx, screen, argv);
 	init_mlx(mlx);

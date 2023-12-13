@@ -27,9 +27,9 @@ endif
 ################################################################################
 
 # Source files
-SRC =	setup/input_error_handling.c \
-	setup/input_initialization.c \
-	setup/input_parsing.c \
+SRC =	src/setup/input_error_handling.c \
+		src/setup/input_initialization.c \
+		src/setup/input_parsing.c \
 
 
 
