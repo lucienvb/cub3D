@@ -26,16 +26,12 @@
 	
 typedef struct s_mlx
 {
-	int	i;
-	// mlx_texture_t	*n_texture;
-	// mlx_texture_t	*e_texture;
-	// mlx_texture_t	*s_texture;
-	// mlx_texture_t	*w_texture;
+	int	i; //only here to surpass flags
 } t_mlx;
 
 typedef struct s_screen
 {
-	int	i;
+	int	i; //only here to surpass flags
 } t_screen;
 
 typedef struct s_cubed
@@ -57,5 +53,13 @@ typedef struct s_cubed
 void	input_error_handling(int argc, char **argv);
 void	input_initialization(t_cubed *cubed, t_mlx *mlx, t_screen *screen, char *argv);
 int		input_parsing(t_cubed *cubed, char *argv);
+
+
+// temp
+char	*get_next_line(int fd);
+char	**ft_split(char const *s, char c);
+size_t	ft_strlen(const char *s);
+char	*ft_strjoin(char const *s1, char const *s2);
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 
 #endif
