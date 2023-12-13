@@ -23,18 +23,18 @@
 // structures
 
 	
-typedef struct s_mlx
-{
-	// mlx_texture_t	*n_texture;
-	// mlx_texture_t	*e_texture;
-	// mlx_texture_t	*s_texture;
-	// mlx_texture_t	*w_texture;
-} t_mlx;
+// typedef struct s_mlx
+// {
+// 	// mlx_texture_t	*n_texture;
+// 	// mlx_texture_t	*e_texture;
+// 	// mlx_texture_t	*s_texture;
+// 	// mlx_texture_t	*w_texture;
+// } t_mlx;
 
-typedef struct s_screen
-{
+// typedef struct s_screen
+// {
 	
-} t_screen;
+// } t_screen;
 
 typedef struct s_cubed
 {
@@ -47,13 +47,13 @@ typedef struct s_cubed
 	char		*WE;
 	char		*NO;
 	char		*SO;
-	t_mlx		*mlx;
-	t_screen	*screen;
+	// t_mlx		*mlx;
+	// t_screen	*screen;
 } t_cubed;
 
 // src/setup
 void	error_handling(int argc, char **argv);
-void	initialization(t_cubed *cubed, t_mlx *mlx, t_screen *screen, char *argv);
-int		input_parsing();
+// void	initialization(t_cubed *cubed, t_mlx *mlx, t_screen *screen, char *argv);
+// int		input_parsing();
 
 #endif
