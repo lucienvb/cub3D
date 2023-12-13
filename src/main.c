@@ -13,6 +13,6 @@ int main(int argc, char **argv)
     // input_parsing(&cubed, argv[1]);
     // printf("%i\n", )
 
-	printf("Hello world!");
+	printf("Hello worldf!");
     return (0);
 }
