@@ -6,6 +6,8 @@
 # include <stdio.h> // remove
 # include <unistd.h>
 # include <string.h> // remove
+# include "../libft/libft.h"
+# include "../libft/ft_printf/ft_printf.h"
 
 // defines
 # define FAILURE		1

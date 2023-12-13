@@ -13,6 +13,15 @@ CC				= gcc
 
 ################################################################################
 
+# Includes
+INCLUDES	= -I ./libft -I ./libft/ft_printf
+
+# Libraries
+PRINTF = ./libft/ft_printf/libftprintf.a
+LIBFT = ./libft/libft.a
+
+################################################################################
+
 CFLAGS			= -Wall -Wextra -Werror -Wpedantic
 INCLUDE_FLAGS	:= $(addprefix -I, $(sort $(dir $(HEADERS))))
 
@@ -46,7 +55,9 @@ all: $(NAME)
 $(NAME): SHELL :=/bin/bash
 
 $(NAME): $(OBJS) $(MAIN_OBJ)
-	$(CC) $(CFLAGS) $^ $(INCLUDE_FLAGS) -o $(NAME)
+	$(MAKE) -C ./libft
+	$(MAKE) -C ./libft/ft_printf
+	$(CC) $(CFLAGS) $^ $(INCLUDE_FLAGS) $(LIBFT) $(PRINTF) -o $(NAME)
 	@printf "$(BLUE_FG)$(NAME)$(RESET_COLOR) created\n"
 
 $(MAIN_OBJ) $(OBJS): $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c | $(HEADERS)
@@ -57,6 +68,8 @@ $(MAIN_OBJ) $(OBJS): $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c | $(HEADERS)
 
 clean:
 	@$(RM) $(OBJS) $(MAIN_OBJ)
+	$(MAKE) -C ./libft clean
+	$(MAKE) -C ./libft/ft_printf clean
 
 debug:
 	$(MAKE) DEBUG=1
@@ -73,6 +86,7 @@ resan: fclean fsan
 .PHONY: resan
 
 fclean: clean
+	@$(RM) $(NAME)
 
 re: fclean all
 
