@@ -2,28 +2,32 @@ include makerc/colors.mk
 
 ################################################################################
 
-NAME			:= cub3d
-SRC_DIR			:= src
-BUILD_DIR		:= build
-MAIN			:= main.c
-RM				:= rm -rvf
-
-HEADERS			= include/cubed.h
-CC				= gcc
+NAME	:= cub3D
+CFLAGS	:= -Wextra -Wall -Werror -Wunreachable-code -Ofast
+LIBMLX	:= ./lib/MLX42
+CC		= gcc
+rm		:= rm -rvf
 
 ################################################################################
 
-# Includes
+HEADERS	:= -I ./include -I $(LIBMLX)/include
+LIBS	:= $(LIBMLX)/build/libmlx42.a -ldl -lglfw -pthread -lm
+
+################################################################################
+
 INCLUDES	= -I ./libft -I ./libft/ft_printf
-
-# Libraries
-PRINTF = ./libft/ft_printf/libftprintf.a
-LIBFT = ./libft/libft.a
+PRINTF 		= ./lib/libft/ft_printf/libftprintf.a
+LIBFT 		= ./lib/libft/libft.a
 
 ################################################################################
 
-CFLAGS			= -Wall -Wextra -Werror -Wpedantic
-INCLUDE_FLAGS	:= $(addprefix -I, $(sort $(dir $(HEADERS))))
+SRCS	:= \
+	src/main.c \
+
+
+OBJS	:= ${SRCS:.c=.o}
+
+################################################################################
 
 ifdef	DEBUG
 	CFLAGS		+=-g
@@ -35,41 +39,27 @@ endif
 
 ################################################################################
 
-# Source files
-SRC =	src/setup/input_error_handling.c \
-		# setup/input_initialization.c \
-		setup/input_parsing.c \
+all: libmlx libft $(NAME)
 
+libmlx:
+	@cmake $(LIBMLX) -B $(LIBMLX)/build && make -C $(LIBMLX)/build -j4
+	@printf "$(MEGENTA_FG)libmlx\n$(RESET_COLOR)"
 
+libft:
+	$(MAKE) -C ./lib/libft
+	$(MAKE) -C ./lib/libft/ft_printf
+	@printf "$(MEGENTA_FG)libft\n$(RESET_COLOR)"
 
-################################################################################
+%.o: %.c
+	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS) $(INCLUDES) && printf "Compiling: $(BRIGHT_CYAN_FG)$(notdir $<)\n$(RESET_COLOR)"
 
-# Object files
-OBJS       = $(addprefix $(BUILD_DIR)/, $(SRC:$(SRC_DIR)/%.c=%.o))
-MAIN_OBJ   = $(addprefix $(BUILD_DIR)/, $(MAIN:%.c=%.o))
-
-################################################################################
-
-all: $(NAME)
-
-$(NAME): SHELL :=/bin/bash
-
-$(NAME): $(OBJS) $(MAIN_OBJ)
-	$(MAKE) -C ./libft
-	$(MAKE) -C ./libft/ft_printf
-	$(CC) $(CFLAGS) $^ $(INCLUDE_FLAGS) $(LIBFT) $(PRINTF) -o $(NAME)
+$(NAME): $(OBJS)
+	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(PRINTF) $(LIBS) $(HEADERS) $(INCLUDES) -o $(NAME)
 	@printf "$(BLUE_FG)$(NAME)$(RESET_COLOR) created\n"
 
-$(MAIN_OBJ) $(OBJS): $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c | $(HEADERS)
-	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) $(INCLUDE_FLAGS) -c $< -o $@
-
-################################################################################
-
 clean:
-	@$(RM) $(OBJS) $(MAIN_OBJ)
-	$(MAKE) -C ./libft clean
-	$(MAKE) -C ./libft/ft_printf clean
+	@$(RM) $(OBJS)
+	@$(RM) $(LIBMLX)/build
 
 debug:
 	$(MAKE) DEBUG=1
@@ -88,6 +78,6 @@ resan: fclean fsan
 fclean: clean
 	@$(RM) $(NAME)
 
-re: fclean all
+re: clean all
 
-.PHONY: all clean fclean re
+.PHONY: all, clean, fclean, re, libmlx

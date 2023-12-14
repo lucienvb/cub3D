@@ -6,8 +6,8 @@
 # include <stdio.h> // remove
 # include <unistd.h>
 # include <string.h> // remove
-# include "../libft/libft.h"
-# include "../libft/ft_printf/ft_printf.h"
+# include "../lib/libft/libft.h"
+# include "../lib/libft/ft_printf/ft_printf.h"
 
 // defines
 # define FAILURE		1
@@ -38,23 +38,23 @@
 	
 // } t_screen;
 
-typedef struct s_cubed
-{
-	char		**map;
-	char		**start_pos;
-	char		*argv;
-	size_t		*ceiling_color;
-	size_t		*floor_color;
-	char		*EA;
-	char		*WE;
-	char		*NO;
-	char		*SO;
-	// t_mlx		*mlx;
-	// t_screen	*screen;
-} t_cubed;
+// typedef struct s_cubed
+// {
+// 	char		**map;
+// 	char		**start_pos;
+// 	char		*argv;
+// 	size_t		*ceiling_color;
+// 	size_t		*floor_color;
+// 	char		*EA;
+// 	char		*WE;
+// 	char		*NO;
+// 	char		*SO;
+// 	// t_mlx		*mlx;
+// 	// t_screen	*screen;
+// } t_cubed;
 
 // src/setup
-void	error_handling(int argc, char **argv);
+// void	error_handling(int argc, char **argv);
 // void	initialization(t_cubed *cubed, t_mlx *mlx, t_screen *screen, char *argv);
 // int		input_parsing();
 
