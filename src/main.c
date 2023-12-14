@@ -29,10 +29,11 @@
 #include "../lib/libft/libft.h"
 #include "../lib/libft/ft_printf/ft_printf.h"
 
-#define WIDTH 512
-#define HEIGHT 512
+#define WIDTH 1024
+#define HEIGHT 1024
 
 static mlx_image_t* image;
+// static mlx_image_t* obstacle;
 
 // -----------------------------------------------------------------------------
 
@@ -41,22 +42,35 @@ int32_t ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a)
     return (r << 24 | g << 16 | b << 8 | a);
 }
 
+void drawColorStripe(int32_t startY, int32_t endY, uint32_t color)
+{
+    for (int32_t i = 0; i < (int32_t)image->width; ++i)
+    {
+        for (int32_t y = startY; y <= endY; ++y)
+        {
+            mlx_put_pixel(image, i, y, color);
+        }
+    }
+}
+
+// void ft_obstacle(void* param)
+// {
+//     (void)param;
+
+//     uint32_t color = ft_pixel(220, 20, 60, 0xFF);
+
+//     drawColorStripe(0, 128, color);
+// }
+
 void ft_randomize(void* param)
 {
     (void)param;
-	for (int32_t i = 0; i < (int32_t) image->width; ++i)
-	{
-		for (int32_t y = 0; y < (int32_t) image->height; ++y)
-		{
-			uint32_t color = ft_pixel(
-				rand() % 0xFF, // R
-				rand() % 0xFF, // G
-				rand() % 0xFF, // B
-				rand() % 0xFF  // A
-			);
-			mlx_put_pixel(image, i, y, color);
-		}
-	}
+
+    uint32_t upperColor = ft_pixel(47, 79, 79, 0xFF);
+    uint32_t lowerColor = ft_pixel(112, 128, 144, 0xFF);
+
+    drawColorStripe(0, image->height / 2 - 1, upperColor);
+    drawColorStripe(image->height / 2, image->height - 1, lowerColor);
 }
 
 void ft_hook(void* param)
@@ -82,16 +96,14 @@ int32_t main(void)
 	mlx_t* mlx;
 
 	ft_printf("jaa man\n");
-	ft_printf("jaa man\n");
-	// printf("jaa man\n");
-
+	
 	// Gotta error check this stuff
 	if (!(mlx = mlx_init(WIDTH, HEIGHT, "MLX42", true)))
 	{
 		puts(mlx_strerror(mlx_errno));
 		return(EXIT_FAILURE);
 	}
-	if (!(image = mlx_new_image(mlx, 128, 128)))
+	if (!(image = mlx_new_image(mlx, WIDTH, HEIGHT)))
 	{
 		mlx_close_window(mlx);
 		puts(mlx_strerror(mlx_errno));
@@ -103,8 +115,23 @@ int32_t main(void)
 		puts(mlx_strerror(mlx_errno));
 		return(EXIT_FAILURE);
 	}
+	// if (!(obstacle = mlx_new_image(mlx, WIDTH, HEIGHT)))
+	// {
+	// 	mlx_close_window(mlx);
+	// 	puts(mlx_strerror(mlx_errno));
+	// 	return(EXIT_FAILURE);
+	// }
+	// if (mlx_image_to_window(mlx, obstacle, 0, 0) == -1)
+	// {
+	// 	mlx_close_window(mlx);
+	// 	puts(mlx_strerror(mlx_errno));
+	// 	return(EXIT_FAILURE);
+	// }
+
 	
+
 	mlx_loop_hook(mlx, ft_randomize, mlx);
+	// mlx_look_hook(mlx, ft_obstacle, mlx);
 	mlx_loop_hook(mlx, ft_hook, mlx);
 
 	mlx_loop(mlx);
