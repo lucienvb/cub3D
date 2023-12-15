@@ -7,7 +7,7 @@ char **copy_map(char **file, int start, int end, int index)
 {
 	char **map;
 	int	strlen;
-
+	printf("komt ie hier?");
 	map = malloc(((end - start) + 1) * sizeof(char*));
 	if (!map)
 	{
@@ -79,10 +79,16 @@ char	**cub_to_double_array(int fd)
 	char	*new_line;
 	char	**double_array;
 
-	while((line = get_next_line(fd))) // TODO: protect gnl?
-		new_line = ft_strjoin(new_line, line); // TODO: protect string join
+	new_line = NULL;
+	line = NULL;
+	while((line = get_next_line(fd)))
+		new_line = ft_strjoin(new_line, line);
+	if (new_line == NULL)
+	{
+		perror("empty map");
+		return (NULL);
+	}
 	return (double_array = ft_split(new_line, '\n'));
-	
 }
 
 int	open_cub_file(char *argv)
@@ -116,3 +122,5 @@ int	input_parsing(t_cubed *cubed, char *argv)
 	close(fd);
 	return (SUCCESS);
 }
+
+
