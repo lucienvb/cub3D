@@ -33,7 +33,10 @@
 #define HEIGHT 1024
 
 static mlx_image_t* image;
-// static mlx_image_t* obstacle;
+double	obstacle_startX;
+double	obstacle_endX;
+double	obstacle_startY;
+double	obstacle_endY;
 
 // -----------------------------------------------------------------------------
 
@@ -42,9 +45,9 @@ int32_t ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a)
     return (r << 24 | g << 16 | b << 8 | a);
 }
 
-void drawColorStripe(int32_t startY, int32_t endY, uint32_t color)
+void drawColorStripe(int32_t startX, int32_t endX, int32_t startY, int32_t endY, uint32_t color)
 {
-    for (int32_t i = 0; i < (int32_t)image->width; ++i)
+    for (int32_t i = startX; i < endX; ++i)
     {
         for (int32_t y = startY; y <= endY; ++y)
         {
@@ -53,24 +56,25 @@ void drawColorStripe(int32_t startY, int32_t endY, uint32_t color)
     }
 }
 
-// void ft_obstacle(void* param)
-// {
-//     (void)param;
-
-//     uint32_t color = ft_pixel(220, 20, 60, 0xFF);
-
-//     drawColorStripe(0, 128, color);
-// }
-
-void ft_randomize(void* param)
+void start_screen(void* param)
 {
     (void)param;
 
-    uint32_t upperColor = ft_pixel(47, 79, 79, 0xFF);
-    uint32_t lowerColor = ft_pixel(112, 128, 144, 0xFF);
+    uint32_t sealing_color = ft_pixel(47, 79, 79, 0xFF);
+    uint32_t floor_color = ft_pixel(112, 128, 144, 0xFF);
+	uint32_t obstacle_color = ft_pixel(220, 20, 60, 0xFF);
 
-    drawColorStripe(0, image->height / 2 - 1, upperColor);
-    drawColorStripe(image->height / 2, image->height - 1, lowerColor);
+    drawColorStripe(0, image->width, 0, image->height / 2 - 1, sealing_color);
+    drawColorStripe(0, image->width, image->height / 2, image->height - 1, floor_color);
+    drawColorStripe(obstacle_startX, obstacle_endX, obstacle_startY, obstacle_endY, obstacle_color);
+}
+
+bool	screen_check(void)
+{
+	if (obstacle_startX == 0 || obstacle_endX == WIDTH - 1 ||
+		obstacle_startY == 0 || obstacle_endY == HEIGHT - 1)
+		return (false);
+	return (true);
 }
 
 void ft_hook(void* param)
@@ -79,13 +83,36 @@ void ft_hook(void* param)
 
 	if (mlx_is_key_down(mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(mlx);
-	if (mlx_is_key_down(mlx, MLX_KEY_UP))
-		image->instances[0].y -= 5;
-	if (mlx_is_key_down(mlx, MLX_KEY_DOWN))
-		image->instances[0].y += 5;
-	if (mlx_is_key_down(mlx, MLX_KEY_LEFT))
+	if (mlx_is_key_down(mlx, MLX_KEY_W)) // move forward (zoom isn)
+	{
+		if (!screen_check())
+			return ;
+		obstacle_startX -= 5;
+		obstacle_endX += 5;
+		obstacle_startY -= 5;
+		obstacle_endY += 5;
+
+	}
+	if (mlx_is_key_down(mlx, MLX_KEY_S)) // move backward (zoom out)
+	{
+		obstacle_startX += 5;
+		obstacle_endX -= 5;
+		obstacle_startY += 5;
+		obstacle_endY -= 5;
+	}
+	if (mlx_is_key_down(mlx, MLX_KEY_A)) // move to the left (change position in map)
+	{
+		obstacle_startX -= 5;
+		obstacle_endX -= 5;
+	}
+	if (mlx_is_key_down(mlx, MLX_KEY_D)) // move to the right (change position in map)
+	{
+		obstacle_startX += 5;
+		obstacle_endX += 5;
+	}
+	if (mlx_is_key_down(mlx, MLX_KEY_LEFT)) // change screen to the left
 		image->instances[0].x -= 5;
-	if (mlx_is_key_down(mlx, MLX_KEY_RIGHT))
+	if (mlx_is_key_down(mlx, MLX_KEY_RIGHT)) // change screen to the right
 		image->instances[0].x += 5;
 }
 
@@ -94,10 +121,9 @@ void ft_hook(void* param)
 int32_t main(void)
 {
 	mlx_t* mlx;
-
+	
 	ft_printf("jaa man\n");
 	
-	// Gotta error check this stuff
 	if (!(mlx = mlx_init(WIDTH, HEIGHT, "MLX42", true)))
 	{
 		puts(mlx_strerror(mlx_errno));
@@ -109,29 +135,20 @@ int32_t main(void)
 		puts(mlx_strerror(mlx_errno));
 		return(EXIT_FAILURE);
 	}
+
+	obstacle_startX = image->width * 0.25;
+	obstacle_endX = image->width * 0.75;
+	obstacle_startY = image->height * 0.25;
+	obstacle_endY = image->height * 0.5 - 1;
+
 	if (mlx_image_to_window(mlx, image, 0, 0) == -1)
 	{
 		mlx_close_window(mlx);
 		puts(mlx_strerror(mlx_errno));
 		return(EXIT_FAILURE);
 	}
-	// if (!(obstacle = mlx_new_image(mlx, WIDTH, HEIGHT)))
-	// {
-	// 	mlx_close_window(mlx);
-	// 	puts(mlx_strerror(mlx_errno));
-	// 	return(EXIT_FAILURE);
-	// }
-	// if (mlx_image_to_window(mlx, obstacle, 0, 0) == -1)
-	// {
-	// 	mlx_close_window(mlx);
-	// 	puts(mlx_strerror(mlx_errno));
-	// 	return(EXIT_FAILURE);
-	// }
 
-	
-
-	mlx_loop_hook(mlx, ft_randomize, mlx);
-	// mlx_look_hook(mlx, ft_obstacle, mlx);
+	mlx_loop_hook(mlx, start_screen, mlx);
 	mlx_loop_hook(mlx, ft_hook, mlx);
 
 	mlx_loop(mlx);
