@@ -30,6 +30,7 @@ endif
 SRC =	src/setup/input_error_handling.c \
 		src/setup/input_initialization.c \
 		src/setup/input_parsing.c \
+		src/setup/parse_map.c \
 		src/setup/utils.c \
 		src/setup/get_next_line/get_next_line.c \
 		src/setup/get_next_line/get_next_line_utils.c \

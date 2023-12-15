@@ -37,7 +37,7 @@ typedef struct s_screen
 typedef struct s_cubed
 {
 	char		**map;
-	char		**start_pos;
+	char		start_pos[3];
 	char		*argv;
 	size_t		*ceiling_color;
 	size_t		*floor_color;
@@ -52,7 +52,11 @@ typedef struct s_cubed
 // src/setup
 void	input_error_handling(int argc, char **argv);
 void	input_initialization(t_cubed *cubed, t_mlx *mlx, t_screen *screen, char *argv);
-int		input_parsing(t_cubed *cubed, char *argv);
+void	input_parsing(t_cubed *cubed, char *argv);
+
+char	**cub_to_double_array(int fd);
+void	parse_map(t_cubed *cubed, char **file);
+void	get_start_pos(t_cubed *cubed);
 
 
 // temp

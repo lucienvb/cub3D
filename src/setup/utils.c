@@ -56,6 +56,7 @@ char *ft_strjoin(const char *s1, const char *s2)
 {
     if (s1 == NULL && s2 == NULL)
         return NULL;
+	
 
     size_t len1 = (s1 != NULL) ? strlen(s1) : 0;
     size_t len2 = (s2 != NULL) ? strlen(s2) : 0;
@@ -65,13 +66,13 @@ char *ft_strjoin(const char *s1, const char *s2)
     if (new_string == NULL)
     {
         perror("malloc failed in ft_strjoin");
-        return NULL;
+        exit(EXIT_FAILURE);
     }
 
     if (s1 != NULL)
-        memcpy(new_string, s1, len1);
+        ft_memcpy(new_string, s1, len1);
     if (s2 != NULL)
-        memcpy(new_string + len1, s2, len2);
+    ft_memcpy(new_string + len1, s2, len2);
     new_string[total_len] = '\0';
     return new_string;
 }
