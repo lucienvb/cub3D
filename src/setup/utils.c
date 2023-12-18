@@ -1,5 +1,19 @@
 #include "../../include/cubed.h"
 
+size_t	ft_strlen(const char *s)
+{
+	size_t	length;
+	char	*string;
+
+	length = 0;
+	if (s == NULL)
+		return (0);
+	string = (char *)s;
+	while (string[length])
+		length++;
+	return (length);
+}
+
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
 	size_t	index;
@@ -19,46 +33,51 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 	return (ft_strlen(src));
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
-	size_t	index1;
-	size_t	index2;
-	size_t	lenght;
-	char	*new_string;
+	size_t	index;
+	char	*destination;
+	char	*source;
 
-	lenght = ft_strlen(s1) + ft_strlen(s2);
-	new_string = malloc(sizeof(char) * (lenght + 1));
-	if (!new_string)
-		return (NULL);
-	index1 = 0;
-	while (s1[index1])
-	{
-		new_string[index1] = s1[index1];
-		index1++;
-	}
-	index2 = 0;
-	while (s2[index2])
-	{
-		new_string[index1 + index2] = s2[index2];
-		index2++;
-	}
-	new_string[index1 + index2] = '\0';
-	return (new_string);
-}
-
-size_t	ft_strlen(const char *s)
-{
-	size_t	lenght;
-	char	*string;
-
-	lenght = 0;
-	string = (char *)s;
-	if (s == NULL)
+	destination = (char *)dst;
+	source = (char *)src;
+	index = 0;
+	if (destination == 0 && source == 0 && n > 0)
 		return (0);
-	while (string[lenght])
-		lenght++;
-	return (lenght);
+	while (index < n)
+	{
+		destination[index] = source[index];
+		index++;
+	}
+	return (dst);
 }
+
+char *ft_strjoin(const char *s1, const char *s2)
+{
+    if (s1 == NULL && s2 == NULL)
+        return NULL;
+	
+
+    size_t len1 = (s1 != NULL) ? strlen(s1) : 0;
+    size_t len2 = (s2 != NULL) ? strlen(s2) : 0;
+    size_t total_len = len1 + len2;
+
+    char *new_string = (char *)malloc(sizeof(char) * (total_len + 1));
+    if (new_string == NULL)
+    {
+        perror("malloc failed in ft_strjoin");
+        exit(EXIT_FAILURE);
+    }
+
+    if (s1 != NULL)
+        ft_memcpy(new_string, s1, len1);
+    if (s2 != NULL)
+  	  ft_memcpy(new_string + len1, s2, len2);
+    new_string[total_len] = '\0';
+    return new_string;
+}
+
+
 
 char	*ft_strdup(const char *s1)
 {
