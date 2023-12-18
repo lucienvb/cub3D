@@ -67,7 +67,7 @@ char	**extract_map(char **file)
 	start = find_start_map(file);
 	while(file[end])
 		end++;
-	map = copy_map(file, start, end, norminette_intje); //send j=0
+	map = copy_map(file, start, end, norminette_intje);
 	if (map == NULL)
 		return (NULL);
 	return (map);
@@ -80,7 +80,7 @@ char	**cub_to_double_array(int fd)
 	char	**double_array;
 
 	while((line = get_next_line(fd))) // TODO: protect gnl?
-		new_line = ft_strjoin(new_line, line); // TODO: protect string join
+		new_line = ft_strjoin(new_line, line); // TODO: protect string join??
 	return (double_array = ft_split(new_line, '\n'));
 	
 }
