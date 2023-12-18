@@ -1,7 +1,5 @@
 #include "../../include/cubed.h"
 
-
-
 char **copy_map(char **file, int start, int end, int index)
 {
 	char **map;
@@ -64,6 +62,11 @@ void	parse_map(t_cubed *cubed, char **file)
 	end = 0;
 	norminette_intje = 0;
 	start = find_start_map(file);
+	if (start == 0)
+	{
+		perror("empty file");
+		exit(EXIT_FAILURE);
+	}
 	while(file[end])
 		end++;
 	map = copy_map(file, start, end, norminette_intje);

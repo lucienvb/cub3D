@@ -13,7 +13,16 @@ CC				= gcc
 
 ################################################################################
 
-CFLAGS			= -Wall -Wextra -Werror -Wpedantic 
+# Includes
+INCLUDES	= -I ./libft -I ./libft/ft_printf
+
+# Libraries
+PRINTF = ./libft/ft_printf/libftprintf.a
+LIBFT = ./libft/libft.a
+
+################################################################################
+
+CFLAGS			= -Wall -Wextra -Werror -Wpedantic
 INCLUDE_FLAGS	:= $(addprefix -I, $(sort $(dir $(HEADERS))))
 
 ifdef	DEBUG
@@ -29,9 +38,10 @@ endif
 # Source files
 SRC =	src/setup/input_error_handling.c \
 		src/setup/input_initialization.c \
-		src/setup/parse_input.c \
+		src/setup/parsing.c \
 		src/setup/parse_map.c \
-		src/setup/parse_other.c \
+		src/setup/parse_floor_ceiling.c \
+		src/setup/parse_path_pics.c \
 		src/setup/utils.c \
 		src/setup/get_next_line/get_next_line.c \
 		src/setup/get_next_line/get_next_line_utils.c \
@@ -51,7 +61,9 @@ all: $(NAME)
 $(NAME): SHELL :=/bin/bash
 
 $(NAME): $(OBJS) $(MAIN_OBJ)
-	$(CC) $(CFLAGS) $^ $(INCLUDE_FLAGS) -o $(NAME)
+	$(MAKE) -C ./libft
+	$(MAKE) -C ./libft/ft_printf
+	$(CC) $(CFLAGS) $^ $(INCLUDE_FLAGS) $(LIBFT) $(PRINTF) -o $(NAME)
 	@printf "$(BLUE_FG)$(NAME)$(RESET_COLOR) created\n"
 
 $(MAIN_OBJ) $(OBJS): $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c | $(HEADERS)
@@ -62,6 +74,8 @@ $(MAIN_OBJ) $(OBJS): $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c | $(HEADERS)
 
 clean:
 	@$(RM) $(OBJS) $(MAIN_OBJ)
+	$(MAKE) -C ./libft clean
+	$(MAKE) -C ./libft/ft_printf clean
 
 debug:
 	$(MAKE) DEBUG=1
@@ -78,6 +92,7 @@ resan: fclean fsan
 .PHONY: resan
 
 fclean: clean
+	@$(RM) $(NAME)
 
 re: fclean all
 
