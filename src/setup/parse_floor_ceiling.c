@@ -1,32 +1,6 @@
 #include "../../include/cubed.h"
 
-void	parse_start_pos(t_cubed *cubed)
-{
-	int	x;
-	int y;
-
-	y = 0;
-	while (cubed->map[y])
-	{
-		x = 0;
-		while (cubed->map[y][x])
-		{
-			if (cubed->map[y][x] == 'N' || cubed->map[y][x] == 'Z' ||
-				cubed->map[y][x] == 'E' || cubed->map[y][x] == 'W')
-			{
-				cubed->pos_x = x;
-				cubed->pos_y = y;
-				return ;
-			}
-			x++;
-		}
-		y++;
-	}
-	perror("start position not found");
-	exit (EXIT_FAILURE);
-}
-
-int	get_color(t_cubed *cubed, char *string, char *search)
+int	get_color(t_cubed *cubed, char *line, char *identifier)
 {
 	int i;
 	int j;
@@ -34,18 +8,18 @@ int	get_color(t_cubed *cubed, char *string, char *search)
 
 	i = 0;
 	j = 0;
-	if (ft_strncmp(string, search, 2) == FOUND)
+	if (ft_strncmp(line, identifier, 2) == FOUND)
 		{
-			while(string[i])
+			while(line[i])
 			{
-				while(cb_isnum(string[i]) == FALSE)
+				while(cb_isnum(line[i]) == FALSE)
 					i++;
-				if (ft_strncmp(search, "C ", 2))
-					cubed->ceiling_color[j] = cb_atoi(&string[i]);
-				if (ft_strncmp(search, "F ", 2))
-					cubed->floor_color[j] = cb_atoi(&string[i]);
+				if (ft_strncmp(identifier, "C ", 2))
+					cubed->ceiling_color[j] = cb_atoi(&line[i]);
+				if (ft_strncmp(identifier, "F ", 2))
+					cubed->floor_color[j] = cb_atoi(&line[i]);
 				j++;
-				while(cb_isnum(string[i]) == TRUE)
+				while(cb_isnum(line[i]) == TRUE)
 					i++;
 			}
 			return (FOUND);
@@ -53,25 +27,25 @@ int	get_color(t_cubed *cubed, char *string, char *search)
 	return(NOT_FOUND);
 }
 
-void	parse_color_code(t_cubed *cubed, char **file_array)
+void	parse_color_code(t_cubed *cubed, char **file)
 {
 	int	i;
 	int	total_found;
 
 	i = 0;
 	total_found = 0;
-	while (file_array[i])
+	while (file[i])
 	{
-		if (get_color(cubed, file_array[i], "F ") == FOUND)
+		if (get_color(cubed, file[i], "F ") == FOUND)
 			total_found++;
 
-		if (get_color(cubed, file_array[i], "C ") == FOUND)
+		if (get_color(cubed, file[i], "C ") == FOUND)
 			total_found++;
 		i++;
 	}
 	if (total_found != 2)
 	{
-		perror("colors not found");
+		perror("color codes not found");
 		exit (EXIT_FAILURE);
 	}
 }

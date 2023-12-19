@@ -3,9 +3,9 @@
 
 // headers
 # include <stdlib.h>
-# include <stdio.h> // remove
+# include <stdio.h> 
 # include <unistd.h>
-# include <string.h> // remove
+// # include <MLX42/MLX42.h>
 # include "../libft/libft.h"
 # include "../libft/ft_printf/ft_printf.h"
 
@@ -44,10 +44,10 @@ typedef struct s_cubed
 	char		*argv;
 	int			ceiling_color[3];
 	int			floor_color[3];
-	char		*EA;
-	char		*WE;
-	char		*NO;
-	char		*SO;
+	// mlx_texture_t	*n_texture;
+	// mlx_texture_t	*e_texture;
+	// mlx_texture_t	*s_texture;
+	// mlx_texture_t	*w_texture;
 	t_mlx		*mlx;
 	t_screen	*screen;
 } t_cubed;
@@ -63,11 +63,15 @@ char	**cub_to_double_array(int fd);
 void	parse_map(t_cubed *cubed, char **file);
 void	parse_start_pos(t_cubed *cubed);
 void	parse_color_code(t_cubed *cubed, char **file_array);
-void	parse_path_pics(t_cubed *cubed, char **file_array);
+void	parse_texture(t_cubed *cubed, char **file_array);
+void	validate_map(t_cubed *cubed);
 
 // src/setup/utils
+int		validate_map_char(int c);
 int		cb_atoi(const char *str);
 int		cb_isnum(char c);
+int		cb_isspace(int c);
+void	perror_exit(char *message);
 
 
 #endif

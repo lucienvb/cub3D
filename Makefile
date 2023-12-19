@@ -41,8 +41,9 @@ SRC =	src/setup/input_error_handling.c \
 		src/setup/parsing.c \
 		src/setup/parse_map.c \
 		src/setup/parse_floor_ceiling.c \
-		src/setup/parse_path_pics.c \
+		src/setup/parse_texture.c \
 		src/setup/utils.c \
+		src/setup/validate_map.c \
 		src/setup/get_next_line/get_next_line.c \
 		src/setup/get_next_line/get_next_line_utils.c \
 

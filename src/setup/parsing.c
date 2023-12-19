@@ -6,11 +6,12 @@ char	**cub_to_double_array(int fd)
 {	
 	char	*line;
 	char	*new_line;
-	char	**double_array;
+	char	**file;
 
+	new_line = ""; // todo: why?
 	while((line = get_next_line(fd))) // todo: protect gnl?
 		new_line = ft_strjoin(new_line, line); // todo: protect string join
-	return (double_array = ft_split(new_line, '\n'));
+	return (file = ft_split(new_line, '\n'));
 }
 
 int	open_cub_file(char *argv)
@@ -51,24 +52,20 @@ void	test_input(t_cubed *cubed)
 		printf("%i ", cubed->floor_color[index]);
 		index++;
 	}
-	printf("\n %s", cubed->NO);
 }
 
 void	input_parsing(t_cubed *cubed, char *argv)
 {
 	int		fd;
-	char	**file_array;
+	char	**file;
 
 	fd = open_cub_file(argv);
-	file_array = cub_to_double_array(fd); // todo: free
-	parse_map(cubed, file_array);
+	file = cub_to_double_array(fd); // todo: free
+	parse_map(cubed, file);
 	// validate_map(cubed);
 	parse_start_pos(cubed);
-	parse_path_pics(cubed, file_array);
-	parse_color_code(cubed, file_array);
+	parse_texture(cubed, file);
+	parse_color_code(cubed, file);
 	test_input(cubed);
-
 	close(fd);
 }
-
-

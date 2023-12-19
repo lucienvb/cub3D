@@ -12,10 +12,7 @@ void    init_cubed(t_cubed *cubed, t_mlx *mlx, t_screen *screen, char *argv)
 	cubed->argv = argv;
 	cubed->ceiling_color[0] = '\0';
 	cubed->floor_color[0] = '\0';
-	cubed->EA = NULL;
-	cubed->WE = NULL;
-	cubed->NO = NULL;
-	cubed->SO = NULL;
+	// todo: init mlx?
 	cubed->mlx = mlx;
 	cubed->screen = screen;
 }
