@@ -62,10 +62,13 @@ void	input_parsing(t_cubed *cubed, char *argv)
 	fd = open_cub_file(argv);
 	file = cub_to_double_array(fd); // todo: free
 	parse_map(cubed, file);
-	// validate_map(cubed);
-	parse_start_pos(cubed);
-	parse_texture(cubed, file);
-	parse_color_code(cubed, file);
-	test_input(cubed);
+	if (validate_map(cubed, cubed->pos_x, cubed->pos_y) == 1)
+	{
+		printf("map correct");
+	}
+	// parse_start_pos(cubed);
+	// parse_texture(cubed, file);
+	// parse_color_code(cubed, file);
+	// test_input(cubed);
 	close(fd);
 }

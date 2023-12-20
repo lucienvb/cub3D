@@ -28,7 +28,7 @@ char **copy_map(char **file, int start, int end, int index)
 	return (map);
 }
 
-int	find_start_map(char **file)
+int	find_start_map(char **file) 
 {
 	int i;
 	int j;

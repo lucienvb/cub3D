@@ -45,7 +45,7 @@ void	parse_color_code(t_cubed *cubed, char **file)
 	}
 	if (total_found != 2)
 	{
-		perror("color codes not found");
+		perror("color code(s) not found");
 		exit (EXIT_FAILURE);
 	}
 }

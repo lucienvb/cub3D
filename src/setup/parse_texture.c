@@ -1,6 +1,6 @@
 #include "../../include/cubed.h"
 
-void	parse_texture(t_cubed *cubed, char **file) // todo: Does not check if path is right!!
+void	parse_texture(t_cubed *cubed, char **file) // todo: Does not check if path is correct!!
 {
 	int				total_found;
 	int				i;
@@ -8,7 +8,7 @@ void	parse_texture(t_cubed *cubed, char **file) // todo: Does not check if path 
 
 	total_found = 0;
 	i = 0;
-	printf("\n paths textures:\n");
+	printf("\npaths textures:\n");
 	while (file[i])
 	{
 		if (ft_strncmp(file[i], "NO ", 3) == FOUND)

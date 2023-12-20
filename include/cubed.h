@@ -64,7 +64,7 @@ void	parse_map(t_cubed *cubed, char **file);
 void	parse_start_pos(t_cubed *cubed);
 void	parse_color_code(t_cubed *cubed, char **file_array);
 void	parse_texture(t_cubed *cubed, char **file_array);
-void	validate_map(t_cubed *cubed);
+int		validate_map(t_cubed *cubed, size_t x, size_t y);
 
 // src/setup/utils
 int		validate_map_char(int c);
@@ -72,6 +72,5 @@ int		cb_atoi(const char *str);
 int		cb_isnum(char c);
 int		cb_isspace(int c);
 void	perror_exit(char *message);
-
 
 #endif

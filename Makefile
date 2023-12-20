@@ -40,7 +40,7 @@ SRC =	src/setup/input_error_handling.c \
 		src/setup/input_initialization.c \
 		src/setup/parsing.c \
 		src/setup/parse_map.c \
-		src/setup/parse_floor_ceiling.c \
+		src/setup/parse_color_code.c \
 		src/setup/parse_texture.c \
 		src/setup/utils.c \
 		src/setup/validate_map.c \
