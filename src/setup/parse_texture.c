@@ -39,7 +39,7 @@ void	parse_texture(t_cubed *cubed, char **file) // todo: Does not check if path 
 	}
 	if (total_found != 4)
 	{
-		printf("%i", cubed->pos_x);
+		printf("%i ignore", cubed->start_pos[Y]);
 		perror("path missing");
 		exit (EXIT_FAILURE);
 	}

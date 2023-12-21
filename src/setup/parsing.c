@@ -36,8 +36,8 @@ void	test_input(t_cubed *cubed)
 		index++;
 	}
 
-	printf("\n\n%i = cubed->pos_x\n", cubed->pos_x);
-	printf("%i = cubed->pos_y\n", cubed->pos_y);
+	printf("\n\n%i = cubed->pos_y\n", cubed->start_pos[Y]);
+	printf("%i = cubed->pos_x\n", cubed->start_pos[X]);
 	index = 0;
 	printf("\n\nceiling color: ");
 	while(index < 3)
@@ -62,13 +62,15 @@ void	input_parsing(t_cubed *cubed, char *argv)
 	fd = open_cub_file(argv);
 	file = cub_to_double_array(fd); // todo: free
 	parse_map(cubed, file);
-	if (validate_map(cubed, cubed->pos_x, cubed->pos_y) == 1)
-	{
-		printf("map correct");
-	}
-	// parse_start_pos(cubed);
-	// parse_texture(cubed, file);
-	// parse_color_code(cubed, file);
-	// test_input(cubed);
+	parse_start_pos(cubed);
+	parse_map_dimensions(cubed);
+	parse_texture(cubed, file);
+	parse_color_code(cubed, file);
+	if (validate_map(cubed, cubed->start_pos[Y], cubed->start_pos[X]) == 1)
+		printf("map is wrong\n");
+	else
+		printf("map is right\n");
+	test_input(cubed);
 	close(fd);
 }
+ 

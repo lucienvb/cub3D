@@ -19,6 +19,9 @@
 # define CRASH			-1
 # define SCREEN_WIDTH	640
 # define SCREEN_HEIGHT	480
+# define Y				0
+# define X				1
+
 
 // enum
 
@@ -39,11 +42,12 @@ typedef struct s_screen
 typedef struct s_cubed
 {
 	char		**map;
-	int			pos_x;
-	int			pos_y;
 	char		*argv;
+	int			start_pos[2];
 	int			ceiling_color[3];
 	int			floor_color[3];
+	int		width;
+	int		height;
 	// mlx_texture_t	*n_texture;
 	// mlx_texture_t	*e_texture;
 	// mlx_texture_t	*s_texture;
@@ -64,7 +68,8 @@ void	parse_map(t_cubed *cubed, char **file);
 void	parse_start_pos(t_cubed *cubed);
 void	parse_color_code(t_cubed *cubed, char **file_array);
 void	parse_texture(t_cubed *cubed, char **file_array);
-int		validate_map(t_cubed *cubed, size_t x, size_t y);
+int		validate_map(t_cubed *cubed, int x, int y);
+void	parse_map_dimensions(t_cubed *cubed);
 
 // src/setup/utils
 int		validate_map_char(int c);

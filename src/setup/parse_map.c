@@ -1,5 +1,28 @@
 #include "../../include/cubed.h"
 
+void	parse_map_dimensions(t_cubed *cubed)
+{
+	int	y;
+	int	x;
+	int	max_x;
+
+	y = 0;
+	max_x = 0;
+	while(cubed->map[y])
+	{
+		x = 0;
+		while(cubed->map[y][x])
+			x++;
+		if (x >= max_x)
+			max_x = x;
+		y++;
+	}
+	cubed->height = y;
+	cubed->width = max_x;
+	printf("%i = map height\n", cubed->height);
+	printf("%i = map width\n", cubed->width);
+}
+
 char **copy_map(char **file, int start, int end, int index)
 {
 	char **map;
@@ -21,7 +44,7 @@ char **copy_map(char **file, int start, int end, int index)
 			perror("Malloc failed in copy_map #2\n");
             exit(EXIT_FAILURE);
         }
-        ft_strlcpy(map[index], file[start], strlen); // TODO: protect?
+        ft_strlcpy(map[index], file[start], strlen + 1); // TODO: protect?
         start++;
         index++;
     }
@@ -54,7 +77,6 @@ int	find_start_map(char **file)
 
 void	parse_map(t_cubed *cubed, char **file)
 {
-	char	**map;
 	int		start;
 	int 	end;
 	int		norminette_intje;
@@ -69,7 +91,6 @@ void	parse_map(t_cubed *cubed, char **file)
 	}
 	while(file[end])
 		end++;
-	map = copy_map(file, start, end, norminette_intje);
-	cubed->map = map;
+	cubed->map = copy_map(file, start, end, norminette_intje);
 }
 
