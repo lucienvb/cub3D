@@ -1,5 +1,3 @@
-// #include "cubed.h"
-
 // int main(int argc, char **argv)
 // {
 // 	(void)argc;
@@ -22,184 +20,293 @@
 // See README in the root project for more information.
 // -----------------------------------------------------------------------------
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <math.h>
-#include "../lib/MLX42/include/MLX42/MLX42.h"
-#include "../lib/libft/libft.h"
-#include "../lib/libft/ft_printf/ft_printf.h"
+/*
+Copyright (c) 2004-2021, Lode Vandevenne
 
-#define WIDTH 1024
-#define HEIGHT 1024
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+
+    * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+
+#include <math.h>
+#include <string.h>
+#include "../include/cubed.h"
+// #include <vector.h>
+// #include <iostream>
+
+/*
+g++ *.cpp -lSDL -O3 -W -Wall -ansi -pedantic
+g++ *.cpp -lSDL
+*/
+
+//place the example code below here:
+
+#define screenWidth 640
+#define screenHeight 480
+#define mapWidth 24
+#define mapHeight 24
 
 static mlx_image_t* image;
-double	obstacle_startX;
-double	obstacle_endX;
-double	obstacle_startY;
-double	obstacle_endY;
-double	diff_x;
-double	diff_y;
-const double pi = 3.14159265359;
-double	angle;
 
-// -----------------------------------------------------------------------------
-
-int32_t ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a)
+int worldMap[mapWidth][mapHeight]=
 {
-    return (r << 24 | g << 16 | b << 8 | a);
+	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,2,2,2,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
+	{1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1},
+	{1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,2,2,0,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,4,0,0,0,0,5,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,4,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
+};
+
+void	screen(void *param)
+{
+	t_cubed	*cubed;
+
+	cubed = param;
+	for(int x = 0; x < w; x++)
+		{
+			//calculate ray position and direction
+			double cameraX = 2 * x / (double)w - 1; //x-coordinate in camera space
+			double rayDirX = dirX + planeX * cameraX;
+			double rayDirY = dirY + planeY * cameraX;
+			//which box of the map we're in
+			int mapX = int(posX);
+			int mapY = int(posY);
+
+			//length of ray from current position to next x or y-side
+			double sideDistX;
+			double sideDistY;
+
+			//length of ray from one x or y-side to next x or y-side
+			//these are derived as:
+			//deltaDistX = sqrt(1 + (rayDirY * rayDirY) / (rayDirX * rayDirX))
+			//deltaDistY = sqrt(1 + (rayDirX * rayDirX) / (rayDirY * rayDirY))
+			//which can be simplified to abs(|rayDir| / rayDirX) and abs(|rayDir| / rayDirY)
+			//where |rayDir| is the length of the vector (rayDirX, rayDirY). Its length,
+			//unlike (dirX, dirY) is not 1, however this does not matter, only the
+			//ratio between deltaDistX and deltaDistY matters, due to the way the DDA
+			//stepping further below works. So the values can be computed as below.
+			// Division through zero is prevented, even though technically that's not
+			// needed in C++ with IEEE 754 floating point values.
+			double deltaDistX = (rayDirX == 0) ? 1e30 : abs(1 / rayDirX);
+			double deltaDistY = (rayDirY == 0) ? 1e30 : abs(1 / rayDirY);
+
+			double perpWallDist;
+
+			//what direction to step in x or y-direction (either +1 or -1)
+			int stepX;
+			int stepY;
+
+			int hit = 0; //was there a wall hit?
+			int side; //was a NS or a EW wall hit?
+			//calculate step and initial sideDist
+			if(rayDirX < 0)
+			{
+				stepX = -1;
+				sideDistX = (posX - mapX) * deltaDistX;
+			}
+			else
+			{
+				stepX = 1;
+				sideDistX = (mapX + 1.0 - posX) * deltaDistX;
+			}
+			if(rayDirY < 0)
+			{
+				stepY = -1;
+				sideDistY = (posY - mapY) * deltaDistY;
+			}
+			else
+			{
+				stepY = 1;
+				sideDistY = (mapY + 1.0 - posY) * deltaDistY;
+			}
+			//perform DDA
+			while(hit == 0)
+			{
+			//jump to next map square, either in x-direction, or in y-direction
+				if(sideDistX < sideDistY)
+				{
+					sideDistX += deltaDistX;
+					mapX += stepX;
+					side = 0;
+				}
+				else
+				{
+					sideDistY += deltaDistY;
+					mapY += stepY;
+					side = 1;
+				}
+				//Check if ray has hit a wall
+				if(worldMap[mapX][mapY] > 0) hit = 1;
+			}
+			//Calculate distance projected on camera direction. This is the shortest distance from the point where the wall is
+			//hit to the camera plane. Euclidean to center camera point would give fisheye effect!
+			//This can be computed as (mapX - posX + (1 - stepX) / 2) / rayDirX for side == 0, or same formula with Y
+			//for size == 1, but can be simplified to the code below thanks to how sideDist and deltaDist are computed:
+			//because they were left scaled to |rayDir|. sideDist is the entire length of the ray above after the multiple
+			//steps, but we subtract deltaDist once because one step more into the wall was taken above.
+			if(side == 0) perpWallDist = (sideDistX - deltaDistX);
+			else          perpWallDist = (sideDistY - deltaDistY);
+
+			//Calculate height of line to draw on screen
+			int lineHeight = (int)(h / perpWallDist);
+
+			//calculate lowest and highest pixel to fill in current stripe
+			int drawStart = -lineHeight / 2 + h / 2;
+			if(drawStart < 0) drawStart = 0;
+			int drawEnd = lineHeight / 2 + h / 2;
+			if(drawEnd >= h) drawEnd = h - 1;
+
+			//choose wall color
+			ColorRGB color;
+			switch(worldMap[mapX][mapY])
+			{
+				case 1:  color = RGB_Red;    break; //red
+				case 2:  color = RGB_Green;  break; //green
+				case 3:  color = RGB_Blue;   break; //blue
+				case 4:  color = RGB_White;  break; //white
+				default: color = RGB_Yellow; break; //yellow
+			}
+
+			//give x and y sides different brightness
+			if(side == 1) {color = color / 2;}
+
+			//draw the pixels of the stripe as a vertical line
+			verLine(x, drawStart, drawEnd, color); // replace for mlx_put_pixel
+		}
+		//timing for input and FPS counter
+		oldTime = time;
+		time = getTicks();
+		double frameTime = (time - oldTime) / 1000.0; //frameTime is the time this frame has taken, in seconds
+		print(1.0 / frameTime); //FPS counter
+		redraw();
+		cls();
+
+		//speed modifiers
+		double moveSpeed = frameTime * 5.0; //the constant value is in squares/second
+		double rotSpeed = frameTime * 3.0; //the constant value is in radians/second
+		readKeys();
+		//move forward if no wall in front of you
+		if(keyDown(SDLK_UP))
+		{
+			if(worldMap[int(posX + dirX * moveSpeed)][int(posY)] == false) posX += dirX * moveSpeed;
+			if(worldMap[int(posX)][int(posY + dirY * moveSpeed)] == false) posY += dirY * moveSpeed;
+		}
+		//move backwards if no wall behind you
+		if(keyDown(SDLK_DOWN))
+		{
+			if(worldMap[int(posX - dirX * moveSpeed)][int(posY)] == false) posX -= dirX * moveSpeed;
+			if(worldMap[int(posX)][int(posY - dirY * moveSpeed)] == false) posY -= dirY * moveSpeed;
+		}
+		//rotate to the right
+		if(keyDown(SDLK_RIGHT))
+		{
+			//both camera direction and camera plane must be rotated
+			double oldDirX = dirX;
+			dirX = dirX * cos(-rotSpeed) - dirY * sin(-rotSpeed);
+			dirY = oldDirX * sin(-rotSpeed) + dirY * cos(-rotSpeed);
+			double oldPlaneX = planeX;
+			planeX = planeX * cos(-rotSpeed) - planeY * sin(-rotSpeed);
+			planeY = oldPlaneX * sin(-rotSpeed) + planeY * cos(-rotSpeed);
+		}
+		//rotate to the left
+		if(keyDown(SDLK_LEFT))
+		{
+			//both camera direction and camera plane must be rotated
+			double oldDirX = dirX;
+			dirX = dirX * cos(rotSpeed) - dirY * sin(rotSpeed);
+			dirY = oldDirX * sin(rotSpeed) + dirY * cos(rotSpeed);
+			double oldPlaneX = planeX;
+			planeX = planeX * cos(rotSpeed) - planeY * sin(rotSpeed);
+			planeY = oldPlaneX * sin(rotSpeed) + planeY * cos(rotSpeed);
+		}
 }
 
-
-// void draw_color_stripe(int32_t startX, int32_t endX, int32_t startY, int32_t endY, uint32_t color)
-// {
-//     // Calculate rotation center
-// 	double rotationAngle = pi / 4.0;
-
-//     double centerX = (startX + endX) / 2.0;
-//     double centerY = (startY + endY) / 2.0;
-
-//     for (int32_t i = startX; i < endX; ++i)
-//     {
-//         for (int32_t y = startY; y <= endY; ++y)
-//         {
-//             // Apply rotation transformation
-//             double rotatedX = centerX + (i - centerX) * cos(rotationAngle) - (y - centerY) * sin(rotationAngle);
-//             double rotatedY = centerY + (i - centerX) * sin(rotationAngle) + (y - centerY) * cos(rotationAngle);
-
-//             // Round the rotated coordinates to the nearest integer
-//             int32_t pixelX = (int32_t)round(rotatedX);
-//             int32_t pixelY = (int32_t)round(rotatedY);
-
-//             mlx_put_pixel(image, pixelX, pixelY, color);
-//         }
-//     }
-// }
-
-void draw_color_stripe(int32_t startX, int32_t endX, int32_t startY, int32_t endY, uint32_t color)
+void	initialize_cubed(t_cubed *cubed)
 {
-	// double	current_diff_x = endX - startX;
-	// double	e = current_diff_x = 2;
+	cubed->posX = 22;
+	cubed->posY = 12;  //x and y start position
+	cubed->dirX = -1;
+	cubed->dirY = 0; //initial direction vector
+	cubed->planeX = 0;
+	cubed->planeY = 0.66; //the 2d raycaster version of camera plane
 
-    for (int32_t i = startX; i < endX; ++i)
-    {
-        for (int32_t y = startY; y <= endY; ++y)
-        {
-			// printf("newX: %f\n", i + (e - cos(angle) * e));
-			// printf("newY: %f\n", y - (sin(angle) * e));
-			// printf("i: %d\n", i);
-			// printf("y: %d\n", y);
-            mlx_put_pixel(image, i, y, color);
-            // mlx_put_pixel(image, round(i + (e - cos(angle) * e)), round(y - (sin(angle) * e)), color);
-        }
-    }
+	cubed->time = 0; //time of current frame
+	cubed->oldTime = 0; //time of previous frame
 }
 
-void start_screen(void* param)
+int	mlx(t_cubed *cubed)
 {
-    (void)param;
-
-    uint32_t sealing_color = ft_pixel(47, 79, 79, 0xFF);
-    uint32_t floor_color = ft_pixel(112, 128, 144, 0xFF);
-	uint32_t obstacle_color = ft_pixel(220, 20, 60, 0xFF);
-
-    draw_color_stripe(0, image->width, 0, image->height / 2 - 1, sealing_color);
-    draw_color_stripe(0, image->width, image->height / 2, image->height - 1, floor_color);
-    draw_color_stripe(obstacle_startX, obstacle_endX, obstacle_startY, obstacle_endY, obstacle_color);
-}
-
-bool	max_obstacle_check(void)
-{
-	if (obstacle_startX == 0 || obstacle_endX == WIDTH - 1 ||
-		obstacle_startY == 0 || obstacle_endY == HEIGHT - 1)
-		return (false);
-	return (true);
-}
-
-void ft_hook(void* param)
-{
-	mlx_t* mlx = param;
-
-	if (mlx_is_key_down(mlx, MLX_KEY_ESCAPE))
-		mlx_close_window(mlx);
-	if (mlx_is_key_down(mlx, MLX_KEY_W)) // move forward (zoom isn)
-	{
-		if (!max_obstacle_check())
-			return ;
-		obstacle_startX -= 5;
-		obstacle_endX += 5;
-		obstacle_startY -= 5;
-		if (obstacle_endY - obstacle_startY >= diff_y)
-			obstacle_endY += 5;
-
-	}
-	if (mlx_is_key_down(mlx, MLX_KEY_S)) // move backward (zoom out)
-	{
-		obstacle_startX += 5;
-		obstacle_endX -= 5;
-		if (obstacle_endY > image->height / 2)
-			obstacle_endY -= 5;
-		obstacle_startY += 5;
-	}
-
-	if (mlx_is_key_down(mlx, MLX_KEY_A)) // move to the left (change position in map)
-	{
-		obstacle_startX += 5;
-		obstacle_endX += 5;
-	}
-	if (mlx_is_key_down(mlx, MLX_KEY_D)) // move to the right (change position in map)
-	{
-		obstacle_startX -= 5;
-		obstacle_endX -= 5;
-	}
-	if (mlx_is_key_down(mlx, MLX_KEY_LEFT)) // change screen to the left
-		image->instances[0].x -= 5;
-	if (mlx_is_key_down(mlx, MLX_KEY_RIGHT)) // change screen to the right
-		image->instances[0].x += 5;
-}
-
-// -----------------------------------------------------------------------------
-
-int32_t main(void)
-{
-	mlx_t* mlx;
-	
-	double a = sin(1) * 5;
-	double b = cos(1) * 5;
-	
-	printf("a: %f\n", a);
-	printf("b: %f\n", b);
-
-	if (!(mlx = mlx_init(WIDTH, HEIGHT, "MLX42", true)))
+	// screen(screenWidth, screenHeight, 0, "Raycaster");
+	if (!(cubed->mlx = mlx_init(screenWidth, screenHeight, "MLX42", true)))
 	{
 		puts(mlx_strerror(mlx_errno));
 		return(EXIT_FAILURE);
 	}
-	if (!(image = mlx_new_image(mlx, WIDTH, HEIGHT)))
+	if (!(image = mlx_new_image(cubed->mlx, screenWidth, screenHeight)))
 	{
-		mlx_close_window(mlx);
+		mlx_close_window(cubed->mlx);
 		puts(mlx_strerror(mlx_errno));
 		return(EXIT_FAILURE);
 	}
-	angle = 2;
-	obstacle_startX = image->width * 0.25;
-	obstacle_endX = image->width * 0.75;
-	diff_x = obstacle_endX - obstacle_startX;
-	obstacle_startY = image->height * 0.25;
-	obstacle_endY = image->height * 0.5 - 1;
-	diff_y = obstacle_endY - obstacle_startY;
-
-	if (mlx_image_to_window(mlx, image, 0, 0) == -1)
+	if (mlx_image_to_window(cubed->mlx, image, 0, 0) == -1)
 	{
-		mlx_close_window(mlx);
+		mlx_close_window(cubed->mlx);
 		puts(mlx_strerror(mlx_errno));
 		return(EXIT_FAILURE);
 	}
 
-	mlx_loop_hook(mlx, start_screen, mlx);
-	mlx_loop_hook(mlx, ft_hook, mlx);
+	mlx_loop_hook(cubed->mlx, screen, cubed);
+	// mlx_loop_hook(mlx, ft_hook, mlx);
 
-	mlx_loop(mlx);
-	mlx_terminate(mlx);
+	mlx_loop(cubed->mlx);
+	mlx_terminate(cubed->mlx);
 	return (EXIT_SUCCESS);
+}
+
+int main(int argc, char *argv[])
+{
+	(void)argc;
+	(void)argv;
+	t_cubed	cubed;
+
+	initialize_cubed(&cubed);
+
+	mlx(&cubed);
+	
+	return (EXIT_SUCCESS);
+	
 }

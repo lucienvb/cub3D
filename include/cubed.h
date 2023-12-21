@@ -8,6 +8,7 @@
 # include <string.h> // remove
 # include "../lib/libft/libft.h"
 # include "../lib/libft/ft_printf/ft_printf.h"
+#include "../lib/MLX42/include/MLX42/MLX42.h"
 
 // defines
 # define FAILURE		1
@@ -23,6 +24,19 @@
 
 
 // structures
+typedef struct s_cubed
+{
+	mlx_t	*mlx;
+	double	posX;
+	double	posY;
+	double	dirX;
+	double	dirY;
+	double	planeX;
+	double	planeY;
+	double	time;
+	double	oldTime;
+
+}			t_cubed;
 
 	
 // typedef struct s_mlx
