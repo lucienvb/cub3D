@@ -23,12 +23,10 @@
 # define X				1
 
 
-// enum
+// enums
 
 
 // structures
-
-	
 typedef struct s_mlx
 {
 	int	i; //only here to surpass flags
@@ -42,12 +40,14 @@ typedef struct s_screen
 typedef struct s_cubed
 {
 	char		**map;
+	char		**map_val;
 	char		*argv;
 	int			start_pos[2];
+	char		start_cardinal_point;
 	int			ceiling_color[3];
 	int			floor_color[3];
-	int		width;
-	int		height;
+	int			width;
+	int			height;
 	// mlx_texture_t	*n_texture;
 	// mlx_texture_t	*e_texture;
 	// mlx_texture_t	*s_texture;
@@ -72,9 +72,8 @@ int		validate_map(t_cubed *cubed, int x, int y);
 void	parse_map_dimensions(t_cubed *cubed);
 
 // src/setup/utils
+void	free_2d_array(char **array);
 int		validate_map_char(int c);
-int		cb_atoi(const char *str);
-int		cb_isnum(char c);
 int		cb_isspace(int c);
 void	perror_exit(char *message);
 void	error_exit(char *message);

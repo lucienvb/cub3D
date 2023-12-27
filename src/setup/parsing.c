@@ -8,7 +8,7 @@ char	**cub_to_double_array(int fd)
 	char	*new_line;
 	char	**file;
 
-	new_line = ""; // todo: why?
+	new_line = "";
 	while((line = get_next_line(fd))) // todo: protect gnl?
 		new_line = ft_strjoin(new_line, line); // todo: protect string join
 	return (file = ft_split(new_line, '\n'));
@@ -39,16 +39,18 @@ void	test_input(t_cubed *cubed)
 	printf("\n\nceiling color: ");
 	while(index < 3)
 	{
-		printf("%i ", cubed->ceiling_color[index]);
+		printf(" %i", cubed->ceiling_color[index]);
 		index++;
 	}
+	printf("\n");
 	index = 0;
-	printf("\nfloor color: ");
+	printf("floor color: ");
 	while(index < 3)
 	{
-		printf("%i ", cubed->floor_color[index]);
+		printf(" %i", cubed->floor_color[index]);
 		index++;
 	}
+	printf("\n");
 }
 
 void	input_parsing(t_cubed *cubed, char *argv)
@@ -64,9 +66,11 @@ void	input_parsing(t_cubed *cubed, char *argv)
 	parse_texture(cubed, file);
 	parse_color_code(cubed, file);
 	if (validate_map(cubed, cubed->start_pos[Y], cubed->start_pos[X]) == FAILURE)
-		printf("map is wrong\n");
-	else
-		printf("map is right\n");
-	// test_input(cubed);
+	{
+		free_2d_array(cubed->map);
+		error_exit("incorrect borders in map");
+	}
+	free_2d_array(cubed->map_val);
+	test_input(cubed);
 	close(fd);
 }

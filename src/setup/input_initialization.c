@@ -7,8 +7,10 @@ void    init_cubed(t_cubed *cubed, t_mlx *mlx, t_screen *screen, char *argv)
 {
 	bzero(cubed, sizeof(*cubed));
 	cubed->map = NULL;
+	cubed->map_val = NULL;
 	cubed->start_pos[Y] = 0;
 	cubed->start_pos[X] = 0;
+	cubed->start_cardinal_point = 0;
 	cubed->ceiling_color[0] = 0;
 	cubed->ceiling_color[1] = 0;
 	cubed->floor_color[0] = 0;

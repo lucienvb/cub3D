@@ -19,8 +19,6 @@ void	parse_map_dimensions(t_cubed *cubed)
 	}
 	cubed->height = y;
 	cubed->width = max_x;
-	printf("%i = map height\n", cubed->height);
-	printf("%i = map width\n", cubed->width);
 }
 
 char **copy_map(char **file, int start, int end, int index)
@@ -83,5 +81,6 @@ void	parse_map(t_cubed *cubed, char **file)
 	while(file[end])
 		end++;
 	cubed->map = copy_map(file, start, end, norminette_intje);
+	cubed->map_val = copy_map(file, start, end, norminette_intje);
 }
 
