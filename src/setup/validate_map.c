@@ -34,10 +34,10 @@ void	parse_start_pos(t_cubed *cubed)
 		y++;
 	}
 	if (count != 1)
-		perror_exit("invalid or no start position(s)");
+		error_exit("invalid or no start position(s)");
 }
 
-int	validate_map(t_cubed *cubed, int y, int x) 
+int	validate_map(t_cubed *cubed, int y, int x) // todo: dup map
 {
 	char	wall;
 	char	flag;

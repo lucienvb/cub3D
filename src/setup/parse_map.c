@@ -30,20 +30,14 @@ char **copy_map(char **file, int start, int end, int index)
 
 	map = malloc(((end - start) + 1) * sizeof(char*));
 	if (!map)
-	{
-		perror("Malloc failed in copy_map #1\n");
-		exit(EXIT_FAILURE);
-	}
+		perror_exit("Malloc failed in copy_map #1\n");
 	map[end - start] = NULL;
     while (start < end)
     {
         strlen = ft_strlen(file[start]);
         map[index] = malloc((strlen + 1) * sizeof(char));
         if (!map[index])
-        {
-			perror("Malloc failed in copy_map #2\n");
-            exit(EXIT_FAILURE);
-        }
+			perror_exit("Malloc failed in copy_map #2\n");
         ft_strlcpy(map[index], file[start], strlen + 1); // TODO: protect?
         start++;
         index++;
@@ -85,10 +79,7 @@ void	parse_map(t_cubed *cubed, char **file)
 	norminette_intje = 0;
 	start = find_start_map(file);
 	if (start == 0)
-	{
-		perror("empty file");
-		exit(EXIT_FAILURE);
-	}
+		error_exit("empty file");
 	while(file[end])
 		end++;
 	cubed->map = copy_map(file, start, end, norminette_intje);

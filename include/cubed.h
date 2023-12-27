@@ -77,5 +77,6 @@ int		cb_atoi(const char *str);
 int		cb_isnum(char c);
 int		cb_isspace(int c);
 void	perror_exit(char *message);
+void	error_exit(char *message);
 
 #endif

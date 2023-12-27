@@ -33,8 +33,5 @@ void	input_error_handling(int argc, char **argv)
 		exit(EXIT_FAILURE);
 	}
 	if (check_file_type(argv[1]) == FAILURE)
-	{
-		ft_printf("wrong file type");
-		exit(EXIT_FAILURE);
-	}
+		error_exit("wrong file type");
 }

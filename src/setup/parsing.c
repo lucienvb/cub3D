@@ -20,10 +20,7 @@ int	open_cub_file(char *argv)
 
 	fd = open(argv, O_RDONLY);
 	if (fd == -1)
-	{
-		perror("failed to open .cub");
-		exit(EXIT_FAILURE);
-	}
+		perror_exit("failed to open .cub");
 	return (fd);
 }
 
@@ -66,11 +63,10 @@ void	input_parsing(t_cubed *cubed, char *argv)
 	parse_map_dimensions(cubed);
 	parse_texture(cubed, file);
 	parse_color_code(cubed, file);
-	if (validate_map(cubed, cubed->start_pos[Y], cubed->start_pos[X]) == 1)
+	if (validate_map(cubed, cubed->start_pos[Y], cubed->start_pos[X]) == FAILURE)
 		printf("map is wrong\n");
 	else
 		printf("map is right\n");
-	test_input(cubed);
+	// test_input(cubed);
 	close(fd);
 }
- 
