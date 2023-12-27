@@ -22,11 +22,12 @@
 #include "../lib/MLX42/include/MLX42/MLX42.h"
 #include "../lib/libft/libft.h"
 #include "../lib/libft/ft_printf/ft_printf.h"
+#include "../include/cubed.h"
 
 #define WIDTH 512
 #define HEIGHT 512
-#define mapWidth 24
-#define mapHeight 24
+// #define mapWidth 24
+// #define mapHeight 24
 
 static mlx_image_t* image;
 double	obstacle_startX;
@@ -40,40 +41,57 @@ double	angle;
 
 // -----------------------------------------------------------------------------
 
+// #define mapWidth 5
+// #define mapHeight 5
 // int worldMap[mapWidth][mapHeight]=
 // {
-// 	{1, 1, 1},
-// 	{1, 0, 1},
-// 	{1, 1, 1}
+// 	{1, 1, 1, 1, 1},
+// 	{1, 0, 0, 0, 1},
+// 	{1, 0, 0, 0, 1},
+// 	{1, 0, 0, 0, 1},
+// 	{1, 1, 1, 1, 1}
 // };
 
+#define mapWidth 5
+#define mapHeight 5
 int worldMap[mapWidth][mapHeight]=
 {
-	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,2,2,2,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-	{1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1},
-	{1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,2,2,0,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,4,0,0,0,0,5,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,4,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
+	{0, 0, 0, 0, 0},
+	{0, 0, 0, 0, 0},
+	{0, 0, 0, 0, 0},
+	{0, 0, 0, 0, 0},
+	{0, 0, 0, 0, 0}
 };
+
+// #define mapWidth 24
+// #define mapHeight 24
+// int worldMap[mapWidth][mapHeight]=
+// {
+//   {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+//   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+//   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+//   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+//   {1,0,0,0,0,0,2,2,2,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
+//   {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
+//   {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1},
+//   {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
+//   {1,0,0,0,0,0,2,2,0,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
+//   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+//   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+//   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+//   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+//   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+//   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+//   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+//   {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+//   {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+//   {1,4,0,0,0,0,5,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+//   {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+//   {1,4,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+//   {1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+//   {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+//   {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
+// };
 
 int32_t ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a)
 {
@@ -91,18 +109,100 @@ void draw_color_stripe(int32_t startX, int32_t endX, int32_t startY, int32_t end
     }
 }
 
+void	raycasting(t_cubed *cubed)
+{
+	int	w = WIDTH;
+	// int	h = HEIGHT; NOT USED
+
+	uint32_t color3 = ft_pixel(255, 0, 0, 0xFF); // red
+	(void)color3;
+	for(int x = 0; x < w; x++)
+	{
+		//calculate ray position and direction
+		double cameraX = 2 * x / (double)w - 1; //x-coordinate in camera space
+		double rayDirX = cubed->dirX + cubed->planeX * cameraX;
+		double rayDirY = cubed->dirY + cubed->planeY * cameraX;
+		//which box of the map we're in
+		int mapX = (int)cubed->posX;
+		int mapY = (int)cubed->posY;
+
+		//length of ray from current position to next x or y-side
+		double sideDistX;
+		double sideDistY;
+
+		double deltaDistX = ((int)rayDirX == 0) ? 1e30 : abs(1 / (int)rayDirX);
+		double deltaDistY = ((int)rayDirY == 0) ? 1e30 : abs(1 / (int)rayDirY);
+
+		// double perpWallDist; NOT USED
+
+		//what direction to step in x or y-direction (either +1 or -1)
+		int stepX;
+		int stepY;
+
+		int hit = 0; //was there a wall hit?
+		int side; //was a NS or a EW wall hit?
+		//calculate step and initial sideDist
+		if(rayDirX < 0)
+		{
+			stepX = -1;
+			sideDistX = (cubed->posX - mapX) * deltaDistX;
+		}
+		else
+		{
+			stepX = 1;
+			sideDistX = (mapX + 1.0 - cubed->posX) * deltaDistX;
+		}
+		if(rayDirY < 0)
+		{
+			stepY = -1;
+			sideDistY = (cubed->posY - mapY) * deltaDistY;
+		}
+		else
+		{
+			stepY = 1;
+			sideDistY = (mapY + 1.0 - cubed->posY) * deltaDistY;
+		}
+		//perform DDA
+		while(hit == 0)
+		{
+		//jump to next map square, either in x-direction, or in y-direction
+			if(sideDistX < sideDistY)
+			{
+				sideDistX += deltaDistX;
+				mapX += stepX;
+				side = 0;
+			}
+			else
+			{
+				sideDistY += deltaDistY;
+				mapY += stepY;
+				side = 1;
+			}
+			//Check if ray has hit a wall
+			// if(worldMap[mapX][mapY] > 0) hit = 1;
+			if(worldMap[mapX][mapY] == 1) hit = 1;
+		}
+		// mlx_put_pixel(image, mapX, mapY, color3);
+		printf("hit is %d\n", hit);
+		printf("side is %d\n", side);
+		// if (hit)
+		// 	return ;
+	}
+}
+
 void start_screen(void* param)
 {
-    (void)param;
+	t_cubed	*cubed;
+
+	cubed = param;
 
     uint32_t color0 = ft_pixel(47, 79, 79, 0xFF);
     uint32_t color1 = ft_pixel(112, 128, 144, 0xFF);
 	uint32_t color2 = ft_pixel(220, 20, 60, 0xFF);
-	uint32_t color3 = ft_pixel(255, 0, 0, 0xFF);
+	uint32_t color3 = ft_pixel(255, 0, 0, 0xFF); // red
 	uint32_t color4 = ft_pixel(60, 179, 113, 0xFF);
 	uint32_t color5 = ft_pixel(0, 0, 255, 0xFF);
 	uint32_t colorBlack = ft_pixel(0, 0, 0, 0xFF);
-
 
 	int	y = 0;
 	int	stepY = HEIGHT / mapHeight;
@@ -117,8 +217,12 @@ void start_screen(void* param)
 		int x = 0;
 		while (x < mapWidth)
 		{
-			printf("x: %d\n", x);
-			if (worldMap[x][y] == 0)
+			// printf("x: %d\n", x);
+			if (x == round(cubed->posX) && y == round(cubed->posY)) // doesn't work yet
+			{
+				draw_color_stripe(startX + 25, endX - 25, startY + 25, endY - 25, colorBlack);
+			}
+			else if (worldMap[x][y] == 0)
 				draw_color_stripe(startX, endX, startY, endY, color0);
 			else if (worldMap[x][y] == 1)
 				draw_color_stripe(startX, endX, startY, endY, color1);
@@ -130,8 +234,7 @@ void start_screen(void* param)
 				draw_color_stripe(startX, endX, startY, endY, color4);
 			else if (worldMap[x][y] == 5)
 				draw_color_stripe(startX, endX, startY, endY, color5);
-			else
-				draw_color_stripe(startX, endX, startY, endY, colorBlack);
+			
 
 
 			startX = endX;
@@ -142,7 +245,7 @@ void start_screen(void* param)
 		endY += stepY;
 		y++;
 	}
-	
+	raycasting(cubed);
     // draw_color_stripe(0, image->width, 0, image->height / 2 - 1, sealing_color);
     // draw_color_stripe(0, image->width, image->height / 2, image->height - 1, floor_color);
     // draw_color_stripe(obstacle_startX, obstacle_endX, obstacle_startY, obstacle_endY, obstacle_color);
@@ -158,87 +261,106 @@ bool	max_obstacle_check(void)
 
 void ft_hook(void* param)
 {
-	mlx_t* mlx = param;
+	t_cubed	*cubed;
 
-	if (mlx_is_key_down(mlx, MLX_KEY_ESCAPE))
-		mlx_close_window(mlx);
-	if (mlx_is_key_down(mlx, MLX_KEY_W)) // move forward (zoom isn)
+	cubed = param;
+
+	if (mlx_is_key_down(cubed->mlx, MLX_KEY_ESCAPE))
+		mlx_close_window(cubed->mlx);
+	if (mlx_is_key_down(cubed->mlx, MLX_KEY_W)) // move forward (zoom isn)
 	{
-		if (!max_obstacle_check())
-			return ;
-		obstacle_startX -= 5;
-		obstacle_endX += 5;
-		obstacle_startY -= 5;
-		if (obstacle_endY - obstacle_startY >= diff_y)
-			obstacle_endY += 5;
+		if (cubed->posY > 1)
+			cubed->posY -= 0.2;
+		// if (!max_obstacle_check())
+		// 	return ;
+		// obstacle_startX -= 5;
+		// obstacle_endX += 5;
+		// obstacle_startY -= 5;
+		// if (obstacle_endY - obstacle_startY >= diff_y)
+		// 	obstacle_endY += 5;
 
 	}
-	if (mlx_is_key_down(mlx, MLX_KEY_S)) // move backward (zoom out)
+	if (mlx_is_key_down(cubed->mlx, MLX_KEY_S)) // move backward (zoom out)
 	{
-		obstacle_startX += 5;
-		obstacle_endX -= 5;
-		if (obstacle_endY > image->height / 2)
-			obstacle_endY -= 5;
-		obstacle_startY += 5;
+		if (cubed->posY < mapHeight - 2)
+			cubed->posY += 0.2;
+		// obstacle_startX += 5;
+		// obstacle_endX -= 5;
+		// if (obstacle_endY > image->height / 2)
+		// 	obstacle_endY -= 5;
+		// obstacle_startY += 5;
 	}
 
-	if (mlx_is_key_down(mlx, MLX_KEY_A)) // move to the left (change position in map)
+	if (mlx_is_key_down(cubed->mlx, MLX_KEY_A)) // move to the left (change position in map)
 	{
-		obstacle_startX += 5;
-		obstacle_endX += 5;
+		if (cubed->posX > 1)
+			cubed->posX -= 0.2;
+		// obstacle_startX += 5;
+		// obstacle_endX += 5;
 	}
-	if (mlx_is_key_down(mlx, MLX_KEY_D)) // move to the right (change position in map)
+	if (mlx_is_key_down(cubed->mlx, MLX_KEY_D)) // move to the right (change position in map)
 	{
-		obstacle_startX -= 5;
-		obstacle_endX -= 5;
+		if (cubed->posX < mapWidth - 2)
+			cubed->posX += 0.2;
+		// obstacle_startX -= 5;
+		// obstacle_endX -= 5;
 	}
-	if (mlx_is_key_down(mlx, MLX_KEY_LEFT)) // change screen to the left
+	if (mlx_is_key_down(cubed->mlx, MLX_KEY_LEFT)) // change screen to the left
 		image->instances[0].x -= 5;
-	if (mlx_is_key_down(mlx, MLX_KEY_RIGHT)) // change screen to the right
+	if (mlx_is_key_down(cubed->mlx, MLX_KEY_RIGHT)) // change screen to the right
 		image->instances[0].x += 5;
+}
+
+bool	initialize_cubed(t_cubed *cubed)
+{
+	cubed->posX = 2;
+	cubed->posY = 2;
+	cubed->dirX = -1.0;
+	cubed->dirY = 0.0;
+	cubed->planeX = 0.0;
+	cubed->planeY = 0.66;
+	cubed->time = 0;
+	cubed->oldTime = 0;
+	return (true);
 }
 
 int32_t main(void)
 {
-	mlx_t* mlx;
+	t_cubed	cubed;
 	
-	double a = sin(1) * 5;
-	double b = cos(1) * 5;
-	
-	printf("a: %f\n", a);
-	printf("b: %f\n", b);
-
-	if (!(mlx = mlx_init(WIDTH, HEIGHT, "MLX42", true)))
+	if (!initialize_cubed(&cubed))
+		return (1);
+	if (!(cubed.mlx = mlx_init(WIDTH, HEIGHT, "MLX42", true)))
 	{
 		puts(mlx_strerror(mlx_errno));
 		return(EXIT_FAILURE);
 	}
-	if (!(image = mlx_new_image(mlx, WIDTH, HEIGHT)))
+	if (!(image = mlx_new_image(cubed.mlx, WIDTH, HEIGHT)))
 	{
-		mlx_close_window(mlx);
+		mlx_close_window(cubed.mlx);
 		puts(mlx_strerror(mlx_errno));
 		return(EXIT_FAILURE);
 	}
-	angle = 2;
-	obstacle_startX = image->width * 0.25;
-	obstacle_endX = image->width * 0.75;
-	diff_x = obstacle_endX - obstacle_startX;
-	obstacle_startY = image->height * 0.25;
-	obstacle_endY = image->height * 0.5 - 1;
-	diff_y = obstacle_endY - obstacle_startY;
+	// angle = 2;
+	// obstacle_startX = image->width * 0.25;
+	// obstacle_endX = image->width * 0.75;
+	// diff_x = obstacle_endX - obstacle_startX;
+	// obstacle_startY = image->height * 0.25;
+	// obstacle_endY = image->height * 0.5 - 1;
+	// diff_y = obstacle_endY - obstacle_startY;
 
-	if (mlx_image_to_window(mlx, image, 0, 0) == -1)
+	if (mlx_image_to_window(cubed.mlx, image, 0, 0) == -1)
 	{
-		mlx_close_window(mlx);
+		mlx_close_window(cubed.mlx);
 		puts(mlx_strerror(mlx_errno));
 		return(EXIT_FAILURE);
 	}
 
-	mlx_loop_hook(mlx, start_screen, mlx);
-	mlx_loop_hook(mlx, ft_hook, mlx);
+	mlx_loop_hook(cubed.mlx, start_screen, &cubed);
+	mlx_loop_hook(cubed.mlx, ft_hook, &cubed);
 
-	mlx_loop(mlx);
-	mlx_terminate(mlx);
+	mlx_loop(cubed.mlx);
+	mlx_terminate(cubed.mlx);
 	return (EXIT_SUCCESS);
 }
 
