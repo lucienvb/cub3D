@@ -282,7 +282,7 @@ void	draw_vertical(int x, int y, t_cubed *cubed)
 {
 	uint32_t colorYellow = ft_pixel(255, 165, 0, 0xFF);
 
-	printf("pa: %f\n", cubed->pa);
+	// printf("pa: %f\n", cubed->pa);
 	int	line = 20;
 
 	while (line > 0)
@@ -290,6 +290,63 @@ void	draw_vertical(int x, int y, t_cubed *cubed)
 		mlx_put_pixel(image, x + cos(cubed->pa) * line, y + sin(cubed->pa) * line, colorYellow);
 		line--;
 	}
+}
+
+void	drawRays3D(void *param)
+{
+	t_cubed *cubed;
+	int		r, mx, my, mp, dof;
+	float	rx, ry, ra, xo, yo;
+
+	cubed = param;
+	int	mapX = cubed->posX;
+	int	mapY = cubed->posY;
+	ra = cubed->pa;
+	for (r = 0; r < 1; r++)
+	{
+		dof = 0;
+		double	aTan = -1/tan(ra);
+		if (ra > pi)
+		{
+			ry = (((int)cubed->posY >> 6) << 6) - 0.0001;
+			rx = (cubed->posY - ry) * aTan + cubed->posX;
+			yo = -64;
+			xo = -yo * aTan;
+		}
+		if (ra < pi)
+		{
+			ry = (((int)cubed->posY >> 6) << 6) + 64;
+			rx = (cubed->posY - ry) * aTan + cubed->posX;
+			yo = 64;
+			xo = -yo * aTan;
+		}
+		if (ra == 0 || ra == pi)
+		{
+			rx = cubed->posX;
+			ry = cubed->posY;
+			dof = 8;
+		}
+		while (dof < 8)
+		{
+			mx = (int)(rx) >> 6;
+			my = (int)(ry) >> 6;
+			mp = my * mapX + mx;
+			// if (mp < mapX * mapY && map[mp] == 1)
+			if (mp < mapX * mapY && worldMap[mapX][mapY] == 1)
+				dof = 8;
+			else
+			{
+				rx += xo;
+				ry += yo;
+				dof += 1;
+			}
+		}
+		printf("cubed->posX: %f\n", cubed->posX);
+		printf("cubed->posY: %f\n", cubed->posY);
+		printf("rx: %f\n", rx);
+		printf("ry: %f\n", ry);
+	}
+
 }
 
 void	player(void *param)
@@ -381,20 +438,20 @@ void ft_hook(void* param)
 	if (mlx_is_key_down(cubed->mlx, MLX_KEY_LEFT)) // change screen to the left
 		// image->instances[0].x -= 5;
 	{
-		cubed->pa -= 0.1;
+		cubed->pa -= 0.05;
 		if (cubed->pa < 0)
 			cubed->pa += 2 * pi;
-		cubed->pdx = cos(cubed->pa)	* 5;
-		cubed->pdy = sin(cubed->pa) * 5;
+		cubed->pdx = cos(cubed->pa)	* 2;
+		cubed->pdy = sin(cubed->pa) * 2;
 	}
 	if (mlx_is_key_down(cubed->mlx, MLX_KEY_RIGHT)) // change screen to the right
 		// image->instances[0].x += 5;
 	{
-		cubed->pa += 0.1;
+		cubed->pa += 0.05;
 		if (cubed->pa > 2 * pi)
 			cubed->pa -= 2 * pi;
-		cubed->pdx = cos(cubed->pa)	* 5;
-		cubed->pdy = sin(cubed->pa) * 5;
+		cubed->pdx = cos(cubed->pa)	* 2;
+		cubed->pdy = sin(cubed->pa) * 2;
 	}
 }
 
@@ -450,6 +507,7 @@ int32_t main(void)
 
 	mlx_loop_hook(cubed.mlx, start_screen, &cubed);
 	mlx_loop_hook(cubed.mlx, player, &cubed);
+	mlx_loop_hook(cubed.mlx, drawRays3D, &cubed);
 	mlx_loop_hook(cubed.mlx, ft_hook, &cubed);
 
 	mlx_loop(cubed.mlx);
