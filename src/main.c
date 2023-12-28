@@ -278,18 +278,16 @@ bool	max_obstacle_check(void)
 	return (true);
 }
 
-void	draw_vertical(int X, int Y, t_cubed *cubed)
+void	draw_vertical(int x, int y, t_cubed *cubed)
 {
 	uint32_t colorYellow = ft_pixel(255, 165, 0, 0xFF);
-	(void)X;
-	(void)Y;
 
 	printf("pa: %f\n", cubed->pa);
 	int	line = 20;
 
 	while (line > 0)
 	{
-		mlx_put_pixel(image, X + cos(cubed->pa) * line, Y + sin(cubed->pa) * line, colorYellow);
+		mlx_put_pixel(image, x + cos(cubed->pa) * line, y + sin(cubed->pa) * line, colorYellow);
 		line--;
 	}
 }
@@ -311,7 +309,8 @@ void	player(void *param)
 					&& (y > cubed->posY - 6 && y < cubed->posY + 6))
 			{
 				mlx_put_pixel(image, x, y, colorYellow);
-				if (x == cubed->posX && y == cubed->posY)
+				if ((x > cubed->posX - 2 && x < cubed->posX + 2)
+					&& (y > cubed->posY - 2 && y < cubed->posY + 2))
 					draw_vertical(x, y, cubed);
 			}
 			x++;
@@ -358,20 +357,27 @@ void ft_hook(void* param)
 		// obstacle_startY += 5;
 	}
 
-	if (mlx_is_key_down(cubed->mlx, MLX_KEY_A)) // move to the left (change position in map)
-	{
-		if (cubed->posX >= 0)
-			cubed->posX -= 5;
-		// obstacle_startX += 5;
-		// obstacle_endX += 5;
-	}
-	if (mlx_is_key_down(cubed->mlx, MLX_KEY_D)) // move to the right (change position in map)
-	{
-		if (cubed->posX <= WIDTH - 5)
-			cubed->posX += 5;
-		// obstacle_startX -= 5;
-		// obstacle_endX -= 5;
-	}
+	// if (mlx_is_key_down(cubed->mlx, MLX_KEY_A)) // move to the left (change position in map)
+	// {
+	// 	// if (cubed->posX >= 0)
+	// 	// 	cubed->posX -= 5;
+
+	// 	cubed->posX -= cubed->pdx;
+	// 	cubed->posY -= cubed->pdy;
+
+	// 	// obstacle_startX += 5;
+	// 	// obstacle_endX += 5;
+	// }
+	// if (mlx_is_key_down(cubed->mlx, MLX_KEY_D)) // move to the right (change position in map)
+	// {
+	// 	// if (cubed->posX <= WIDTH - 5)
+	// 	// 	cubed->posX += 5;
+	// 	cubed->posX += cubed->pdx;
+	// 	cubed->posY += cubed->pdy;
+
+	// 	// obstacle_startX -= 5;
+	// 	// obstacle_endX -= 5;
+	// }
 	if (mlx_is_key_down(cubed->mlx, MLX_KEY_LEFT)) // change screen to the left
 		// image->instances[0].x -= 5;
 	{
