@@ -41,27 +41,27 @@ double	angle;
 
 // -----------------------------------------------------------------------------
 
-// #define mapWidth 5
-// #define mapHeight 5
-// int worldMap[mapWidth][mapHeight]=
-// {
-// 	{1, 1, 1, 1, 1},
-// 	{1, 0, 0, 0, 1},
-// 	{1, 0, 0, 0, 1},
-// 	{1, 0, 0, 0, 1},
-// 	{1, 1, 1, 1, 1}
-// };
-
 #define mapWidth 5
 #define mapHeight 5
 int worldMap[mapWidth][mapHeight]=
 {
-	{0, 0, 0, 0, 0},
-	{0, 0, 0, 0, 0},
-	{0, 0, 0, 0, 0},
-	{0, 0, 0, 0, 0},
-	{0, 0, 0, 0, 0}
+	{1, 1, 1, 1, 1},
+	{1, 0, 0, 0, 1},
+	{1, 0, 0, 0, 1},
+	{1, 0, 0, 0, 1},
+	{1, 1, 1, 1, 1}
 };
+
+// #define mapWidth 5
+// #define mapHeight 5
+// int worldMap[mapWidth][mapHeight]=
+// {
+// 	{0, 0, 0, 0, 0},
+// 	{0, 0, 0, 0, 0},
+// 	{0, 0, 0, 0, 0},
+// 	{0, 0, 0, 0, 0},
+// 	{0, 0, 0, 0, 0}
+// };
 
 // #define mapWidth 24
 // #define mapHeight 24
@@ -116,13 +116,21 @@ void	raycasting(t_cubed *cubed)
 
 	uint32_t color3 = ft_pixel(255, 0, 0, 0xFF); // red
 	(void)color3;
+
 	for(int x = 0; x < w; x++)
 	{
 		//calculate ray position and direction
 		double cameraX = 2 * x / (double)w - 1; //x-coordinate in camera space
 		double rayDirX = cubed->dirX + cubed->planeX * cameraX;
 		double rayDirY = cubed->dirY + cubed->planeY * cameraX;
-		//which box of the map we're in
+		if (rayDirY >= 0)
+			mlx_put_pixel(image, WIDTH / 2, rayDirY * HEIGHT, color3);
+
+		// printf("cameraX: %f\n", cameraX);
+		// printf("rayDirX: %f\n", rayDirX);
+		// printf("rayDirY: %f\n", rayDirY * HEIGHT);
+
+		// which box of the map we're in
 		int mapX = (int)cubed->posX;
 		int mapY = (int)cubed->posY;
 
@@ -169,6 +177,7 @@ void	raycasting(t_cubed *cubed)
 			if(sideDistX < sideDistY)
 			{
 				sideDistX += deltaDistX;
+				// printf("sideDistX: %f\n", sideDistX);
 				mapX += stepX;
 				side = 0;
 			}
@@ -180,11 +189,18 @@ void	raycasting(t_cubed *cubed)
 			}
 			//Check if ray has hit a wall
 			// if(worldMap[mapX][mapY] > 0) hit = 1;
-			if(worldMap[mapX][mapY] == 1) hit = 1;
+			if(worldMap[mapX][mapY] == 1) 
+			{
+				printf("mapX: %d\n", mapX);
+				printf("mapY: %d\n", mapY);
+				// printf("hit is now 1\n");
+				hit = 1;
+			}
 		}
+		(void)side;
 		// mlx_put_pixel(image, mapX, mapY, color3);
 		printf("hit is %d\n", hit);
-		printf("side is %d\n", side);
+		// printf("side is %d\n", side);
 		// if (hit)
 		// 	return ;
 	}
@@ -192,17 +208,20 @@ void	raycasting(t_cubed *cubed)
 
 void start_screen(void* param)
 {
-	t_cubed	*cubed;
+	// t_cubed	*cubed;
+	(void)param;
 
-	cubed = param;
+	// cubed = param;
 
-    uint32_t color0 = ft_pixel(47, 79, 79, 0xFF);
-    uint32_t color1 = ft_pixel(112, 128, 144, 0xFF);
-	uint32_t color2 = ft_pixel(220, 20, 60, 0xFF);
-	uint32_t color3 = ft_pixel(255, 0, 0, 0xFF); // red
-	uint32_t color4 = ft_pixel(60, 179, 113, 0xFF);
-	uint32_t color5 = ft_pixel(0, 0, 255, 0xFF);
+    // uint32_t color0 = ft_pixel(47, 79, 79, 0xFF);
+    // uint32_t color1 = ft_pixel(112, 128, 144, 0xFF);
+	// uint32_t color2 = ft_pixel(220, 20, 60, 0xFF);
+	// uint32_t color3 = ft_pixel(255, 0, 0, 0xFF); // red
+	// uint32_t color4 = ft_pixel(60, 179, 113, 0xFF);
+	// uint32_t color5 = ft_pixel(0, 0, 255, 0xFF);
 	uint32_t colorBlack = ft_pixel(0, 0, 0, 0xFF);
+	uint32_t colorWhite = ft_pixel(255, 255, 255, 0xFF);
+
 
 	int	y = 0;
 	int	stepY = HEIGHT / mapHeight;
@@ -218,22 +237,22 @@ void start_screen(void* param)
 		while (x < mapWidth)
 		{
 			// printf("x: %d\n", x);
-			if (x == round(cubed->posX) && y == round(cubed->posY)) // doesn't work yet
-			{
-				draw_color_stripe(startX + 25, endX - 25, startY + 25, endY - 25, colorBlack);
-			}
-			else if (worldMap[x][y] == 0)
-				draw_color_stripe(startX, endX, startY, endY, color0);
+			// if (x == round(cubed->posX) && y == round(cubed->posY)) // doesn't work yet
+			// {
+			// 	draw_color_stripe(startX + 25, endX - 25, startY + 25, endY - 25, colorBlack);
+			// }
+			if (worldMap[x][y] == 0)
+				draw_color_stripe(startX, endX, startY, endY, colorBlack);
 			else if (worldMap[x][y] == 1)
-				draw_color_stripe(startX, endX, startY, endY, color1);
-			else if (worldMap[x][y] == 2)
-			draw_color_stripe(startX, endX, startY, endY, color2);
-			else if (worldMap[x][y] == 3)
-				draw_color_stripe(startX, endX, startY, endY, color3);
-			else if (worldMap[x][y] == 4)
-				draw_color_stripe(startX, endX, startY, endY, color4);
-			else if (worldMap[x][y] == 5)
-				draw_color_stripe(startX, endX, startY, endY, color5);
+				draw_color_stripe(startX+1, endX-1, startY+1, endY-1, colorWhite);
+			// else if (worldMap[x][y] == 2)
+			// draw_color_stripe(startX, endX, startY, endY, color2);
+			// else if (worldMap[x][y] == 3)
+			// 	draw_color_stripe(startX, endX, startY, endY, color3);
+			// else if (worldMap[x][y] == 4)
+			// 	draw_color_stripe(startX, endX, startY, endY, color4);
+			// else if (worldMap[x][y] == 5)
+			// 	draw_color_stripe(startX, endX, startY, endY, color5);
 			
 
 
@@ -245,7 +264,7 @@ void start_screen(void* param)
 		endY += stepY;
 		y++;
 	}
-	raycasting(cubed);
+	// raycasting(cubed);
     // draw_color_stripe(0, image->width, 0, image->height / 2 - 1, sealing_color);
     // draw_color_stripe(0, image->width, image->height / 2, image->height - 1, floor_color);
     // draw_color_stripe(obstacle_startX, obstacle_endX, obstacle_startY, obstacle_endY, obstacle_color);
@@ -259,6 +278,48 @@ bool	max_obstacle_check(void)
 	return (true);
 }
 
+void	draw_vertical(int X, int Y, t_cubed *cubed)
+{
+	uint32_t colorYellow = ft_pixel(255, 165, 0, 0xFF);
+	(void)X;
+	(void)Y;
+
+	printf("pa: %f\n", cubed->pa);
+	int	line = 20;
+
+	while (line > 0)
+	{
+		mlx_put_pixel(image, X + cos(cubed->pa) * line, Y + sin(cubed->pa) * line, colorYellow);
+		line--;
+	}
+}
+
+void	player(void *param)
+{
+	t_cubed *cubed;
+
+	cubed = param;
+	uint32_t colorYellow = ft_pixel(255, 165, 0, 0xFF);
+
+	int	y = 0;
+	while (y < HEIGHT)
+	{
+		int x = 0;
+		while (x < WIDTH)
+		{
+			if ((x > cubed->posX - 6 && x < cubed->posX + 6)
+					&& (y > cubed->posY - 6 && y < cubed->posY + 6))
+			{
+				mlx_put_pixel(image, x, y, colorYellow);
+				if (x == cubed->posX && y == cubed->posY)
+					draw_vertical(x, y, cubed);
+			}
+			x++;
+		}
+		y++;
+	}
+}
+
 void ft_hook(void* param)
 {
 	t_cubed	*cubed;
@@ -269,8 +330,11 @@ void ft_hook(void* param)
 		mlx_close_window(cubed->mlx);
 	if (mlx_is_key_down(cubed->mlx, MLX_KEY_W)) // move forward (zoom isn)
 	{
-		if (cubed->posY > 1)
-			cubed->posY -= 0.2;
+		// if (cubed->posY >= 5)
+			// cubed->posY -= 5;
+		cubed->posX += cubed->pdx;
+		cubed->posY += cubed->pdy;
+		
 		// if (!max_obstacle_check())
 		// 	return ;
 		// obstacle_startX -= 5;
@@ -282,8 +346,11 @@ void ft_hook(void* param)
 	}
 	if (mlx_is_key_down(cubed->mlx, MLX_KEY_S)) // move backward (zoom out)
 	{
-		if (cubed->posY < mapHeight - 2)
-			cubed->posY += 0.2;
+		// if (cubed->posY <= HEIGHT - 5)
+		// 	cubed->posY += 5;
+		cubed->posX -= cubed->pdx;
+		cubed->posY	-= cubed->pdy;
+
 		// obstacle_startX += 5;
 		// obstacle_endX -= 5;
 		// if (obstacle_endY > image->height / 2)
@@ -293,34 +360,53 @@ void ft_hook(void* param)
 
 	if (mlx_is_key_down(cubed->mlx, MLX_KEY_A)) // move to the left (change position in map)
 	{
-		if (cubed->posX > 1)
-			cubed->posX -= 0.2;
+		if (cubed->posX >= 0)
+			cubed->posX -= 5;
 		// obstacle_startX += 5;
 		// obstacle_endX += 5;
 	}
 	if (mlx_is_key_down(cubed->mlx, MLX_KEY_D)) // move to the right (change position in map)
 	{
-		if (cubed->posX < mapWidth - 2)
-			cubed->posX += 0.2;
+		if (cubed->posX <= WIDTH - 5)
+			cubed->posX += 5;
 		// obstacle_startX -= 5;
 		// obstacle_endX -= 5;
 	}
 	if (mlx_is_key_down(cubed->mlx, MLX_KEY_LEFT)) // change screen to the left
-		image->instances[0].x -= 5;
+		// image->instances[0].x -= 5;
+	{
+		cubed->pa -= 0.1;
+		if (cubed->pa < 0)
+			cubed->pa += 2 * pi;
+		cubed->pdx = cos(cubed->pa)	* 5;
+		cubed->pdy = sin(cubed->pa) * 5;
+	}
 	if (mlx_is_key_down(cubed->mlx, MLX_KEY_RIGHT)) // change screen to the right
-		image->instances[0].x += 5;
+		// image->instances[0].x += 5;
+	{
+		cubed->pa += 0.1;
+		if (cubed->pa > 2 * pi)
+			cubed->pa -= 2 * pi;
+		cubed->pdx = cos(cubed->pa)	* 5;
+		cubed->pdy = sin(cubed->pa) * 5;
+	}
 }
 
 bool	initialize_cubed(t_cubed *cubed)
 {
-	cubed->posX = 2;
-	cubed->posY = 2;
+	cubed->posX = 256;
+	cubed->posY = 256;
 	cubed->dirX = -1.0;
 	cubed->dirY = 0.0;
 	cubed->planeX = 0.0;
 	cubed->planeY = 0.66;
 	cubed->time = 0;
 	cubed->oldTime = 0;
+	cubed->pa = 0;
+	cubed->px = 0;
+	cubed->py = 0;
+	cubed->pdx = 0;
+	cubed->pdy = 0;
 	return (true);
 }
 
@@ -357,6 +443,7 @@ int32_t main(void)
 	}
 
 	mlx_loop_hook(cubed.mlx, start_screen, &cubed);
+	mlx_loop_hook(cubed.mlx, player, &cubed);
 	mlx_loop_hook(cubed.mlx, ft_hook, &cubed);
 
 	mlx_loop(cubed.mlx);

@@ -35,7 +35,11 @@ typedef struct s_cubed
 	double	planeY;
 	double	time;
 	double	oldTime;
-
+	double	pa;
+	double	px;
+	double	py;
+	double	pdx;
+	double	pdy;
 }			t_cubed;
 
 	
