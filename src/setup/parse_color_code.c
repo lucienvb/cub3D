@@ -52,7 +52,7 @@ int get_color(t_cubed *cubed, char *line, char idf)
     return (NOT_FOUND);
 }
 
-void	parse_color_code(t_cubed *cubed, char **file)
+int	parse_color_code(t_cubed *cubed)
 {
 	int	i;
 	int	total_found;
@@ -60,17 +60,21 @@ void	parse_color_code(t_cubed *cubed, char **file)
 
 	i = 0;
 	total_found = 0;
-	while (file[i])
+	while (cubed->file[i])
 	{
 		j = 0;
-		while(cb_isspace(file[i][j]) == FALSE)
+		while(cb_isspace(cubed->file[i][j]) == FALSE)
 			j++;
-		if (get_color(cubed, &file[i][j], 'C') == FOUND)
+		if (get_color(cubed, &cubed->file[i][j], 'C') == FOUND)
 			total_found++;
-		else if (get_color(cubed, &file[i][j], 'F') == FOUND)
+		else if (get_color(cubed, &cubed->file[i][j], 'F') == FOUND)
 			total_found++;
 		i++;
 	}
 	if (total_found != 2)
-		error_exit("color code(s) incorrect");
+	{
+		ft_printf("color code(s) incorrect");
+		return (FAILURE);
+	}
+	return (SUCCESS);
 }

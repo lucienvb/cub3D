@@ -17,7 +17,7 @@ int	is_cardinal_point(char c)
 	return (FALSE);
 }
 
-void	parse_start_pos(t_cubed *cubed)
+int	parse_start_pos(t_cubed *cubed)
 {
 	int	x;
 	int y;
@@ -42,9 +42,10 @@ void	parse_start_pos(t_cubed *cubed)
 	}
 	if (count != 1)
 	{
-		printf("%i \n", count);
-		error_exit("invalid or no start position(s)");
+		printf("invalid or no start position(s)");
+		return (FAILURE);
 	}
+	return (SUCCESS);
 }
 
 int	validate_map(t_cubed *cubed, int y, int x)

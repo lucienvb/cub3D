@@ -8,7 +8,11 @@ int main(int argc, char **argv)
 
     input_error_handling(argc, argv);
     input_initialization(&cubed, &mlx, &screen, argv[1]);
-    input_parsing(&cubed, argv[1]);
-
-    return (0);
+    if (input_parsing(&cubed, argv[1]) == FAILURE)
+    {
+        free_allocations(&cubed);
+        return (FAILURE);
+    }
+    free_allocations(&cubed);
+    return (SUCCESS);
 }

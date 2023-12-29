@@ -2,26 +2,23 @@
 #include "./get_next_line/get_next_line.h"
 #include <fcntl.h>
 
-char	**cub_to_double_array(int fd)
+char	**cub_to_double_array(int fd) // todo: check if free correctly!!
 {	
 	char	*line;
 	char	*new_line;
 	char	**file;
 
 	new_line = "";
-	while((line = get_next_line(fd))) // todo: protect gnl?
+	while((line = get_next_line(fd)))
+	{
 		new_line = ft_strjoin(new_line, line); // todo: protect string join
-	return (file = ft_split(new_line, '\n'));
-}
-
-int	open_cub_file(char *argv)
-{
-	int		fd;
-
-	fd = open(argv, O_RDONLY);
-	if (fd == -1)
-		perror_exit("failed to open .cub");
-	return (fd);
+		if (new_line == NULL)
+			return (NULL);
+	}
+	file = ft_split(new_line, '\n');
+	free(line);
+	free(new_line);
+	return (file);
 }
 
 void	test_input(t_cubed *cubed)
@@ -53,24 +50,38 @@ void	test_input(t_cubed *cubed)
 	printf("\n");
 }
 
-void	input_parsing(t_cubed *cubed, char *argv)
+int	parsing(t_cubed *cubed)
 {
-	int		fd;
-	char	**file;
+	if (parse_map(cubed) == FAILURE)
+	{
+		close(cubed->fd);
+		free_2d_array(cubed->file);
+		error_exit("malloc failed in parsing");
+	}
+	if (parse_color_code(cubed) == FAILURE)
+		return (FAILURE);
+	if (parse_texture(cubed) == FAILURE)
+		return (FAILURE);
+	if (parse_start_pos(cubed) == FAILURE)
+		return (FAILURE);
+	if (parse_map_dimensions(cubed) == FAILURE)
+		return (FAILURE);
+	return (SUCCESS);
+}
 
-	fd = open_cub_file(argv);
-	file = cub_to_double_array(fd); // todo: free
-	parse_map(cubed, file);
-	parse_start_pos(cubed);
-	parse_map_dimensions(cubed);
-	parse_texture(cubed, file);
-	parse_color_code(cubed, file);
+int	input_parsing(t_cubed *cubed, char *argv)
+{
+	cubed->fd = open(argv, O_RDONLY);
+	if (cubed->fd == -1)
+		perror_exit("failed to open .cub");
+	cubed->file = cub_to_double_array(cubed->fd);
+	if (cubed->file == NULL)
+		error_exit("failed to parse map to 2d array");
 	if (validate_map(cubed, cubed->start_pos[Y], cubed->start_pos[X]) == FAILURE)
 	{
-		free_2d_array(cubed->map);
-		error_exit("incorrect borders in map");
+		ft_printf("incorrect borders in map");
+		return (FAILURE);
 	}
-	free_2d_array(cubed->map_val);
 	test_input(cubed);
-	close(fd);
+	return (SUCCESS);
 }

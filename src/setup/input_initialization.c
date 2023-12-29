@@ -6,8 +6,11 @@
 void    init_cubed(t_cubed *cubed, t_mlx *mlx, t_screen *screen, char *argv)
 {
 	bzero(cubed, sizeof(*cubed));
+	cubed->fd = -1;
+	cubed->file = NULL;
 	cubed->map = NULL;
 	cubed->map_val = NULL;
+	cubed->argv = argv;
 	cubed->start_pos[Y] = 0;
 	cubed->start_pos[X] = 0;
 	cubed->start_cardinal_point = 0;
@@ -17,7 +20,6 @@ void    init_cubed(t_cubed *cubed, t_mlx *mlx, t_screen *screen, char *argv)
 	cubed->floor_color[1] = 0;
 	cubed->width = 0;
 	cubed->height = 0;
-	cubed->argv = argv;
 	// todo: init mlx?
 	cubed->mlx = mlx;
 	cubed->screen = screen;

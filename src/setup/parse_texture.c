@@ -72,7 +72,7 @@ int	save_texture(t_cubed *cubed, char *line)
 // 	return (NOT_FOUND;
 // }
 
-void	parse_texture(t_cubed *cubed, char **file) // todo: Does not check if path is correct!!
+int	parse_texture(t_cubed *cubed) // todo: Does not check if path is correct!!
 {
 	int	i;
 	int	j;
@@ -80,17 +80,19 @@ void	parse_texture(t_cubed *cubed, char **file) // todo: Does not check if path 
 
 	total_found = 0;
 	i = 0;
-	while (file[i])
+	while (cubed->file[i])
 	{
 		j = 0;
-		while (cb_isspace(file[i][j]) == FOUND)
+		while (cb_isspace(cubed->file[i][j]) == FOUND)
 			j++;
-		total_found += save_texture(cubed, &file[i][j]);
+		total_found += save_texture(cubed, &cubed->file[i][j]);
 		i++;
 	}
 	if (total_found != 4)
 	{
-		printf("\n%i ignore\n", total_found);
-		error_exit("incorrect path(s)");
+		printf("\n%i ignore\n", total_found); // todo: here to surpass compile flags. delete later
+		ft_printf("incorrect path(s)");
+		return (FAILURE);
 	}
+	return (SUCCESS);
 }

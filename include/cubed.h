@@ -39,6 +39,8 @@ typedef struct s_screen
 
 typedef struct s_cubed
 {
+	int			fd;
+	char		**file;
 	char		**map;
 	char		**map_val;
 	char		*argv;
@@ -62,14 +64,14 @@ void	input_initialization(t_cubed *cubed, t_mlx *mlx, t_screen *screen, char *ar
 char	*get_next_line(int fd);
 
 // src/setup/parsing
-void	input_parsing(t_cubed *cubed, char *argv);
+int		input_parsing(t_cubed *cubed, char *argv);
 char	**cub_to_double_array(int fd);
-void	parse_map(t_cubed *cubed, char **file);
-void	parse_start_pos(t_cubed *cubed);
-void	parse_color_code(t_cubed *cubed, char **file_array);
-void	parse_texture(t_cubed *cubed, char **file_array);
+int		parse_map(t_cubed *cubed);
+int		parse_start_pos(t_cubed *cubed);
+int		parse_color_code(t_cubed *cubed);
+int		parse_texture(t_cubed *cubed);
 int		validate_map(t_cubed *cubed, int x, int y);
-void	parse_map_dimensions(t_cubed *cubed);
+int		parse_map_dimensions(t_cubed *cubed);
 
 // src/setup/utils
 void	free_2d_array(char **array);
@@ -77,5 +79,8 @@ int		validate_map_char(int c);
 int		cb_isspace(int c);
 void	perror_exit(char *message);
 void	error_exit(char *message);
+
+//src/cleanup
+void	free_allocations(t_cubed *cubed);
 
 #endif

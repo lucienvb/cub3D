@@ -46,6 +46,7 @@ SRC =	src/setup/input_error_handling.c \
 		src/setup/validate_map.c \
 		src/setup/get_next_line/get_next_line.c \
 		src/setup/get_next_line/get_next_line_utils.c \
+		src/cleanup/free_allocations.c \
 
 
 

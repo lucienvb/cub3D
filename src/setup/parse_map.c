@@ -1,6 +1,6 @@
 #include "../../include/cubed.h"
 
-void	parse_map_dimensions(t_cubed *cubed)
+int	parse_map_dimensions(t_cubed *cubed)
 {
 	int	y;
 	int	x;
@@ -17,8 +17,14 @@ void	parse_map_dimensions(t_cubed *cubed)
 			max_x = x;
 		y++;
 	}
+	if (y == 0 || x == 0)
+	{
+		ft_printf("incorrect map");
+		return (FAILURE);
+	}
 	cubed->height = y;
 	cubed->width = max_x;
+	return (SUCCESS);
 }
 
 char **copy_map(char **file, int start, int end, int index)
@@ -28,15 +34,15 @@ char **copy_map(char **file, int start, int end, int index)
 
 	map = malloc(((end - start) + 1) * sizeof(char*));
 	if (!map)
-		perror_exit("Malloc failed in copy_map #1\n");
+		return (NULL);
 	map[end - start] = NULL;
     while (start < end)
     {
         strlen = ft_strlen(file[start]);
         map[index] = malloc((strlen + 1) * sizeof(char));
         if (!map[index])
-			perror_exit("Malloc failed in copy_map #2\n");
-        ft_strlcpy(map[index], file[start], strlen + 1); // TODO: protect?
+			return (NULL);
+        ft_strlcpy(map[index], file[start], strlen + 1);
         start++;
         index++;
     }
@@ -67,7 +73,7 @@ int	find_start_map(char **file)
 	return (start);
 }
 
-void	parse_map(t_cubed *cubed, char **file)
+int	parse_map(t_cubed *cubed)
 {
 	int		start;
 	int 	end;
@@ -75,12 +81,20 @@ void	parse_map(t_cubed *cubed, char **file)
 	
 	end = 0;
 	norminette_intje = 0;
-	start = find_start_map(file);
+	start = find_start_map(cubed->file);
 	if (start == 0)
-		error_exit("empty file");
-	while(file[end])
+		error_exit("map is incorrect or not present");
+	while(cubed->file[end])
 		end++;
-	cubed->map = copy_map(file, start, end, norminette_intje);
-	cubed->map_val = copy_map(file, start, end, norminette_intje);
+	cubed->map = copy_map(cubed->file, start, end, norminette_intje);
+	if (cubed->map == NULL)
+		return (FAILURE);
+	cubed->map_val = copy_map(cubed->file, start, end, norminette_intje);
+	if (cubed->map_val == NULL)
+	{
+		free_2d_array(cubed->map);
+		return (FAILURE);
+	}
+	return (SUCCESS);
 }
 
