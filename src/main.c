@@ -292,11 +292,47 @@ void	draw_vertical(int x, int y, t_cubed *cubed)
 	}
 }
 
+// not finished
+// void	draw_vertical_ray(int x, int y, double pa, )
+// {
+// 	uint32_t colorYellow = ft_pixel(255, 165, 0, 0xFF);
+
+// 	// printf("pa: %f\n", cubed->pa);
+// 	int	line = 20;
+
+// 	while (line > 0)
+// 	{
+// 		mlx_put_pixel(image, x + cos(cubed->pa) * line, y + sin(cubed->pa) * line, colorYellow);
+// 		line--;
+// 	}
+// }
+
+// kut functie, kan weg denk ik
+// void	drawVerticalRay(t_cubed *cubed, double rx, double ry)
+// {
+// 	uint32_t	colorGreen = ft_pixel(60, 179, 113, 0xFF);
+
+// 	double	tempPosX = cubed->posX + 20;
+// 	double	tempPosY = cubed->posY;
+
+// 	while (tempPosY < ry && tempPosY < HEIGHT)
+// 	{
+// 		while (tempPosX < rx && tempPosX < WIDTH)
+// 		{
+// 			printf("temp pos x: %f\n", tempPosX);
+// 			printf("temp pos y: %f\n", tempPosY);
+// 			mlx_put_pixel(image, tempPosX, tempPosY, colorGreen);
+// 			tempPosX++;
+// 		}
+// 		tempPosY++;
+// 	}
+// }
+
 void	drawRays3D(void *param)
 {
 	t_cubed *cubed;
 	int		r, mx, my, mp, dof;
-	float	rx, ry, ra, xo, yo;
+	double	rx, ry, ra, xo, yo;
 
 	cubed = param;
 	int	mapX = cubed->posX;
@@ -328,9 +364,11 @@ void	drawRays3D(void *param)
 		}
 		while (dof < 8)
 		{
-			mx = (int)(rx) >> 6;
-			my = (int)(ry) >> 6;
+			mx = (int)rx >> 6;
+			my = (int)ry >> 6;
 			mp = my * mapX + mx;
+
+			// printf("mp: %d\n", mp);
 			// if (mp < mapX * mapY && map[mp] == 1)
 			if (mp < mapX * mapY && worldMap[mapX][mapY] == 1)
 				dof = 8;
@@ -341,12 +379,23 @@ void	drawRays3D(void *param)
 				dof += 1;
 			}
 		}
-		printf("cubed->posX: %f\n", cubed->posX);
-		printf("cubed->posY: %f\n", cubed->posY);
-		printf("rx: %f\n", rx);
-		printf("ry: %f\n", ry);
-	}
+		// printf("cubed->posX: %f\n", cubed->posX);
+		// printf("cubed->posY: %f\n", cubed->posY);
+		// printf("rx: %f\n", rx);
+		// printf("ry: %f\n", ry);
 
+		// drawVerticalRay(cubed, rx, ry);
+		// draw_vertical_ray(cubed); AFMAKEN
+
+		// double	new_rx = rx / width;
+		// double 	new_ry = ry / HEIGHT + 150;
+		// printf("new rx: %f\n", new_rx);
+		// printf("new ry: %f\n", new_ry);
+
+		// uint32_t	colorGreen = ft_pixel(60, 179, 113, 0xFF);
+		// if ((new_rx > 0 && new_rx < WIDTH) && (new_ry > 0 && new_ry < HEIGHT))
+		// 	mlx_put_pixel(image, new_rx, new_ry, colorGreen);
+	}
 }
 
 void	player(void *param)
