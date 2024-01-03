@@ -1,6 +1,6 @@
 #include "../../include/cubed.h"
 
-int	save_pos(t_cubed *cubed, char pos, int x, int y)
+static int	save_pos(t_cubed *cubed, char pos, int x, int y)
 {
 	cubed->start_pos[Y] = y;
 	cubed->start_pos[X] = x;
@@ -9,10 +9,9 @@ int	save_pos(t_cubed *cubed, char pos, int x, int y)
 	return (1);
 }
 
-int	is_cardinal_point(char c)
+static int	is_cardinal_point(char c)
 {
-	if ((c == 'N' || c == 'S' ||
-				c == 'E' || c == 'W'))
+	if ((c == 'N' || c == 'S' || c == 'E' || c == 'W'))
 		return (TRUE);
 	return (FALSE);
 }
@@ -20,9 +19,9 @@ int	is_cardinal_point(char c)
 int	parse_start_pos(t_cubed *cubed)
 {
 	int	x;
-	int y;
+	int	y;
 	int	count;
-	int flag;
+	int	flag;
 
 	count = 0;
 	y = 0;
@@ -41,10 +40,7 @@ int	parse_start_pos(t_cubed *cubed)
 		y++;
 	}
 	if (count != 1)
-	{
-		printf("invalid or no start position(s)");
 		return (FAILURE);
-	}
 	return (SUCCESS);
 }
 
@@ -55,12 +51,11 @@ int	validate_map(t_cubed *cubed, int y, int x)
 
 	wall = '1';
 	flag = 'X';
-
 	if (x < 0 || y < 0)
 		return (0);
-	 if (y >= cubed->height || x >= cubed->width ||
-	 cubed->map_val[y][x] == wall || cubed->map_val[y][x] == flag) 
-        return 0;
+	if (y >= cubed->height || x >= cubed->width
+		|| cubed->map_val[y][x] == wall || cubed->map_val[y][x] == flag)
+		return (0);
 	if (x == 0 || y == 0 || y == cubed->height - 1 || x == cubed->width - 1)
 		return (1);
 	if (cubed->map_val[y][x] && cubed->map_val[y][x] != '0')

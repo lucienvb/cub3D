@@ -1,5 +1,5 @@
 #ifndef CUBED_H
-#define CUBED_H
+# define CUBED_H
 
 // headers
 # include <stdlib.h>
@@ -22,21 +22,7 @@
 # define Y				0
 # define X				1
 
-
-// enums
-
-
 // structures
-typedef struct s_mlx
-{
-	int	i; //only here to surpass flags
-} t_mlx;
-
-typedef struct s_screen
-{
-	int	i; //only here to surpass flags
-} t_screen;
-
 typedef struct s_cubed
 {
 	int			fd;
@@ -46,26 +32,23 @@ typedef struct s_cubed
 	char		*argv;
 	int			start_pos[2];
 	char		start_cardinal_point;
-	int			ceiling_color[3];
-	int			floor_color[3];
+	int			ceiling[3];
+	int			floor[3];
 	int			width;
 	int			height;
 	// mlx_texture_t	*n_texture;
 	// mlx_texture_t	*e_texture;
 	// mlx_texture_t	*s_texture;
 	// mlx_texture_t	*w_texture;
-	t_mlx		*mlx;
-	t_screen	*screen;
-} t_cubed;
+}	t_cubed;
 
 // src/setup/input
 void	input_error_handling(int argc, char **argv);
-void	input_initialization(t_cubed *cubed, t_mlx *mlx, t_screen *screen, char *argv);
+void	input_init(t_cubed *cubed, char *argv);
 char	*get_next_line(int fd);
 
 // src/setup/parsing
 int		input_parsing(t_cubed *cubed, char *argv);
-char	**cub_to_double_array(int fd);
 int		parse_map(t_cubed *cubed);
 int		parse_start_pos(t_cubed *cubed);
 int		parse_color_code(t_cubed *cubed);
@@ -81,6 +64,7 @@ void	perror_exit(char *message);
 void	error_exit(char *message);
 
 //src/cleanup
+void	free_2d_array(char **array);
 void	free_allocations(t_cubed *cubed);
 
 #endif

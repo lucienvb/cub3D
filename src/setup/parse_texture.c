@@ -1,20 +1,20 @@
 #include "../../include/cubed.h"
 
-char *remove_space(char *line)
+static char	*remove_space(char *line)
 {
-	int index;
+	int	index;
 
 	index = 0;
-	while(cb_isspace(line[index]) == FOUND)
+	while (cb_isspace(line[index]) == FOUND && line[index])
 		index++;
 	return (&line[index]);
 }
 
 int	save_texture(t_cubed *cubed, char *line)
 {
-	int	found;
+	int		found;
+	char	*line_nospace;
 
-	char *line_nospace;
 	found = 0;
 	if (ft_strncmp(line, "NO ", 3) == FOUND)
 	{
@@ -40,7 +40,7 @@ int	save_texture(t_cubed *cubed, char *line)
 		printf("%s\n", line_nospace);
 		found++;
 	}
-	if (found == 1000) // todo: here to surpass compile flags, REMOVE
+	if (found == 1000)
 		printf("%i", cubed->start_cardinal_point);
 	return (found);
 }
@@ -69,7 +69,7 @@ int	save_texture(t_cubed *cubed, char *line)
 // 		cubed->w_texture = remove_space(&line[2]);
 // 		return (FOUND);
 // 	}
-// 	return (NOT_FOUND;
+// 	return (NOT_FOUND);
 // }
 
 int	parse_texture(t_cubed *cubed) // todo: Does not check if path is correct!!
@@ -83,15 +83,16 @@ int	parse_texture(t_cubed *cubed) // todo: Does not check if path is correct!!
 	while (cubed->file[i])
 	{
 		j = 0;
-		while (cb_isspace(cubed->file[i][j]) == FOUND)
+		while (cb_isspace(cubed->file[i][j]) == FOUND && cubed->file[i][j])
 			j++;
 		total_found += save_texture(cubed, &cubed->file[i][j]);
 		i++;
 	}
 	if (total_found != 4)
 	{
-		printf("\n%i ignore\n", total_found); // todo: here to surpass compile flags. delete later
-		ft_printf("incorrect path(s)");
+		printf("\n%i ignore and delete!!\n", total_found);
+		ft_printf("Error\n");
+		ft_printf("incorrect path(s)\n");
 		return (FAILURE);
 	}
 	return (SUCCESS);
