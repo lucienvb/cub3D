@@ -234,6 +234,30 @@ void	drawPoint(double posX, double posY, uint32_t color, int thickness)
 	}
 }
 
+bool	checkRay(t_cubed *cubed, double x_target, double y_target)
+{
+	int	x;
+	int	y;
+
+	y = 0;
+	while (y < mapHeight)
+	{
+		x = 0;
+		while (x < mapWidth)
+		{
+			if (worldMap[x][y] == 1)
+			{
+				if ((x_target >= x * cubed->widthBlock && x_target <= (x + 1) * cubed->widthBlock) &&
+						(y_target >= y * cubed->heightBlock && y_target <= (y + 1) * cubed->heightBlock))
+					return (true);
+			}
+			x++;
+		} 
+		y++;
+	}
+	return (false);
+}
+
 void	getAxAy(t_cubed *cubed, double *Ax, double *Ay)
 {
 	uint32_t	colorGreen = ft_pixel(60, 179, 113, 0xFF);
@@ -260,20 +284,26 @@ void	getAxAy(t_cubed *cubed, double *Ax, double *Ay)
 	printf("Ay: %f\n", *Ay);
 	
 
-	// drawPoint(cubed, *Ax, *Ay, colorGreen, 3);
 	drawPoint(cubed->posX, cubed->posY + *Ay, colorGreen, 3);
 	drawPoint(cubed->posX + *Ax, cubed->posY, colorGreen, 3);
 	
 	uint32_t	colorPurple = ft_pixel(160, 32, 240, 0xFF);
 
-	// double	xWalked = 0;
-	// double	yWalked = 0;
-	// if (*Ax < *Ay)
-		// xWalked += *Ax;
+
 	drawPoint(cubed->posX + *Ax, cubed->posY + *Ax * sin(cubed->pa) / cos(cubed->pa), colorPurple, 2);	
 	drawPoint(cubed->posX + *Ay * cos(cubed->pa) / sin(cubed->pa), cubed->posY + *Ay, colorPurple, 2);	
-	// mlx_put_pixel(image, cubed->posX + *Ax, cubed->posY + *Ay, coloPurple);
 
+	uint32_t	colorOrange = ft_pixel(255, 140, 0, 0xFF);
+	if (checkRay(cubed, cubed->posX + *Ax, cubed->posY + *Ax * sin(cubed->pa)))
+	{
+		printf("It's HIT\n");
+		drawPoint(cubed->posX + *Ax, cubed->posY + *Ax * sin(cubed->pa) / cos(cubed->pa), colorOrange, 4);	
+	}
+	else if (checkRay(cubed, cubed->posX + *Ay * cos(cubed->pa) / sin(cubed->pa), cubed->posY + *Ay))
+	{
+		printf("It's HIT\n");
+		drawPoint(cubed->posX + *Ay * cos(cubed->pa) / sin(cubed->pa), cubed->posY + *Ay, colorOrange, 4);
+	}
 }
 
 void	raycasting(void *param)
@@ -456,8 +486,12 @@ int32_t main(void)
 	}
 
 	mlx_loop_hook(cubed.mlx, start_screen, &cubed);
+
+	// int hit = 0;
+	// checkRay(&cubed, 102.3, 102.3, &hit);
+	// printf("hit: %i\n", hit);
+
 	mlx_loop_hook(cubed.mlx, player, &cubed);
-	// mlx_loop_hook(cubed.mlx, drawRays3D, &cubed);
 	mlx_loop_hook(cubed.mlx, raycasting, &cubed);
 	mlx_loop_hook(cubed.mlx, ft_hook, &cubed);
 
