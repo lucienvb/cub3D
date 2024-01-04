@@ -215,6 +215,25 @@ void	draw_vertical(int x, int y, t_cubed *cubed)
 	}
 }
 
+void	drawPoint(double posX, double posY, uint32_t color, int thickness)
+{
+	int	y = 0;
+
+	while (y < HEIGHT && posY > 0 && posY < HEIGHT)
+	{
+		int x = 0;
+		while (x < WIDTH && posX > 0 && posX < WIDTH)
+		{
+			if ((x > posX - thickness && x < posX + thickness)
+						&& (y > posY - thickness && y < posY + thickness)
+						&& (x != posX && y != posY))
+					mlx_put_pixel(image, x, y, color);
+			x++;
+		}
+		y++;
+	}
+}
+
 void	getAxAy(t_cubed *cubed, double *Ax, double *Ay)
 {
 	uint32_t	colorGreen = ft_pixel(60, 179, 113, 0xFF);
@@ -241,23 +260,20 @@ void	getAxAy(t_cubed *cubed, double *Ax, double *Ay)
 	printf("Ay: %f\n", *Ay);
 	
 
-	int	y = 0;
-	while (y < HEIGHT && cubed->posY > 0 && cubed->posY < HEIGHT)
-	{
-		int x = 0;
-		while (x < WIDTH && cubed->posX > 0 && cubed->posX < WIDTH)
-		{
-			if ((x > cubed->posX - 3 && x < cubed->posX + 3)
-					&& (y > cubed->posY - 3 && y < cubed->posY + 3)
-					&& (x != cubed->posX && y != cubed->posY))
-				{
-					mlx_put_pixel(image, x, y + *Ay, colorGreen);
-					mlx_put_pixel(image, x + *Ax, y, colorGreen);
-				}
-			x++;
-		}
-		y++;
-	}
+	// drawPoint(cubed, *Ax, *Ay, colorGreen, 3);
+	drawPoint(cubed->posX, cubed->posY + *Ay, colorGreen, 3);
+	drawPoint(cubed->posX + *Ax, cubed->posY, colorGreen, 3);
+	
+	uint32_t	colorPurple = ft_pixel(160, 32, 240, 0xFF);
+
+	// double	xWalked = 0;
+	// double	yWalked = 0;
+	// if (*Ax < *Ay)
+		// xWalked += *Ax;
+	drawPoint(cubed->posX + *Ax, cubed->posY + *Ax * sin(cubed->pa) / cos(cubed->pa), colorPurple, 2);	
+	drawPoint(cubed->posX + *Ay * cos(cubed->pa) / sin(cubed->pa), cubed->posY + *Ay, colorPurple, 2);	
+	// mlx_put_pixel(image, cubed->posX + *Ax, cubed->posY + *Ay, coloPurple);
+
 }
 
 void	raycasting(void *param)
