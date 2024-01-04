@@ -260,16 +260,14 @@ bool	checkRay(t_cubed *cubed, double x_target, double y_target)
 
 void	getAxAy(t_cubed *cubed, double *Ax, double *Ay)
 {
-	uint32_t	colorGreen = ft_pixel(60, 179, 113, 0xFF);
-
 	if (cubed->dirX == 1)
-		*Ax = cubed->posX;
+		*Ax = cubed->tempPosX;
 	else if (cubed->dirX == -1)
-		*Ax = WIDTH - cubed->posX;
+		*Ax = WIDTH - cubed->tempPosX;
 	if (cubed->dirY == 1)
-		*Ay = cubed->posY;
+		*Ay = cubed->tempPosY;
 	else if (cubed->dirY == -1)
-		*Ay = HEIGHT - cubed->posY;	
+		*Ay = HEIGHT - cubed->tempPosY;	
 
 	while (*Ax >= 0 && cubed->pa != 0.5 * pi && cubed->pa != 1.5 * pi)
 		*Ax -= cubed->widthBlock;
@@ -282,34 +280,11 @@ void	getAxAy(t_cubed *cubed, double *Ax, double *Ay)
 	if (cubed->dirY == 1)
 		*Ay *= -1;
 	printf("Ay: %f\n", *Ay);
-	
-
-	drawPoint(cubed->posX, cubed->posY + *Ay, colorGreen, 3);
-	drawPoint(cubed->posX + *Ax, cubed->posY, colorGreen, 3);
-	
-	uint32_t	colorPurple = ft_pixel(160, 32, 240, 0xFF);
-
-
-	drawPoint(cubed->posX + *Ax, cubed->posY + *Ax * sin(cubed->pa) / cos(cubed->pa), colorPurple, 2);	
-	drawPoint(cubed->posX + *Ay * cos(cubed->pa) / sin(cubed->pa), cubed->posY + *Ay, colorPurple, 2);	
-
-	uint32_t	colorOrange = ft_pixel(255, 140, 0, 0xFF);
-	if (checkRay(cubed, cubed->posX + *Ax, cubed->posY + *Ax * sin(cubed->pa)))
-	{
-		printf("It's HIT\n");
-		drawPoint(cubed->posX + *Ax, cubed->posY + *Ax * sin(cubed->pa) / cos(cubed->pa), colorOrange, 4);	
-	}
-	else if (checkRay(cubed, cubed->posX + *Ay * cos(cubed->pa) / sin(cubed->pa), cubed->posY + *Ay))
-	{
-		printf("It's HIT\n");
-		drawPoint(cubed->posX + *Ay * cos(cubed->pa) / sin(cubed->pa), cubed->posY + *Ay, colorOrange, 4);
-	}
 }
 
 void	raycasting(void *param)
 {
 	t_cubed 	*cubed;
-	// uint32_t	colorGreen = ft_pixel(60, 179, 113, 0xFF);
 	cubed = param;
 
 	double		Ax = 0;
@@ -321,7 +296,59 @@ void	raycasting(void *param)
 	printf("dirX: %f\n", cubed->dirX);
 	printf("dirY: %f\n", cubed->dirY);
 
+	// double	currentX = 0;
+	// double	currentY = 0;
+	// bool	hit = false;
+	
+
+	// while (!hit)
+	// {
+	// 	getAxAy(cubed, &Ax, &Ay);
+	// 	if (Ax < Ay)
+	// 	{
+	// 		currentX = Ax;
+
+	// 	}
+	// }
+
+	cubed->tempPosX = cubed->posX;
+	cubed->tempPosY = cubed->posY;
 	getAxAy(cubed, &Ax, &Ay);
+	
+
+	uint32_t	colorGreen = ft_pixel(60, 179, 113, 0xFF);
+	
+	drawPoint(cubed->posX, cubed->posY + Ay, colorGreen, 3);
+	drawPoint(cubed->posX + Ax, cubed->posY, colorGreen, 3);
+	
+	uint32_t	colorPurple = ft_pixel(160, 32, 240, 0xFF);
+
+
+	drawPoint(cubed->posX + Ax, cubed->posY + Ax * sin(cubed->pa) / cos(cubed->pa), colorPurple, 2);	
+	drawPoint(cubed->posX + Ay * cos(cubed->pa) / sin(cubed->pa), cubed->posY + Ay, colorPurple, 2);
+
+	cubed->tempPosX += Ax;
+	cubed->tempPosY += Ax * sin(cubed->pa) / cos(cubed->pa);
+
+	getAxAy(cubed, &Ax, &Ay);
+		
+	// drawPoint(cubed->tempPosX, cubed->tempPosY + Ay, colorGreen, 3);
+	// drawPoint(cubed->tempPosX + Ax, cubed->tempPosY, colorGreen, 3);
+	
+	drawPoint(cubed->tempPosX + Ax, cubed->tempPosY + Ax * sin(cubed->pa) / cos(cubed->pa), colorPurple, 2);	
+	drawPoint(cubed->tempPosX + Ay * cos(cubed->pa) / sin(cubed->pa), cubed->tempPosY + Ay, colorPurple, 2);
+
+	// uint32_t	colorOrange = ft_pixel(255, 140, 0, 0xFF);
+	// if (checkRay(cubed, cubed->posX + Ay * cos(cubed->pa) / sin(cubed->pa), cubed->posY + Ay))
+	// {
+	// 	printf("It's a HIT\n");
+	// 	drawPoint(cubed->posX + Ay * cos(cubed->pa) / sin(cubed->pa), cubed->posY + Ay, colorOrange, 4);
+	// }
+	// else if (checkRay(cubed, cubed->posX + Ax, cubed->posY + Ax * sin(cubed->pa)))
+	// {
+	// 	printf("It's a HIT\n");
+	// 	drawPoint(cubed->posX + Ax, cubed->posY + Ax * sin(cubed->pa) / cos(cubed->pa), colorOrange, 4);	
+	// }
 	
 }
 
@@ -341,8 +368,8 @@ void	player(void *param)
 			if ((x > cubed->posX - 6 && x < cubed->posX + 6)
 					&& (y > cubed->posY - 6 && y < cubed->posY + 6))
 			{
-			printf("posX: %f\n", cubed->posX);
-			printf("posY: %f\n", cubed->posY);
+			// printf("posX: %f\n", cubed->posX);
+			// printf("posY: %f\n", cubed->posY);
 				mlx_put_pixel(image, x, y, colorYellow);
 				if ((x > cubed->posX - 2 && x < cubed->posX + 2)
 					&& (y > cubed->posY - 2 && y < cubed->posY + 2))

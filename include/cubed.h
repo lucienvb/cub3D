@@ -29,6 +29,8 @@ typedef struct s_cubed
 	mlx_t	*mlx;
 	double	posX;
 	double	posY;
+	double	tempPosX;
+	double	tempPosY;
 	double	dirX;
 	double	dirY;
 	double	planeX;
