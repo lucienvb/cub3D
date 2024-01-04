@@ -40,6 +40,9 @@ typedef struct s_cubed
 	double	py;
 	double	pdx;
 	double	pdy;
+	double	widthBlock;
+	double	heightBlock;
+
 }			t_cubed;
 
 	
