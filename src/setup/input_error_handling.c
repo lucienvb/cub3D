@@ -1,41 +1,37 @@
-#include "cubed.h"
+#include "../../include/cubed.h"
 #include <string.h> //remove
 
-static void    print_input_info(void) // change to ft_printf
+static void	print_input_info(void)
 {
-	printf("wrong input\n");
-	printf("cub3d program requires 2 argmuents:\n");
-	printf("< ./cubed >  +  < map_name >\n");
+	ft_printf("wrong input\n");
+	ft_printf("cub3d program requires 2 argmuents:\n");
+	ft_printf("< ./cubed >  +  < map_name >\n");
 }
 
-static int check_file_type(char *argv)
+static int	check_file_type(char *argv)
 {
-	int index;
-	index = 0;
+	int	index;
 
-	while(argv[index])
+	index = 0;
+	while (argv[index])
 	{
 		if (argv[index] == '.')
 		{
-		  if (strcmp(&argv[index], ".cub") == FOUND)
-		  	return (SUCCESS);
+			if (ft_strncmp(&argv[index], ".cub\0", 5) == FOUND)
+				return (SUCCESS);
 		}
 		index++;
 	}
 	return (FAILURE);
 }
 
-
-void   error_handling(int argc, char **argv)
+void	input_error_handling(int argc, char **argv)
 {
-	if (argc != 2 || !*argv[1] || (strcmp(argv[1], " ") == FOUND)) //change to ft_strcmp!!
+	if (argc != 2 || !*argv[1] || (ft_strncmp(argv[1], " ", 1) == FOUND))
 	{
 		print_input_info();
 		exit(EXIT_FAILURE);
 	}
 	if (check_file_type(argv[1]) == FAILURE)
-	{
-		printf("wrong file type"); // change to ft_printf
-		exit(EXIT_FAILURE);
-	}
+		error_exit("wrong file type");
 }

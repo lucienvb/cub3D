@@ -1,39 +1,30 @@
-#include "cubed.h"
+#include "../../include/cubed.h"
 #include <string.h>
 
 // check if everything is initialized correctly
 
-void    init_cubed(t_cubed *cubed, t_mlx *mlx, t_screen *screen, char *argv)
+static void	init_cubed(t_cubed *cubed, char *argv)
 {
 	bzero(cubed, sizeof(*cubed));
+	cubed->fd = -1;
+	cubed->file = NULL;
 	cubed->map = NULL;
-	cubed->start_pos = NULL;
+	cubed->map_val = NULL;
 	cubed->argv = argv;
-	cubed->ceiling_color = NULL;
-	cubed->floor_color = NULL;
-	cubed->EA = NULL;
-	cubed->WE = NULL;
-	cubed->NO = NULL;
-	cubed->SO = NULL;
-	cubed->mlx = mlx;
-	cubed->screen = screen;
+	cubed->start_pos[Y] = 0;
+	cubed->start_pos[X] = 0;
+	cubed->start_cardinal_point = 0;
+	cubed->ceiling[0] = 0;
+	cubed->ceiling[1] = 0;
+	cubed->ceiling[2] = 0;
+	cubed->floor[0] = 0;
+	cubed->floor[1] = 0;
+	cubed->floor[2] = 0;
+	cubed->width = 0;
+	cubed->height = 0;
 }
 
-
-void	init_mlx(t_mlx *mlx) 
+void	input_init(t_cubed *cubed, char *argv)
 {
-	bzero(mlx, sizeof(*mlx));
-
-}
-
-void    init_screen(t_screen *screen)
-{
-	bzero(screen, sizeof(*screen));
-}
-
-void	initialization(t_cubed *cubed, t_mlx *mlx, t_screen *screen, char *argv)
-{
-	init_cubed(cubed, mlx, screen, argv);
-	init_mlx(mlx);
-	init_screen(screen);
+	init_cubed(cubed, argv);
 }
