@@ -48,7 +48,7 @@ int worldMap[mapWidth][mapHeight]=
 	{1, 1, 1, 1, 1},
 	{1, 0, 0, 0, 1},
 	{1, 0, 0, 0, 1},
-	{1, 0, 0, 0, 1},
+	{1, 1, 0, 1, 1},
 	{1, 1, 1, 1, 1}
 };
 
@@ -273,20 +273,65 @@ void	getAxAy(t_cubed *cubed, double *Ax, double *Ay)
 		*Ax -= cubed->widthBlock;
 	if (cubed->dirX == 1)
 		*Ax *= -1;
-	printf("Ax: %f\n", *Ax);
+	// printf("Ax: %f\n", *Ax);
 	
 	while (*Ay >= 0 && cubed->pa != 0 && cubed->pa != pi)
 		*Ay -= cubed->heightBlock;
 	if (cubed->dirY == 1)
 		*Ay *= -1;
-	printf("Ay: %f\n", *Ay);
+	// printf("Ay: %f\n", *Ay);
+}
+
+bool	x_ray_is_shortest(t_cubed *cubed, double Ax, double Ay)
+{
+	double xRayLength = sqrt(Ax * Ax + Ax * sin(cubed->pa) / cos(cubed->pa) * Ax * sin(cubed->pa) / cos(cubed->pa));
+	double yRayLength = sqrt(Ay * cos(cubed->pa) / sin(cubed->pa) * Ay * cos(cubed->pa) / sin(cubed->pa) + Ay * Ay);
+
+	if (xRayLength < yRayLength)
+		return (true);
+	return (false);
+}
+
+bool	is_hit(t_cubed *cubed, double Ax, double Ay)
+{
+	uint32_t	colorOrange = ft_pixel(255, 140, 0, 0xFF);
+
+	if (x_ray_is_shortest(cubed, Ax, Ay) == true)
+	{
+		if (checkRay(cubed, cubed->tempPosX + Ax, cubed->tempPosY + Ax * sin(cubed->pa)))
+		{
+			drawPoint(cubed->tempPosX + Ax, cubed->tempPosY + Ax * sin(cubed->pa) / cos(cubed->pa), colorOrange, 4);	
+			return (true);
+		}
+		else if (checkRay(cubed, cubed->tempPosX + Ay * cos(cubed->pa) / sin(cubed->pa), cubed->tempPosY + Ay))
+		{
+			drawPoint(cubed->tempPosX + Ay * cos(cubed->pa) / sin(cubed->pa), cubed->tempPosY + Ay, colorOrange, 4);
+			return (true);
+		}
+	}
+	else
+	{
+		if (checkRay(cubed, cubed->tempPosX + Ay * cos(cubed->pa) / sin(cubed->pa), cubed->tempPosY + Ay))
+		{
+			drawPoint(cubed->tempPosX + Ay * cos(cubed->pa) / sin(cubed->pa), cubed->tempPosY + Ay, colorOrange, 4);
+			return (true);
+		}
+		else if (checkRay(cubed, cubed->tempPosX + Ax, cubed->tempPosY + Ax * sin(cubed->pa)))
+		{
+			drawPoint(cubed->tempPosX + Ax, cubed->tempPosY + Ax * sin(cubed->pa) / cos(cubed->pa), colorOrange, 4);	
+			return (true);
+		}
+	}
+	return (false);
 }
 
 void	raycasting(void *param)
 {
 	t_cubed 	*cubed;
-	cubed = param;
+	uint32_t	colorGreen = ft_pixel(60, 179, 113, 0xFF);
+	uint32_t	colorPurple = ft_pixel(160, 32, 240, 0xFF);
 
+	cubed = param;
 	double		Ax = 0;
 	double		Ay = 0;
 	
@@ -300,55 +345,33 @@ void	raycasting(void *param)
 	// double	currentY = 0;
 	// bool	hit = false;
 	
-
-	// while (!hit)
-	// {
-	// 	getAxAy(cubed, &Ax, &Ay);
-	// 	if (Ax < Ay)
-	// 	{
-	// 		currentX = Ax;
-
-	// 	}
-	// }
-
 	cubed->tempPosX = cubed->posX;
 	cubed->tempPosY = cubed->posY;
 	getAxAy(cubed, &Ax, &Ay);
 	
-
-	uint32_t	colorGreen = ft_pixel(60, 179, 113, 0xFF);
 	
 	drawPoint(cubed->posX, cubed->posY + Ay, colorGreen, 3);
 	drawPoint(cubed->posX + Ax, cubed->posY, colorGreen, 3);
 	
-	uint32_t	colorPurple = ft_pixel(160, 32, 240, 0xFF);
-
-
 	drawPoint(cubed->posX + Ax, cubed->posY + Ax * sin(cubed->pa) / cos(cubed->pa), colorPurple, 2);	
 	drawPoint(cubed->posX + Ay * cos(cubed->pa) / sin(cubed->pa), cubed->posY + Ay, colorPurple, 2);
+
+	if (is_hit(cubed, Ax, Ay) == true)
+		return ;
 
 	cubed->tempPosX += Ax;
 	cubed->tempPosY += Ax * sin(cubed->pa) / cos(cubed->pa);
 
 	getAxAy(cubed, &Ax, &Ay);
 		
-	// drawPoint(cubed->tempPosX, cubed->tempPosY + Ay, colorGreen, 3);
-	// drawPoint(cubed->tempPosX + Ax, cubed->tempPosY, colorGreen, 3);
+	drawPoint(cubed->tempPosX, cubed->tempPosY + Ay, colorGreen, 3);
+	drawPoint(cubed->tempPosX + Ax, cubed->tempPosY, colorGreen, 3);
 	
 	drawPoint(cubed->tempPosX + Ax, cubed->tempPosY + Ax * sin(cubed->pa) / cos(cubed->pa), colorPurple, 2);	
 	drawPoint(cubed->tempPosX + Ay * cos(cubed->pa) / sin(cubed->pa), cubed->tempPosY + Ay, colorPurple, 2);
 
-	// uint32_t	colorOrange = ft_pixel(255, 140, 0, 0xFF);
-	// if (checkRay(cubed, cubed->posX + Ay * cos(cubed->pa) / sin(cubed->pa), cubed->posY + Ay))
-	// {
-	// 	printf("It's a HIT\n");
-	// 	drawPoint(cubed->posX + Ay * cos(cubed->pa) / sin(cubed->pa), cubed->posY + Ay, colorOrange, 4);
-	// }
-	// else if (checkRay(cubed, cubed->posX + Ax, cubed->posY + Ax * sin(cubed->pa)))
-	// {
-	// 	printf("It's a HIT\n");
-	// 	drawPoint(cubed->posX + Ax, cubed->posY + Ax * sin(cubed->pa) / cos(cubed->pa), colorOrange, 4);	
-	// }
+	if (is_hit(cubed, Ax, Ay) == true)
+		return ;
 	
 }
 
@@ -469,8 +492,8 @@ void ft_hook(void* param)
 
 bool	initialize_cubed(t_cubed *cubed)
 {
-	cubed->posX = 256;
-	cubed->posY = 256;
+	cubed->posX = 150;
+	cubed->posY = 375;
 	cubed->dirX = -1.0;
 	cubed->dirY = 0.0;
 	cubed->planeX = 0.0;
