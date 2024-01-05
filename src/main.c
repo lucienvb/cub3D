@@ -26,8 +26,8 @@
 
 #define WIDTH 512
 #define HEIGHT 512
-// #define mapWidth 24
-// #define mapHeight 24
+// #define row 24
+// #define column 24
 
 static mlx_image_t* image;
 double	obstacle_startX;
@@ -41,20 +41,9 @@ double	angle;
 
 // -----------------------------------------------------------------------------
 
-#define mapWidth 5
-#define mapHeight 5
-int worldMap[mapWidth][mapHeight]=
-{
-	{1, 1, 1, 1, 1},
-	{1, 0, 0, 0, 1},
-	{1, 0, 0, 0, 1},
-	{1, 1, 0, 1, 1},
-	{1, 1, 1, 1, 1}
-};
-
-// #define mapWidth 5
-// #define mapHeight 5
-// int worldMap[mapWidth][mapHeight]=
+// #define row 5
+// #define column 5
+// int worldMap[row][column]=
 // {
 // 	{0, 0, 0, 0, 0},
 // 	{0, 0, 0, 0, 0},
@@ -63,9 +52,9 @@ int worldMap[mapWidth][mapHeight]=
 // 	{0, 0, 0, 0, 0}
 // };
 
-// #define mapWidth 24
-// #define mapHeight 24
-// int worldMap[mapWidth][mapHeight]=
+// #define row 24
+// #define column 24
+// int worldMap[row][column]=
 // {
 //   {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 //   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
@@ -100,65 +89,62 @@ int32_t ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a)
 
 void draw_color_stripe(int32_t startX, int32_t endX, int32_t startY, int32_t endY, uint32_t color)
 {
-    for (int32_t x = startX; x < endX; ++x)
+	int32_t	y;
+	int32_t	x;
+
+	y = startY;
+	while (y < endY)
     {
-        for (int32_t y = startY; y <= endY; ++y)
+		x = startX;
+       while( x < endX)
         {
             mlx_put_pixel(image, x, y, color);
+			x++;
         }
-    }
+		y++;
+	}
 }
+
+
+#define column 5
+#define row 5
+int worldMap[column][row]=
+{
+	{1, 1, 1, 1, 1},
+	{1, 0, 0, 1, 1},
+	{1, 0, 0, 0, 1},
+	{1, 0, 0, 0, 1},
+	{1, 1, 1, 1, 1}
+};
 
 void start_screen(void* param)
 {
-	// t_cubed	*cubed;
 	(void)param;
-
-	// cubed = param;
-
-    // uint32_t color0 = ft_pixel(47, 79, 79, 0xFF);
-    // uint32_t color1 = ft_pixel(112, 128, 144, 0xFF);
-	// uint32_t color2 = ft_pixel(220, 20, 60, 0xFF);
-	// uint32_t color3 = ft_pixel(255, 0, 0, 0xFF); // red
-	// uint32_t color4 = ft_pixel(60, 179, 113, 0xFF);
-	// uint32_t color5 = ft_pixel(0, 0, 255, 0xFF);
 	uint32_t colorBlack = ft_pixel(0, 0, 0, 0xFF);
 	uint32_t colorWhite = ft_pixel(255, 255, 255, 0xFF);
 
-
 	int	y = 0;
-	int	stepY = HEIGHT / mapHeight;
+	int	stepY = HEIGHT / column;
+	int stepX = WIDTH / row;
 	int	startY = 0;
 	int	endY = stepY;
 
-	while (y < mapHeight)
+
+	while (y < (int)column)
 	{
 		int	startX = 0;
-		int stepX = WIDTH / mapWidth;
 		int endX = stepX;
 		int x = 0;
-		while (x < mapWidth)
+		while (x < (int)row)
 		{
-			// printf("x: %d\n", x);
-			// if (x == round(cubed->posX) && y == round(cubed->posY)) // doesn't work yet
-			// {
-			// 	draw_color_stripe(startX + 25, endX - 25, startY + 25, endY - 25, colorBlack);
-			// }
-			if (worldMap[x][y] == 0)
+			if (worldMap[y][x] == 0)
+			{
 				draw_color_stripe(startX, endX, startY, endY, colorBlack);
-			else if (worldMap[x][y] == 1)
+			}
+			else if (worldMap[y][x] == 1)
+			{
 				draw_color_stripe(startX+1, endX-1, startY+1, endY-1, colorWhite);
-			// else if (worldMap[x][y] == 2)
-			// draw_color_stripe(startX, endX, startY, endY, color2);
-			// else if (worldMap[x][y] == 3)
-			// 	draw_color_stripe(startX, endX, startY, endY, color3);
-			// else if (worldMap[x][y] == 4)
-			// 	draw_color_stripe(startX, endX, startY, endY, color4);
-			// else if (worldMap[x][y] == 5)
-			// 	draw_color_stripe(startX, endX, startY, endY, color5);
-			
-
-
+			}
 			startX = endX;
 			endX += stepX;
 			x++;
@@ -167,10 +153,6 @@ void start_screen(void* param)
 		endY += stepY;
 		y++;
 	}
-	// raycasting(cubed);
-    // draw_color_stripe(0, image->width, 0, image->height / 2 - 1, sealing_color);
-    // draw_color_stripe(0, image->width, image->height / 2, image->height - 1, floor_color);
-    // draw_color_stripe(obstacle_startX, obstacle_endX, obstacle_startY, obstacle_endY, obstacle_color);
 }
 
 bool	max_obstacle_check(void)
@@ -240,12 +222,12 @@ bool	checkRay(t_cubed *cubed, double x_target, double y_target)
 	int	y;
 
 	y = 0;
-	while (y < mapHeight)
+	while (y < column)
 	{
 		x = 0;
-		while (x < mapWidth)
+		while (x < row)
 		{
-			if (worldMap[x][y] == 1)
+			if (worldMap[y][x] == 1)
 			{
 				if ((x_target >= x * cubed->widthBlock && x_target <= (x + 1) * cubed->widthBlock) &&
 						(y_target >= y * cubed->heightBlock && y_target <= (y + 1) * cubed->heightBlock))
@@ -331,22 +313,30 @@ t_hit	is_hit(t_cubed *cubed, double Ax, double Ay)
 	return (no_hit);
 }
 
-void	ray_loop(t_cubed *cubed, double Ax, double Ay)
+void	ray_loop(t_cubed *cubed, double Ax, double Ay, bool *hit)
 {
-	bool	hit = false;
-
-	while (!hit)
+	uint32_t	colorGreen = ft_pixel(60, 179, 113, 0xFF);
+	uint32_t	colorPurple = ft_pixel(160, 32, 240, 0xFF);
+	
+	
+	while (!(*hit))
 	{
-		if (is_hit(cubed, Ax, Ay) == x_ray_hit && x_ray_is_shortest(cubed, Ax, Ay))
-		{
-			printf("The x ray has a hit on coordinates x(%f) and y(%f)\n", cubed->posX + Ax, cubed->posY + Ax * sin(cubed->pa) / cos(cubed->pa));
-			return ;
-		}
-		else if (is_hit(cubed, Ax, Ay) == y_ray_hit && !x_ray_is_shortest(cubed, Ax, Ay))
+		if (!x_ray_is_shortest(cubed, Ax, Ay) && is_hit(cubed, Ax, Ay) == y_ray_hit)
 		{
 			printf("The y ray has a hit on coordinates x(%f) and y(%f)\n", cubed->posX + Ay * cos(cubed->pa) / sin(cubed->pa), cubed->posY + Ay);
+			*hit = true;
 			return ;
 		}
+		else if (x_ray_is_shortest(cubed, Ax, Ay) && is_hit(cubed, Ax, Ay) == x_ray_hit)
+		{
+			printf("The x ray has a hit on coordinates x(%f) and y(%f)\n", cubed->posX + Ax, cubed->posY + Ax * sin(cubed->pa) / cos(cubed->pa));
+			*hit = true;
+			return ;
+		}
+		drawPoint(cubed->posX, cubed->posY + Ay, colorGreen, 3);
+		drawPoint(cubed->posX + Ax, cubed->posY, colorGreen, 3);
+		drawPoint(cubed->posX + Ax, cubed->posY + Ax * sin(cubed->pa) / cos(cubed->pa), colorPurple, 2);	
+		drawPoint(cubed->posX + Ay * cos(cubed->pa) / sin(cubed->pa), cubed->posY + Ay, colorPurple, 2);
 		if (x_ray_is_shortest(cubed, Ax, Ay))
 		{
 			if (cubed->dirX == 1)
@@ -362,14 +352,11 @@ void	ray_loop(t_cubed *cubed, double Ax, double Ay)
 				Ay -= cubed->heightBlock;
 		}
 	}
-	
 }
 
 void	raycasting(void *param)
 {
 	t_cubed 	*cubed;
-	// uint32_t	colorGreen = ft_pixel(60, 179, 113, 0xFF);
-	// uint32_t	colorPurple = ft_pixel(160, 32, 240, 0xFF);
 
 	cubed = param;
 	double		Ax = 0;
@@ -385,13 +372,8 @@ void	raycasting(void *param)
 	cubed->tempPosY = cubed->posY;
 	getAxAy(cubed, &Ax, &Ay);
 
-	ray_loop(cubed, Ax, Ay);
-	
-	// drawPoint(cubed->posX, cubed->posY + Ay, colorGreen, 3);
-	// drawPoint(cubed->posX + Ax, cubed->posY, colorGreen, 3);
-	
-	// drawPoint(cubed->posX + Ax, cubed->posY + Ax * sin(cubed->pa) / cos(cubed->pa), colorPurple, 2);	
-	// drawPoint(cubed->posX + Ay * cos(cubed->pa) / sin(cubed->pa), cubed->posY + Ay, colorPurple, 2);
+	bool	hit = false;
+	ray_loop(cubed, Ax, Ay, &hit);
 }
 
 void	player(void *param)
@@ -524,8 +506,8 @@ bool	initialize_cubed(t_cubed *cubed)
 	cubed->py = 0;
 	cubed->pdx = 0;
 	cubed->pdy = 0;
-	cubed->widthBlock = (double)WIDTH / (double)mapWidth;
-	cubed->heightBlock = (double)HEIGHT / (double)mapHeight;
+	cubed->widthBlock = (double)WIDTH / (double)row;
+	cubed->heightBlock = (double)HEIGHT / (double)column;
 	return (true);
 }
 
