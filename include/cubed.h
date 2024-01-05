@@ -6,8 +6,8 @@
 # include <stdio.h> 
 # include <unistd.h>
 // # include <MLX42/MLX42.h>
-# include "../libft/libft.h"
-# include "../libft/ft_printf/ft_printf.h"
+# include "../libs/libft/libft.h"
+# include "../libs/libft/ft_printf/ft_printf.h"
 
 // defines
 # define FAILURE		1
