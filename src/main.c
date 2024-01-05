@@ -260,6 +260,21 @@ bool	checkRay(t_cubed *cubed, double x_target, double y_target)
 
 void	getAxAy(t_cubed *cubed, double *Ax, double *Ay)
 {
+	// double	tempAx = 0;
+	// double	tempAy = 0;
+
+	printf("Ax: %f\n", *Ax);
+	printf("Ay: %f\n", *Ay);
+	// tempAx = *Ax; 
+	// tempAy = *Ay;
+	// if (cubed->dirX == 1)
+	// 	*Ax = cubed->tempPosX + tempAx;
+	// else if (cubed->dirX == -1)
+	// 	*Ax = WIDTH - cubed->tempPosX - tempAx;
+	// if (cubed->dirY == 1)
+	// 	*Ay = cubed->tempPosY + tempAy;
+	// else if (cubed->dirY == -1)
+	// 	*Ay = HEIGHT - cubed->tempPosY - tempAy;
 	if (cubed->dirX == 1)
 		*Ax = cubed->tempPosX;
 	else if (cubed->dirX == -1)
@@ -267,7 +282,7 @@ void	getAxAy(t_cubed *cubed, double *Ax, double *Ay)
 	if (cubed->dirY == 1)
 		*Ay = cubed->tempPosY;
 	else if (cubed->dirY == -1)
-		*Ay = HEIGHT - cubed->tempPosY;	
+		*Ay = HEIGHT - cubed->tempPosY;			
 
 	while (*Ax >= 0 && cubed->pa != 0.5 * pi && cubed->pa != 1.5 * pi)
 		*Ax -= cubed->widthBlock;
@@ -288,11 +303,15 @@ bool	x_ray_is_shortest(t_cubed *cubed, double Ax, double Ay)
 	double yRayLength = sqrt(Ay * cos(cubed->pa) / sin(cubed->pa) * Ay * cos(cubed->pa) / sin(cubed->pa) + Ay * Ay);
 
 	if (xRayLength < yRayLength)
+	{
+		printf("xRay is shortest\n");
 		return (true);
+	}
+	printf("yRay is shortest\n");
 	return (false);
 }
 
-bool	is_hit(t_cubed *cubed, double Ax, double Ay)
+t_hit	is_hit(t_cubed *cubed, double Ax, double Ay)
 {
 	uint32_t	colorOrange = ft_pixel(255, 140, 0, 0xFF);
 
@@ -301,12 +320,12 @@ bool	is_hit(t_cubed *cubed, double Ax, double Ay)
 		if (checkRay(cubed, cubed->tempPosX + Ax, cubed->tempPosY + Ax * sin(cubed->pa)))
 		{
 			drawPoint(cubed->tempPosX + Ax, cubed->tempPosY + Ax * sin(cubed->pa) / cos(cubed->pa), colorOrange, 4);	
-			return (true);
+			return (x_ray_hit);
 		}
 		else if (checkRay(cubed, cubed->tempPosX + Ay * cos(cubed->pa) / sin(cubed->pa), cubed->tempPosY + Ay))
 		{
 			drawPoint(cubed->tempPosX + Ay * cos(cubed->pa) / sin(cubed->pa), cubed->tempPosY + Ay, colorOrange, 4);
-			return (true);
+			return (y_ray_hit);
 		}
 	}
 	else
@@ -314,15 +333,15 @@ bool	is_hit(t_cubed *cubed, double Ax, double Ay)
 		if (checkRay(cubed, cubed->tempPosX + Ay * cos(cubed->pa) / sin(cubed->pa), cubed->tempPosY + Ay))
 		{
 			drawPoint(cubed->tempPosX + Ay * cos(cubed->pa) / sin(cubed->pa), cubed->tempPosY + Ay, colorOrange, 4);
-			return (true);
+			return (y_ray_hit);
 		}
 		else if (checkRay(cubed, cubed->tempPosX + Ax, cubed->tempPosY + Ax * sin(cubed->pa)))
 		{
 			drawPoint(cubed->tempPosX + Ax, cubed->tempPosY + Ax * sin(cubed->pa) / cos(cubed->pa), colorOrange, 4);	
-			return (true);
+			return (x_ray_hit);
 		}
 	}
-	return (false);
+	return (no_hit);
 }
 
 void	raycasting(void *param)
@@ -354,24 +373,133 @@ void	raycasting(void *param)
 	drawPoint(cubed->posX + Ax, cubed->posY, colorGreen, 3);
 	
 	drawPoint(cubed->posX + Ax, cubed->posY + Ax * sin(cubed->pa) / cos(cubed->pa), colorPurple, 2);	
+	drawPoint(cubed->posX + Ax + cubed->widthBlock, cubed->posY + (Ax + cubed->widthBlock) * sin(cubed->pa) / cos(cubed->pa), colorPurple, 2);	
 	drawPoint(cubed->posX + Ay * cos(cubed->pa) / sin(cubed->pa), cubed->posY + Ay, colorPurple, 2);
 
-	if (is_hit(cubed, Ax, Ay) == true)
+	if (is_hit(cubed, Ax, Ay) == x_ray_hit)
+	{
+		printf("It's hit on coordinates x(%f) and y(%f)\n", cubed->posX + Ax, cubed->posY + Ax * sin(cubed->pa) / cos(cubed->pa));
 		return ;
+	}
+	else if (is_hit(cubed, Ax + cubed->widthBlock, (Ax + cubed->widthBlock) * sin(cubed->pa) / cos(cubed->pa)) == x_ray_hit)
+	{
+		printf("It's hit on coordinates x(%f) and y(%f)\n", cubed->posX + Ax + cubed->widthBlock, cubed->posY + (Ax + cubed->widthBlock) * sin(cubed->pa) / cos(cubed->pa));
+		return ;
+	}
+	else if (is_hit(cubed, Ax, Ay) == y_ray_hit)
+	{
+		printf("It's hit on coordinates x(%f) and y(%f)\n", cubed->posX + Ay * cos(cubed->pa) / sin(cubed->pa), cubed->posY + Ay);
+		return ;
+	}
+	else 
+		printf("no hit\n");
 
-	cubed->tempPosX += Ax;
-	cubed->tempPosY += Ax * sin(cubed->pa) / cos(cubed->pa);
+	printf("Ax in raycasting: %f\n", Ax);
+	printf("Ay in raycasting: %f\n", Ay);
+	if (x_ray_is_shortest(cubed, Ax, Ay))
+	{
+		// Ax += cubed->widthBlock;
+		cubed->tempPosX += Ax;
+		cubed->tempPosY += Ax * sin(cubed->pa) / cos(cubed->pa);
+	}	
+	else
+	{
+		cubed->tempPosX += Ay * cos(cubed->pa) / sin(cubed->pa);
+		cubed->tempPosY += Ay;
+		// Ay += cubed->heightBlock;
+	}
 
-	getAxAy(cubed, &Ax, &Ay);
+	// second run
+
+	// getAxAy(cubed, &Ax, &Ay);
 		
-	drawPoint(cubed->tempPosX, cubed->tempPosY + Ay, colorGreen, 3);
-	drawPoint(cubed->tempPosX + Ax, cubed->tempPosY, colorGreen, 3);
+	// drawPoint(cubed->tempPosX, cubed->tempPosY + Ay, colorGreen, 3);
+	// drawPoint(cubed->tempPosX + Ax, cubed->tempPosY, colorGreen, 3);
 	
-	drawPoint(cubed->tempPosX + Ax, cubed->tempPosY + Ax * sin(cubed->pa) / cos(cubed->pa), colorPurple, 2);	
-	drawPoint(cubed->tempPosX + Ay * cos(cubed->pa) / sin(cubed->pa), cubed->tempPosY + Ay, colorPurple, 2);
+	// drawPoint(cubed->tempPosX + Ax, cubed->tempPosY + Ax * sin(cubed->pa) / cos(cubed->pa), colorPurple, 2);	
+	// drawPoint(cubed->tempPosX + Ay * cos(cubed->pa) / sin(cubed->pa), cubed->tempPosY + Ay, colorPurple, 2);
 
-	if (is_hit(cubed, Ax, Ay) == true)
-		return ;
+	// if (is_hit(cubed, Ax, Ay) == x_ray_hit)
+	// {
+	// 	printf("It's hit on coordinates x(%f) and y(%f)\n", cubed->posX + Ax, cubed->posY + Ax * sin(cubed->pa) / cos(cubed->pa));
+	// 	return ;
+	// }
+	// else if (is_hit(cubed, Ax, Ay) == y_ray_hit)
+	// {
+	// 	printf("It's hit on coordinates x(%f) and y(%f)\n", cubed->posX + Ay * cos(cubed->pa) / sin(cubed->pa), cubed->posY + Ay);
+	// 	return ;
+	// }
+	// else 
+	// 	printf("no hit\n");
+
+	// printf("Ax in raycasting: %f\n", Ax);
+	// printf("Ay in raycasting: %f\n", Ay);
+
+	// third run
+
+	// if (x_ray_is_shortest(cubed, Ax, Ay))
+	// {
+	// 	cubed->tempPosX += Ax;
+	// 	cubed->tempPosY += Ax * sin(cubed->pa) / cos(cubed->pa);
+	// }	
+	// else
+	// {
+	// 	cubed->tempPosX += Ay * cos(cubed->pa) / sin(cubed->pa);
+	// 	cubed->tempPosY += Ay;
+	// }
+
+	// getAxAy(cubed, &Ax, &Ay);
+		
+	// drawPoint(cubed->tempPosX, cubed->tempPosY + Ay, colorGreen, 3);
+	// drawPoint(cubed->tempPosX + Ax, cubed->tempPosY, colorGreen, 3);
+	
+	// drawPoint(cubed->tempPosX + Ax, cubed->tempPosY + Ax * sin(cubed->pa) / cos(cubed->pa), colorPurple, 2);	
+	// drawPoint(cubed->tempPosX + Ay * cos(cubed->pa) / sin(cubed->pa), cubed->tempPosY + Ay, colorPurple, 2);
+
+	// if (is_hit(cubed, Ax, Ay) == x_ray_hit)
+	// {
+	// 	printf("It's hit on coordinates x(%f) and y(%f)\n", cubed->posX + Ax, cubed->posY + Ax * sin(cubed->pa) / cos(cubed->pa));
+	// 	return ;
+	// }
+	// else if (is_hit(cubed, Ax, Ay) == y_ray_hit)
+	// {
+	// 	printf("It's hit on coordinates x(%f) and y(%f)\n", cubed->posX + Ay * cos(cubed->pa) / sin(cubed->pa), cubed->posY + Ay);
+	// 	return ;
+	// }
+	// else 
+	// 	printf("no hit\n");
+
+	// if (x_ray_is_shortest(cubed, Ax, Ay))
+	// {
+	// 	cubed->tempPosX += Ax;
+	// 	cubed->tempPosY += Ax * sin(cubed->pa) / cos(cubed->pa);
+	// }	
+	// else
+	// {
+	// 	cubed->tempPosX += Ay * cos(cubed->pa) / sin(cubed->pa);
+	// 	cubed->tempPosY += Ay;
+	// }
+
+	// getAxAy(cubed, &Ax, &Ay);
+		
+	// drawPoint(cubed->tempPosX, cubed->tempPosY + Ay, colorGreen, 3);
+	// drawPoint(cubed->tempPosX + Ax, cubed->tempPosY, colorGreen, 3);
+	
+	// drawPoint(cubed->tempPosX + Ax, cubed->tempPosY + Ax * sin(cubed->pa) / cos(cubed->pa), colorPurple, 2);	
+	// drawPoint(cubed->tempPosX + Ay * cos(cubed->pa) / sin(cubed->pa), cubed->tempPosY + Ay, colorPurple, 2);
+
+	// if (is_hit(cubed, Ax, Ay) == x_ray_hit)
+	// {
+	// 	printf("It's hit on coordinates x(%f) and y(%f)\n", cubed->posX + Ax, cubed->posY + Ax * sin(cubed->pa) / cos(cubed->pa));
+	// 	return ;
+	// }
+	// else if (is_hit(cubed, Ax, Ay) == y_ray_hit)
+	// {
+	// 	printf("It's hit on coordinates x(%f) and y(%f)\n", cubed->posX + Ay * cos(cubed->pa) / sin(cubed->pa), cubed->posY + Ay);
+	// 	return ;
+	// }
+	// else 
+	// 	printf("no hit\n");
 	
 }
 

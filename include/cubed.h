@@ -21,6 +21,12 @@
 # define SCREEN_HEIGHT	480
 
 // enum
+typedef enum e_hit
+{
+	x_ray_hit,
+	y_ray_hit,
+	no_hit,
+}	t_hit;
 
 
 // structures
