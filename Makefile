@@ -1,30 +1,30 @@
 include makerc/colors.mk
 
 # Directories and File Names
-NAME        := cub3d
-SRC_DIR     := src
-BUILD_DIR   := build
-MAIN        := main.c
-RM          := rm -rvf
-HEADERS     = include/cubed.h
-CC          = gcc
+NAME		:= cub3d
+SRC_DIR		:= src
+BUILD_DIR	:= build
+MAIN		:= main.c
+RM			:= rm -rvf
+HEADERS		= include/cubed.h
+CC			= gcc
 
 # External Libraries
-PATH_MLX    := ./libs/MLX42
+PATH_MLX	:= ./libs/MLX42
 PATH_LIBFT  := ./libs/libft
-PATH_PRINTF := ./libs/libft/ft_printf
+PATH_PRINTF	:= ./libs/libft/ft_printf
 
 # Include Paths
-INCLUDES    = -I $(PATH_LIBFT) -I $(PATH_PRINTF) -I $(PATH_MLX)/include
+INCLUDES	= -I $(PATH_LIBFT) -I $(PATH_PRINTF) -I $(PATH_MLX)/include
 
 # Libraries
-MLX_ARCHIVE     := $(PATH_MLX)/build/libmlx42.a -ldl -lglfw -pthread -lm
-PRINTF_ARCHIVE  := $(PATH_PRINTF)/libftprintf.a
-LIBFT_ARCHIVE   := $(PATH_LIBFT)/libft.a
+MLX_ARCHIVE		:= $(PATH_MLX)/build/libmlx42.a -ldl -lglfw -pthread -lm
+PRINTF_ARCHIVE	:= $(PATH_PRINTF)/libftprintf.a
+LIBFT_ARCHIVE	:= $(PATH_LIBFT)/libft.a
 
 # Compiler Flags
-CFLAGS          = -Wall -Wextra -Werror -Wpedantic
-INCLUDE_FLAGS   := $(addprefix -I, $(sort $(dir $(HEADERS))))
+CFLAGS			= -Wall -Wextra -Werror -Wpedantic
+INCLUDE_FLAGS	:= $(addprefix -I, $(sort $(dir $(HEADERS))))
 
 ifdef DEBUG
 	CFLAGS += -g
