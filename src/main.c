@@ -291,11 +291,11 @@ t_hit	is_hit(t_cubed *cubed, double Ax, double Ay)
 			drawPoint(cubed->tempPosX + Ax, cubed->tempPosY + Ax * sin(cubed->pa) / cos(cubed->pa), colorOrange, 4);	
 			return (x_ray_hit);
 		}
-		else if (checkRay(cubed, cubed->tempPosX + Ay * cos(cubed->pa) / sin(cubed->pa), cubed->tempPosY + Ay))
-		{
-			drawPoint(cubed->tempPosX + Ay * cos(cubed->pa) / sin(cubed->pa), cubed->tempPosY + Ay, colorOrange, 4);
-			return (y_ray_hit);
-		}
+		// else if (checkRay(cubed, cubed->tempPosX + Ay * cos(cubed->pa) / sin(cubed->pa), cubed->tempPosY + Ay))
+		// {
+		// 	drawPoint(cubed->tempPosX + Ay * cos(cubed->pa) / sin(cubed->pa), cubed->tempPosY + Ay, colorOrange, 4);
+		// 	return (y_ray_hit);
+		// }
 	}
 	else
 	{
@@ -304,11 +304,11 @@ t_hit	is_hit(t_cubed *cubed, double Ax, double Ay)
 			drawPoint(cubed->tempPosX + Ay * cos(cubed->pa) / sin(cubed->pa), cubed->tempPosY + Ay, colorOrange, 4);
 			return (y_ray_hit);
 		}
-		else if (checkRay(cubed, cubed->tempPosX + Ax, cubed->tempPosY + Ax * sin(cubed->pa)))
-		{
-			drawPoint(cubed->tempPosX + Ax, cubed->tempPosY + Ax * sin(cubed->pa) / cos(cubed->pa), colorOrange, 4);	
-			return (x_ray_hit);
-		}
+		// else if (checkRay(cubed, cubed->tempPosX + Ax, cubed->tempPosY + Ax * sin(cubed->pa)))
+		// {
+		// 	drawPoint(cubed->tempPosX + Ax, cubed->tempPosY + Ax * sin(cubed->pa) / cos(cubed->pa), colorOrange, 4);	
+		// 	return (x_ray_hit);
+		// }
 	}
 	return (no_hit);
 }
@@ -335,10 +335,9 @@ void	ray_loop(t_cubed *cubed, double Ax, double Ay, bool *hit)
 		}
 		drawPoint(cubed->posX, cubed->posY + Ay, colorGreen, 3);
 		drawPoint(cubed->posX + Ax, cubed->posY, colorGreen, 3);
-		drawPoint(cubed->posX + Ax, cubed->posY + Ax * sin(cubed->pa) / cos(cubed->pa), colorPurple, 2);	
-		drawPoint(cubed->posX + Ay * cos(cubed->pa) / sin(cubed->pa), cubed->posY + Ay, colorPurple, 2);
 		if (x_ray_is_shortest(cubed, Ax, Ay))
 		{
+			drawPoint(cubed->posX + Ax, cubed->posY + Ax * sin(cubed->pa) / cos(cubed->pa), colorPurple, 2);	
 			if (cubed->dirX == 1)
 				Ax += cubed->widthBlock;
 			else
@@ -346,6 +345,7 @@ void	ray_loop(t_cubed *cubed, double Ax, double Ay, bool *hit)
 		}
 		else
 		{
+			drawPoint(cubed->posX + Ay * cos(cubed->pa) / sin(cubed->pa), cubed->posY + Ay, colorPurple, 2);
 			if (cubed->dirY == 1)
 				Ay += cubed->heightBlock;
 			else
@@ -357,11 +357,10 @@ void	ray_loop(t_cubed *cubed, double Ax, double Ay, bool *hit)
 void	raycasting(void *param)
 {
 	t_cubed 	*cubed;
-
-	cubed = param;
 	double		Ax = 0;
 	double		Ay = 0;
-	
+
+	cubed = param;
 	printf("widthBlock: %f\n", cubed->widthBlock);
 	printf("heightBlock: %f\n", cubed->heightBlock);
 	printf("pa: %f\n", cubed->pa);
