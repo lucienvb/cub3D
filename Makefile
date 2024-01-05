@@ -1,84 +1,90 @@
 include makerc/colors.mk
-################################################################################
 
-NAME			:= cub3d
-SRC_DIR			:= src
-BUILD_DIR		:= build
-MAIN			:= main.c
-RM				:= rm -rvf
-HEADERS			= include/cubed.h 
-CC				= gcc
+# Directories and File Names
+NAME        := cub3d
+SRC_DIR     := src
+BUILD_DIR   := build
+MAIN        := main.c
+RM          := rm -rvf
+HEADERS     = include/cubed.h
+CC          = gcc
 
-################################################################################
-# Includes
-PATH_MLX	:= 	./libs/MLX42
-INCLUDES	= -I ./libs/libft -I ./libs/libft/ft_printf -I $(PATH_MLX)/include
+# External Libraries
+PATH_MLX    := ./libs/MLX42
+PATH_LIBFT  := ./libs/libft
+PATH_PRINTF := ./libs/libft/ft_printf
+
+# Include Paths
+INCLUDES    = -I $(PATH_LIBFT) -I $(PATH_PRINTF) -I $(PATH_MLX)/include
 
 # Libraries
-MLX_ARCHIVE	:= $(PATH_MLX)/build/libmlx42.a -ldl -lglfw -pthread -lm
-PRINTF_ARCHIVE = ./libs/libft/ft_printf/libftprintf.a
-LIBFT_ARCHIVE = ./libs/libft/libft.a
+MLX_ARCHIVE     := $(PATH_MLX)/build/libmlx42.a -ldl -lglfw -pthread -lm
+PRINTF_ARCHIVE  := $(PATH_PRINTF)/libftprintf.a
+LIBFT_ARCHIVE   := $(PATH_LIBFT)/libft.a
 
-################################################################################
-CFLAGS			= -Wall -Wextra -Werror -Wpedantic
-INCLUDE_FLAGS	:= $(addprefix -I, $(sort $(dir $(HEADERS))))
+# Compiler Flags
+CFLAGS          = -Wall -Wextra -Werror -Wpedantic
+INCLUDE_FLAGS   := $(addprefix -I, $(sort $(dir $(HEADERS))))
 
-ifdef	DEBUG
-	CFLAGS		+=-g
+ifdef DEBUG
+	CFLAGS += -g
 endif
 
-ifdef	FSAN
-	CFLAGS		+=-fsanitize=address,undefined
+ifdef FSAN
+	CFLAGS += -fsanitize=address,undefined
 endif
 
-################################################################################
 # Source files
-SRC =	src/setup/input_error_handling.c \
-		src/setup/input_initialization.c \
-		src/setup/parsing.c \
-		src/setup/parse_map.c \
-		src/setup/parse_color_code.c \
-		src/setup/parse_texture.c \
-		src/setup/utils.c \
-		src/setup/validate_map.c \
-		src/setup/get_next_line/get_next_line.c \
-		src/setup/get_next_line/get_next_line_utils.c \
-		src/cleanup/free_allocations.c \
-
-
-
-################################################################################
+SRC = \
+	src/setup/input_error_handling.c \
+	src/setup/input_initialization.c \
+	src/setup/parsing.c \
+	src/setup/parse_map.c \
+	src/setup/parse_color_code.c \
+	src/setup/parse_texture.c \
+	src/setup/utils.c \
+	src/setup/validate_map.c \
+	src/setup/get_next_line/get_next_line.c \
+	src/setup/get_next_line/get_next_line_utils.c \
+	src/cleanup/free_allocations.c
 
 # Object files
-OBJS       = $(addprefix $(BUILD_DIR)/, $(SRC:$(SRC_DIR)/%.c=%.o))
-MAIN_OBJ   = $(addprefix $(BUILD_DIR)/, $(MAIN:%.c=%.o))
+OBJS        = $(addprefix $(BUILD_DIR)/, $(SRC:$(SRC_DIR)/%.c=%.o))
+MAIN_OBJ    = $(addprefix $(BUILD_DIR)/, $(MAIN:%.c=%.o))
 
-################################################################################
+# Targets
+all: libmlx $(NAME)
 
-all: $(NAME)
+clone_submodule:
+	git clone https://github.com/codam-coding-college/MLX42.git ./libs/MLX42
 
 libmlx:
 	@cmake $(PATH_MLX) -B $(PATH_MLX)/build && make -C $(PATH_MLX)/build -j4
 	@printf "$(MEGENTA_FG)libmlx\n$(RESET_COLOR)"
 
-# $(NAME): SHELL :=/bin/bash
-
 $(NAME): $(OBJS) $(MAIN_OBJ)
-	$(MAKE) -C ./libs/libft
-	$(MAKE) -C ./libs/libft/ft_printf
+	$(MAKE) -C $(PATH_LIBFT)
+	$(MAKE) -C $(PATH_PRINTF)
 	$(CC) $(CFLAGS) $^ $(INCLUDE_FLAGS) $(LIBFT_ARCHIVE) $(PRINTF_ARCHIVE) -o $(NAME)
-	@printf "$(BLUE_FG)$(NAME)$(RESET_COLOR) created_arhcive\n"
+	@printf "$(BLUE_FG)$(NAME)$(RESET_COLOR) created_archive\n"
 
 $(MAIN_OBJ) $(OBJS): $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c | $(HEADERS)
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $(INCLUDE_FLAGS) -c $< -o $@
 
-################################################################################
+# Cleaning
 clean:
 	@$(RM) $(OBJS) $(MAIN_OBJ)
-	$(MAKE) -C ./libs/libft clean
-	$(MAKE) -C ./libs/libft/ft_printf clean
+	$(MAKE) -C $(PATH_LIBFT) clean
+	$(MAKE) -C $(PATH_PRINTF) clean
 
+fclean: clean
+	@$(RM) $(NAME)
+	@$(RM) $(PATH_MLX)/build
+
+re: fclean all
+
+# Debugging
 debug:
 	$(MAKE) DEBUG=1
 .PHONY: debug
@@ -92,11 +98,5 @@ fsan:
 
 resan: fclean fsan
 .PHONY: resan
-
-fclean: clean
-	@$(RM) $(NAME)
-	@$(RM) $(PATH_MLX)/build
-
-re: fclean all
 
 .PHONY: all clean fclean re
