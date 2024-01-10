@@ -111,7 +111,7 @@ void draw_color_stripe(int32_t startX, int32_t endX, int32_t startY, int32_t end
 int worldMap[column][row]=
 {
 	{1, 1, 1, 1, 1},
-	{1, 0, 0, 1, 1},
+	{1, 1, 0, 1, 1},
 	{1, 0, 0, 0, 1},
 	{1, 0, 0, 0, 1},
 	{1, 1, 1, 1, 1}
@@ -269,14 +269,14 @@ bool	x_ray_is_shortest(t_cubed *cubed, double Ax, double Ay)
 	double xRayLength = sqrt(Ax * Ax + Ax * sin(cubed->pa) / cos(cubed->pa) * Ax * sin(cubed->pa) / cos(cubed->pa));
 	double yRayLength = sqrt(Ay * cos(cubed->pa) / sin(cubed->pa) * Ay * cos(cubed->pa) / sin(cubed->pa) + Ay * Ay);
 
-	printf("xRayLength with Ax(%f): %f\n", Ax, xRayLength);
-	printf("yRayLength with Ay(%f): %f\n", Ay, yRayLength);
+	// printf("xRayLength with Ax(%f): %f\n", Ax, xRayLength);
+	// printf("yRayLength with Ay(%f): %f\n", Ay, yRayLength);
 	if (xRayLength < yRayLength)
 	{
-		printf("xRay is shortest\n");
+		// printf("xRay is shortest\n");
 		return (true);
 	}
-	printf("yRay is shortest\n");
+	// printf("yRay is shortest\n");
 	return (false);
 }
 
@@ -286,7 +286,7 @@ t_hit	is_hit(t_cubed *cubed, double Ax, double Ay)
 
 	if (x_ray_is_shortest(cubed, Ax, Ay) == true)
 	{
-		if (checkRay(cubed, cubed->tempPosX + Ax, cubed->tempPosY + Ax * sin(cubed->pa)))
+		if (checkRay(cubed, cubed->tempPosX + Ax, cubed->tempPosY + Ax * sin(cubed->pa) / cos(cubed->pa)))
 		{
 			drawPoint(cubed->tempPosX + Ax, cubed->tempPosY + Ax * sin(cubed->pa) / cos(cubed->pa), colorOrange, 4);	
 			return (x_ray_hit);
@@ -304,7 +304,7 @@ t_hit	is_hit(t_cubed *cubed, double Ax, double Ay)
 			drawPoint(cubed->tempPosX + Ay * cos(cubed->pa) / sin(cubed->pa), cubed->tempPosY + Ay, colorOrange, 4);
 			return (y_ray_hit);
 		}
-		// else if (checkRay(cubed, cubed->tempPosX + Ax, cubed->tempPosY + Ax * sin(cubed->pa)))
+		// else if (checkRay(cubed, cubed->tempPosX + Ax, cubed->tempPosY + Ax * sin(cubed->pa) / cos(cubed->pa)))
 		// {
 		// 	drawPoint(cubed->tempPosX + Ax, cubed->tempPosY + Ax * sin(cubed->pa) / cos(cubed->pa), colorOrange, 4);	
 		// 	return (x_ray_hit);
@@ -492,7 +492,7 @@ void ft_hook(void* param)
 
 bool	initialize_cubed(t_cubed *cubed)
 {
-	cubed->posX = 150;
+	cubed->posX = 125;
 	cubed->posY = 375;
 	cubed->dirX = -1.0;
 	cubed->dirY = 0.0;
@@ -536,11 +536,6 @@ int32_t main(void)
 	}
 
 	mlx_loop_hook(cubed.mlx, start_screen, &cubed);
-
-	// int hit = 0;
-	// checkRay(&cubed, 102.3, 102.3, &hit);
-	// printf("hit: %i\n", hit);
-
 	mlx_loop_hook(cubed.mlx, player, &cubed);
 	mlx_loop_hook(cubed.mlx, raycasting, &cubed);
 	mlx_loop_hook(cubed.mlx, ft_hook, &cubed);
