@@ -44,12 +44,14 @@ typedef struct s_cubed
 	double	time;
 	double	oldTime;
 	double	pa;
+	double	fov;
 	double	px;
 	double	py;
 	double	pdx;
 	double	pdy;
 	double	widthBlock;
 	double	heightBlock;
+	bool	plus30;
 
 }			t_cubed;
 

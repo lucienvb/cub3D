@@ -29,14 +29,14 @@
 // #define row 24
 // #define column 24
 
-static mlx_image_t* image;
+static	mlx_image_t* image;
 double	obstacle_startX;
 double	obstacle_endX;
 double	obstacle_startY;
 double	obstacle_endY;
 double	diff_x;
 double	diff_y;
-const double pi = 3.14159265359;
+double	pi = 3.14159265359;
 double	angle;
 
 // -----------------------------------------------------------------------------
@@ -54,7 +54,7 @@ double	angle;
 
 // #define row 24
 // #define column 24
-// int worldMap[row][column]=
+// int worldMap[column][row]=
 // {
 //   {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 //   {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
@@ -106,16 +106,38 @@ void draw_color_stripe(int32_t startX, int32_t endX, int32_t startY, int32_t end
 }
 
 
-#define column 5
-#define row 5
+#define column 4
+#define row 4
 int worldMap[column][row]=
 {
-	{1, 1, 1, 1, 1},
-	{1, 1, 0, 1, 1},
-	{1, 0, 0, 0, 1},
-	{1, 0, 0, 0, 1},
-	{1, 1, 1, 1, 1}
+	{1, 1, 1, 1},
+	{1, 0, 0, 1},
+	{1, 0, 0, 1},
+	{1, 1, 1, 1}
 };
+
+// #define column 5
+// #define row 5
+// int worldMap[column][row]=
+// {
+// 	{1, 1, 1, 1, 1},
+// 	{1, 0, 0, 0, 1},
+// 	{1, 0, 1, 0, 1},
+// 	{1, 0, 0, 0, 1},
+// 	{1, 1, 1, 1, 1}
+// };
+
+// #define column 6
+// #define row 6
+// int worldMap[column][row]=
+// {
+// 	{1, 1, 1, 1, 1, 1},
+// 	{1, 0, 0, 0, 0, 1},
+// 	{1, 0, 0, 0, 0, 1},
+// 	{1, 0, 0, 0, 0, 1},
+// 	{1, 0, 0, 0, 0, 1},
+// 	{1, 1, 1, 1, 1, 1}
+// };
 
 void start_screen(void* param)
 {
@@ -165,8 +187,9 @@ bool	max_obstacle_check(void)
 
 void	setXYdir(t_cubed *cubed, double x, double y, int line)
 {
-	double	xVision = x + cos(cubed->pa) * line;
-	double	yVision = y + sin(cubed->pa) * line;
+	double	pa = cubed->pa + cubed->fov;
+	double	xVision = x + cos(pa) * line;
+	double	yVision = y + sin(pa) * line;
 
 	if (x == xVision)
 		cubed->dirX = 0;
@@ -184,15 +207,15 @@ void	setXYdir(t_cubed *cubed, double x, double y, int line)
 
 void	draw_vertical(int x, int y, t_cubed *cubed)
 {
-	uint32_t colorYellow = ft_pixel(255, 165, 0, 0xFF);
-
+	uint32_t	colorYellow = ft_pixel(255, 165, 0, 0xFF);
+	double		pa = cubed->pa;
 	// printf("pa: %f\n", cubed->pa);
 	int	line = 20;
 	setXYdir(cubed, x, y, line);
 
 	while (line > 0)
 	{
-		mlx_put_pixel(image, x + cos(cubed->pa) * line, y + sin(cubed->pa) * line, colorYellow);
+		mlx_put_pixel(image, x + cos(pa) * line, y + sin(pa) * line, colorYellow);
 		line--;
 	}
 }
@@ -242,6 +265,9 @@ bool	checkRay(t_cubed *cubed, double x_target, double y_target)
 
 void	getAxAy(t_cubed *cubed, double *Ax, double *Ay)
 {
+	double	pa = cubed->pa + cubed->fov;
+	// double	pa = cubed->pa;
+
 	if (cubed->dirX == 1)
 		*Ax = cubed->tempPosX;
 	else if (cubed->dirX == -1)
@@ -251,13 +277,13 @@ void	getAxAy(t_cubed *cubed, double *Ax, double *Ay)
 	else if (cubed->dirY == -1)
 		*Ay = HEIGHT - cubed->tempPosY;			
 
-	while (*Ax >= 0 && cubed->pa != 0.5 * pi && cubed->pa != 1.5 * pi)
+	while (*Ax >= 0 && pa != 0.5 * pi && pa != 1.5 * pi)
 		*Ax -= cubed->widthBlock;
 	if (cubed->dirX == 1)
 		*Ax *= -1;
 	// printf("Ax: %f\n", *Ax);
 	
-	while (*Ay >= 0 && cubed->pa != 0 && cubed->pa != pi)
+	while (*Ay >= 0 && pa != 0 && pa != pi)
 		*Ay -= cubed->heightBlock;
 	if (cubed->dirY == 1)
 		*Ay *= -1;
@@ -266,8 +292,10 @@ void	getAxAy(t_cubed *cubed, double *Ax, double *Ay)
 
 bool	x_ray_is_shortest(t_cubed *cubed, double Ax, double Ay)
 {
-	double xRayLength = sqrt(Ax * Ax + Ax * sin(cubed->pa) / cos(cubed->pa) * Ax * sin(cubed->pa) / cos(cubed->pa));
-	double yRayLength = sqrt(Ay * cos(cubed->pa) / sin(cubed->pa) * Ay * cos(cubed->pa) / sin(cubed->pa) + Ay * Ay);
+	double	pa = cubed->pa + cubed->fov;
+
+	double xRayLength = sqrt(Ax * Ax + Ax * sin(pa) / cos(pa) * Ax * sin(pa) / cos(pa));
+	double yRayLength = sqrt(Ay * cos(pa) / sin(pa) * Ay * cos(pa) / sin(pa) + Ay * Ay);
 
 	// printf("xRayLength with Ax(%f): %f\n", Ax, xRayLength);
 	// printf("yRayLength with Ay(%f): %f\n", Ay, yRayLength);
@@ -283,32 +311,33 @@ bool	x_ray_is_shortest(t_cubed *cubed, double Ax, double Ay)
 t_hit	is_hit(t_cubed *cubed, double Ax, double Ay)
 {
 	uint32_t	colorOrange = ft_pixel(255, 140, 0, 0xFF);
+	double		pa = cubed->pa + cubed->fov;
 
 	if (x_ray_is_shortest(cubed, Ax, Ay) == true)
 	{
-		if (checkRay(cubed, cubed->tempPosX + Ax, cubed->tempPosY + Ax * sin(cubed->pa) / cos(cubed->pa)))
+		if (checkRay(cubed, cubed->tempPosX + Ax, cubed->tempPosY + Ax * sin(pa) / cos(pa)))
 		{
-			drawPoint(cubed->tempPosX + Ax, cubed->tempPosY + Ax * sin(cubed->pa) / cos(cubed->pa), colorOrange, 4);	
+			drawPoint(cubed->tempPosX + Ax, cubed->tempPosY + Ax * sin(pa) / cos(pa), colorOrange, 4);	
 			return (x_ray_hit);
 		}
-		// else if (checkRay(cubed, cubed->tempPosX + Ay * cos(cubed->pa) / sin(cubed->pa), cubed->tempPosY + Ay))
-		// {
-		// 	drawPoint(cubed->tempPosX + Ay * cos(cubed->pa) / sin(cubed->pa), cubed->tempPosY + Ay, colorOrange, 4);
-		// 	return (y_ray_hit);
-		// }
+		else if (checkRay(cubed, cubed->tempPosX + Ay * cos(pa) / sin(pa), cubed->tempPosY + Ay)) // DOUBLE CHECK
+		{
+			drawPoint(cubed->tempPosX + Ay * cos(pa) / sin(pa), cubed->tempPosY + Ay, colorOrange, 4);
+			return (y_ray_hit);
+		}
 	}
 	else
 	{
-		if (checkRay(cubed, cubed->tempPosX + Ay * cos(cubed->pa) / sin(cubed->pa), cubed->tempPosY + Ay))
+		if (checkRay(cubed, cubed->tempPosX + Ay * cos(pa) / sin(pa), cubed->tempPosY + Ay))
 		{
-			drawPoint(cubed->tempPosX + Ay * cos(cubed->pa) / sin(cubed->pa), cubed->tempPosY + Ay, colorOrange, 4);
+			drawPoint(cubed->tempPosX + Ay * cos(pa) / sin(pa), cubed->tempPosY + Ay, colorOrange, 4);
 			return (y_ray_hit);
 		}
-		// else if (checkRay(cubed, cubed->tempPosX + Ax, cubed->tempPosY + Ax * sin(cubed->pa) / cos(cubed->pa)))
-		// {
-		// 	drawPoint(cubed->tempPosX + Ax, cubed->tempPosY + Ax * sin(cubed->pa) / cos(cubed->pa), colorOrange, 4);	
-		// 	return (x_ray_hit);
-		// }
+		else if (checkRay(cubed, cubed->tempPosX + Ax, cubed->tempPosY + Ax * sin(pa) / cos(pa))) // DOUBLE CHECK
+		{
+			drawPoint(cubed->tempPosX + Ax, cubed->tempPosY + Ax * sin(pa) / cos(pa), colorOrange, 4);	
+			return (x_ray_hit);
+		}
 	}
 	return (no_hit);
 }
@@ -317,19 +346,19 @@ void	ray_loop(t_cubed *cubed, double Ax, double Ay, bool *hit)
 {
 	uint32_t	colorGreen = ft_pixel(60, 179, 113, 0xFF);
 	uint32_t	colorPurple = ft_pixel(160, 32, 240, 0xFF);
-	
+	double		pa = cubed->pa + cubed->fov;	
 	
 	while (!(*hit))
 	{
 		if (!x_ray_is_shortest(cubed, Ax, Ay) && is_hit(cubed, Ax, Ay) == y_ray_hit)
 		{
-			printf("The y ray has a hit on coordinates x(%f) and y(%f)\n", cubed->posX + Ay * cos(cubed->pa) / sin(cubed->pa), cubed->posY + Ay);
+			printf("The y ray has a hit on coordinates x(%f) and y(%f)\n", cubed->posX + Ay * cos(pa) / sin(pa), cubed->posY + Ay);
 			*hit = true;
 			return ;
 		}
 		else if (x_ray_is_shortest(cubed, Ax, Ay) && is_hit(cubed, Ax, Ay) == x_ray_hit)
 		{
-			printf("The x ray has a hit on coordinates x(%f) and y(%f)\n", cubed->posX + Ax, cubed->posY + Ax * sin(cubed->pa) / cos(cubed->pa));
+			printf("The x ray has a hit on coordinates x(%f) and y(%f)\n", cubed->posX + Ax, cubed->posY + Ax * sin(pa) / cos(pa));
 			*hit = true;
 			return ;
 		}
@@ -337,7 +366,7 @@ void	ray_loop(t_cubed *cubed, double Ax, double Ay, bool *hit)
 		drawPoint(cubed->posX + Ax, cubed->posY, colorGreen, 3);
 		if (x_ray_is_shortest(cubed, Ax, Ay))
 		{
-			drawPoint(cubed->posX + Ax, cubed->posY + Ax * sin(cubed->pa) / cos(cubed->pa), colorPurple, 2);	
+			drawPoint(cubed->posX + Ax, cubed->posY + Ax * sin(pa) / cos(pa), colorPurple, 2);	
 			if (cubed->dirX == 1)
 				Ax += cubed->widthBlock;
 			else
@@ -345,7 +374,7 @@ void	ray_loop(t_cubed *cubed, double Ax, double Ay, bool *hit)
 		}
 		else
 		{
-			drawPoint(cubed->posX + Ay * cos(cubed->pa) / sin(cubed->pa), cubed->posY + Ay, colorPurple, 2);
+			drawPoint(cubed->posX + Ay * cos(pa) / sin(pa), cubed->posY + Ay, colorPurple, 2);
 			if (cubed->dirY == 1)
 				Ay += cubed->heightBlock;
 			else
@@ -354,6 +383,16 @@ void	ray_loop(t_cubed *cubed, double Ax, double Ay, bool *hit)
 	}
 }
 
+// Start direction with there corresponding pa
+// NO --> cubed->pa = pi * 3 / 2
+// SO --> cubed->pa = pi / 2
+// WE --> cubed->pa = pi
+// EA --> cubed->pa = 0
+
+// FOV
+// 30 degrees to the left --> pa -= pi / 6
+// 30 degrees to the right --> pa += pi / 6
+
 void	raycasting(void *param)
 {
 	t_cubed 	*cubed;
@@ -361,18 +400,38 @@ void	raycasting(void *param)
 	double		Ay = 0;
 
 	cubed = param;
-	printf("widthBlock: %f\n", cubed->widthBlock);
-	printf("heightBlock: %f\n", cubed->heightBlock);
-	printf("pa: %f\n", cubed->pa);
-	printf("dirX: %f\n", cubed->dirX);
-	printf("dirY: %f\n", cubed->dirY);
+	// printf("widthBlock: %f\n", cubed->widthBlock);
+	// printf("heightBlock: %f\n", cubed->heightBlock);
+	// printf("pa: %f\n", cubed->pa);
+	// printf("dirX: %f\n", cubed->dirX);
+	// printf("dirY: %f\n", cubed->dirY);
 	
 	cubed->tempPosX = cubed->posX;
 	cubed->tempPosY = cubed->posY;
-	getAxAy(cubed, &Ax, &Ay);
-
+	
 	bool	hit = false;
-	ray_loop(cubed, Ax, Ay, &hit);
+
+	// printf("fov left: %f\n", (pi / -6));
+	// printf("fov right: %f\n", (pi / 6));
+	
+	
+	// getAxAy(cubed, &Ax, &Ay);
+	// ray_loop(cubed, Ax, Ay, &hit);
+
+	// while (cubed->fov >= (pi / -6) && cubed->fov <= (pi / 6))
+	// {
+		getAxAy(cubed, &Ax, &Ay);
+		ray_loop(cubed, Ax, Ay, &hit);
+		if (cubed->fov >= pi / 6)
+			cubed->fov = pi / -6;
+		else
+			cubed->fov += 0.01;
+		getAxAy(cubed, &Ax, &Ay);
+		ray_loop(cubed, Ax, Ay, &hit);	
+		// cubed->fov += 0.1;
+	// 	if (cubed->fov == (pi / 6))
+	// 		break ;
+	// }
 }
 
 void	player(void *param)
@@ -501,12 +560,14 @@ bool	initialize_cubed(t_cubed *cubed)
 	cubed->time = 0;
 	cubed->oldTime = 0;
 	cubed->pa = 0;
+	cubed->fov = pi / -6;
 	cubed->px = 0;
 	cubed->py = 0;
 	cubed->pdx = 0;
 	cubed->pdy = 0;
 	cubed->widthBlock = (double)WIDTH / (double)row;
 	cubed->heightBlock = (double)HEIGHT / (double)column;
+	cubed->plus30 = false;
 	return (true);
 }
 
@@ -534,6 +595,8 @@ int32_t main(void)
 		puts(mlx_strerror(mlx_errno));
 		return(EXIT_FAILURE);
 	}
+
+	// printf("fov: %f\n", cubed.fov);
 
 	mlx_loop_hook(cubed.mlx, start_screen, &cubed);
 	mlx_loop_hook(cubed.mlx, player, &cubed);
