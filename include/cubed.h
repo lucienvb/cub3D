@@ -39,16 +39,10 @@ typedef struct s_cubed
 	double	tempPosY;
 	double	dirX;
 	double	dirY;
-	// double	planeX;
-	// double	planeY;
-	// double	time;
-	// double	oldTime;
 	double	pa;
 	double	fov;
 	double	mapWidth;
 	double	mapHeight;
-	// double	px;
-	// double	py;
 	double	pdx;
 	double	pdy;
 	double	widthBlock;
