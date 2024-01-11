@@ -48,6 +48,14 @@ typedef struct s_cubed
 	double	widthBlock;
 	double	heightBlock;
 	bool	plus30;
+	double	screen_width;
+	double	screen_height;
+	double	mini_map_start_y;
+	double	x_ray_length;
+	double	y_ray_length;
+	bool	side;
+	double	Ax;
+	double	Ay;
 
 }			t_cubed;
 
