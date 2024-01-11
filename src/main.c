@@ -103,14 +103,14 @@ void draw_color_stripe(int32_t startX, int32_t endX, int32_t startY, int32_t end
 	}
 }
 
-#define column 3
-#define row 3
-int worldMap[column][row]=
-{
-	{1, 1, 1},
-	{1, 0, 1},
-	{1, 1, 1}
-};
+// #define column 3
+// #define row 3
+// int worldMap[column][row]=
+// {
+// 	{1, 1, 1},
+// 	{1, 0, 1},
+// 	{1, 1, 1}
+// };
 
 // #define column 4
 // #define row 4
@@ -122,16 +122,16 @@ int worldMap[column][row]=
 // 	{1, 1, 1, 1}
 // };
 
-// #define column 5
-// #define row 5
-// int worldMap[column][row]=
-// {
-// 	{1, 1, 1, 1, 1},
-// 	{1, 0, 0, 0, 1},
-// 	{1, 0, 1, 0, 1},
-// 	{1, 0, 0, 0, 1},
-// 	{1, 1, 1, 1, 1}
-// };
+#define column 5
+#define row 5
+int worldMap[column][row]=
+{
+	{1, 1, 1, 1, 1},
+	{1, 0, 0, 0, 1},
+	{1, 0, 1, 0, 1},
+	{1, 0, 0, 0, 1},
+	{1, 1, 1, 1, 1}
+};
 
 // #define column 6
 // #define row 6
@@ -302,28 +302,73 @@ bool	x_ray_is_shortest(t_cubed *cubed, double Ax, double Ay)
 	return (false);
 }
 
-// void	draw_vertical(int x, int y, t_cubed *cubed)
-// {
-// 	(void)cubed;
-// 	uint32_t	colorYellow = ft_pixel(255, 165, 0, 0xFF);
+void	draw_vertical(int x, int drawStart, int endStart, uint32_t color)
+{
+	// (void)cubed;
+	// uint32_t	colorYellow = ft_pixel(255, 165, 0, 0xFF);
 
-// 	while (y >= 0)
-// 	{
-// 		mlx_put_pixel(image, x, y, colorYellow);
-// 		y--;
-// 	}
-// }
+	int y = drawStart;
 
-// void	draw_wall(t_cubed *cubed, double Ax, double Ay)
-// {
-// 	double	perpWallDist;
+	while (y < endStart)
+	{
+		mlx_put_pixel(image, x, y, color);
+		y++;
+	}
+}
+
+
+// sideDistX = Ax (when first calculated)
+// sideDistY = Ay (when first calculated)
+// deltaDistX = blockWidth
+// deltaDistY = blockHeight
+void	draw_wall(t_cubed *cubed, double Ax, double Ay, int x)
+{
+	double	perpWallDist;
+	double	h = cubed->screen_height;
 	
-// 	perpWallDist = 0;
-// 	if(side == 0) perpWallDist = (Ax - cubed->);
-//       else          perpWallDist = (sideDistY - deltaDistY);
+	perpWallDist = 0;
+	//Calculate distance projected on camera direction (Euclidean distance would give fisheye effect!)
+	if (cubed->side == 0)
+		perpWallDist = (Ax - cubed->widthBlock);
+	else
+	    perpWallDist = (Ay - cubed->heightBlock);
 
+	//Calculate height of line to draw on screen
+	int lineHeight = (int)(h / perpWallDist);
+
+	//calculate lowest and highest pixel to fill in current stripe
+	int drawStart = -lineHeight / 2 + h / 2;
+	int drawEnd = lineHeight / 2 + h / 2;
+
+	if (drawStart < 0)
+		drawStart = 0;
+	if(drawEnd >= h)
+		drawEnd = (int)h - 1;
+
+	//choose wall color
+	uint32_t	colorOrange = ft_pixel(255, 140, 0, 0xFF);
+	uint32_t	colorYellow = ft_pixel(255, 165, 0, 0xFF);
+	uint32_t	color = 0;
+	// ColorRGB color;
+	// switch(worldMap[mapX][mapY])
+	// {
+	// case 1:  color = RGB_Red;  break; //red
+	// case 2:  color = RGB_Green;  break; //green
+	// case 3:  color = RGB_Blue;   break; //blue
+	// case 4:  color = RGB_White;  break; //white
+	// default: color = RGB_Yellow; break; //yellow
+	// }
+
+	//give x and y sides different brightness
+	if (cubed->side == 1) 
+		color = colorOrange;
+	else
+		color = colorYellow;
+
+	//draw the pixels of the stripe as a vertical line
+	draw_vertical(x, drawStart, (int)drawEnd, color);
 		
-// }
+}
 
 t_hit	is_hit(t_cubed *cubed, double Ax, double Ay)
 {
@@ -335,7 +380,7 @@ t_hit	is_hit(t_cubed *cubed, double Ax, double Ay)
 		if (checkRay(cubed, cubed->tempPosX + Ax, cubed->tempPosY + Ax * sin(pa) / cos(pa)))
 		{
 			drawPoint(cubed, cubed->tempPosX + Ax, cubed->tempPosY + Ax * sin(pa) / cos(pa), colorOrange, 4);
-			// draw_wall(cubed, Ax, Ay);
+			draw_wall(cubed, Ax, Ay, cubed->tempPosX + Ax);
 			cubed->side = false;
 			return (x_ray_hit);
 		}
@@ -345,7 +390,7 @@ t_hit	is_hit(t_cubed *cubed, double Ax, double Ay)
 		if (checkRay(cubed, cubed->tempPosX + Ay * cos(pa) / sin(pa), cubed->tempPosY + Ay))
 		{
 			drawPoint(cubed, cubed->tempPosX + Ay * cos(pa) / sin(pa), cubed->tempPosY + Ay, colorOrange, 4);
-			// draw_wall(cubed, 1, round(cubed->tempPosX + Ay * cos(pa) / sin(pa)));
+			draw_wall(cubed, Ax, Ay, cubed->tempPosX + Ay * cos(pa) / sin(pa));
 			cubed->side = true;
 			return (y_ray_hit);
 		}
