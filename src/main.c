@@ -24,8 +24,8 @@
 #include "../lib/libft/ft_printf/ft_printf.h"
 #include "../include/cubed.h"
 
-#define BLOCK_WIDTH 75
-#define BLOCK_HEIGHT 75
+#define BLOCK_WIDTH 25
+#define BLOCK_HEIGHT 25
 // #define row 24
 // #define column 24
 
@@ -105,14 +105,14 @@ void draw_color_stripe(int32_t startX, int32_t endX, int32_t startY, int32_t end
 	}
 }
 
-#define column 3
-#define row 3
-int worldMap[column][row]=
-{
-	{1, 1, 1},
-	{1, 0, 1},
-	{1, 1, 1}
-};
+// #define column 3
+// #define row 3
+// int worldMap[column][row]=
+// {
+// 	{1, 1, 1},
+// 	{1, 0, 1},
+// 	{1, 1, 1}
+// };
 
 // #define column 4
 // #define row 4
@@ -124,16 +124,16 @@ int worldMap[column][row]=
 // 	{1, 1, 1, 1}
 // };
 
-// #define column 5
-// #define row 5
-// int worldMap[column][row]=
-// {
-// 	{1, 1, 1, 1, 1},
-// 	{1, 0, 0, 0, 1},
-// 	{1, 0, 1, 0, 1},
-// 	{1, 0, 0, 0, 1},
-// 	{1, 1, 1, 1, 1}
-// };
+#define column 5
+#define row 5
+int worldMap[column][row]=
+{
+	{1, 1, 1, 1, 1},
+	{1, 0, 0, 0, 1},
+	{1, 0, 1, 0, 1},
+	{1, 0, 0, 0, 1},
+	{1, 1, 1, 1, 1}
+};
 
 // #define column 6
 // #define row 6
@@ -260,8 +260,8 @@ bool	checkRay(t_cubed *cubed, double x_target, double y_target)
 		{
 			if (worldMap[y][x] == 1)
 			{
-				if ((x_target >= x * cubed->widthBlock && x_target <= (x + 1) * cubed->widthBlock) &&
-						(y_target >= y * cubed->heightBlock && y_target <= (y + 1) * cubed->heightBlock))
+				if ((x_target >= x * cubed->widthBlock && x_target <= (x + 1) * cubed->widthBlock + 1) &&
+						(y_target >= y * cubed->heightBlock && y_target <= (y + 1) * cubed->heightBlock + 1))
 					return (true);
 			}
 			x++;
