@@ -145,17 +145,20 @@ int worldMap[column][row]=
 // 	{1, 1, 1, 1, 1, 1}
 // };
 
-void mini_map(void* param)
+void	draw_floor_and_ceiling(t_cubed *cubed)
 {
-	t_cubed	*cubed = param;
-	uint32_t colorBlack = ft_pixel(0, 0, 0, 0xFF);
-	uint32_t colorWhite = ft_pixel(255, 255, 255, 0xFF);
 	uint32_t colorBrown = ft_pixel(139, 69, 19, 0xFF);
-	uint32_t	colorPurple = ft_pixel(160, 32, 240, 0xFF);
+	uint32_t colorPurple = ft_pixel(160, 32, 240, 0xFF);
 
 	draw_color_stripe(0, cubed->screen_width - 1, 0, cubed->screen_height / 2 - 1, colorPurple);
 	draw_color_stripe(0, cubed->screen_width - 1, cubed->screen_height / 2 - 1, cubed->screen_height - 1, colorBrown);
+}
 
+void mini_map(t_cubed *cubed)
+{
+	uint32_t colorBlack = ft_pixel(0, 0, 0, 0xFF);
+	uint32_t colorWhite = ft_pixel(255, 255, 255, 0xFF);
+	
 	int	y = 0;
 	int	stepY = cubed->mapHeight / column;
 	int stepX = cubed->mapWidth / row;
@@ -321,7 +324,7 @@ void	draw_vertical(int x, int drawStart, int endStart, uint32_t color)
 // sideDistY = Ay (when first calculated)
 // deltaDistX = blockWidth
 // deltaDistY = blockHeight
-void	draw_wall(t_cubed *cubed, double Ax, double Ay, int x)
+void	draw_one_wall(t_cubed *cubed, double Ax, double Ay, int x)
 {
 	double	perpWallDist;
 	double	h = cubed->screen_height;
@@ -366,8 +369,22 @@ void	draw_wall(t_cubed *cubed, double Ax, double Ay, int x)
 		color = colorYellow;
 
 	//draw the pixels of the stripe as a vertical line
-	draw_vertical(x, drawStart, (int)drawEnd, color);
-		
+	draw_vertical(x, drawStart, (int)drawEnd, color);		
+}
+
+void	draw_walls(t_cubed *cubed)
+{
+	size_t	i;
+	size_t	end;
+	size_t	index;
+
+	i = 0;
+	end = cubed->intersections_index;
+	while (i < end)
+	{
+		draw_one_wall(cubed, cubed->Ax, cubed->Ay, i);
+		i++;
+	}
 }
 
 // INTERSECTIONS
@@ -391,31 +408,41 @@ t_hit	is_hit(t_cubed *cubed, double Ax, double Ay)
 {
 	uint32_t	colorOrange = ft_pixel(255, 140, 0, 0xFF);
 	double		pa = cubed->pa + cubed->fov;
-	int			x;
-	int			y;
+	double			x;
+	double			y;
+	size_t		i;
 
 	x = 0;
 	y = 0;
-	if (x_ray_is_shortest(cubed, Ax, Ay) == true) // if true the x-ray has a hit, that means a wall is hit horizontally
+	i = cubed->intersections_index;
+	if (x_ray_is_shortest(cubed, Ax, Ay) == true && i < cubed->screen_width) // if true the x-ray has a hit, that means a wall is hit horizontally
 	{
 		x = cubed->tempPosX + Ax;						// x-coordinate of hit
 		y = cubed->tempPosY + Ax * sin(pa) / cos(pa);	// y-coordinate of hit
 		if (checkRay(cubed, x, y))
 		{
+			cubed->intersections[i].x = x;
+			cubed->intersections[i].y = y;
+			// printf("x-ray --> on index %zu the coordinates are: (x: %f, y: %f)\n", i, x, y);
+			cubed->intersections_index++;
 			drawPoint(cubed, x, y, colorOrange, 4); // we want to move these to another function to draw everything at once
-			draw_wall(cubed, Ax, Ay, x);			// we want to move these to another function to draw everything at once
+			// draw_wall(cubed, Ax, Ay, x);			// we want to move these to another function to draw everything at once
 			cubed->side = false;
 			return (x_ray_hit);
 		}
 	}
-	else // the y-ray has a hit, that means a wall is hit vertically
+	else if (i < cubed->screen_width) // the y-ray has a hit, that means a wall is hit vertically
 	{
 		x = cubed->tempPosX + Ay * cos(pa) / sin(pa);	// x-coordinate of hit
 		y = cubed->tempPosY + Ay;						// y-coordinate of hit
 		if (checkRay(cubed, x, y))
 		{
+			cubed->intersections[i].x = x;
+			cubed->intersections[i].y = y;
+			// printf("y-ray --> on index %zu the coordinates are: (x: %f, y: %f)\n", i, x, y);
+			cubed->intersections_index++;
 			drawPoint(cubed, x, y, colorOrange, 4);	// we want to move these to another function to draw everything at once
-			draw_wall(cubed, Ax, Ay, x);			// we want to move these to another function to draw everything at once
+			// draw_wall(cubed, Ax, Ay, x);			// we want to move these to another function to draw everything at once
 			cubed->side = true;
 			return (y_ray_hit);
 		}
@@ -435,12 +462,14 @@ void	ray_loop(t_cubed *cubed, double Ax, double Ay, bool *hit)
 		{
 			// printf("The y ray has a hit on coordinates x(%f) and y(%f)\n", cubed->posX + Ay * cos(pa) / sin(pa), cubed->posY + Ay);
 			*hit = true;
+			// printf("ray_loop --> on index %zu the coordinates are: (x: %f, y: %f)\n", cubed->intersections_index, cubed->intersections[cubed->intersections_index].x, cubed->intersections[cubed->intersections_index].y);
 			return ;
 		}
 		else if (x_ray_is_shortest(cubed, Ax, Ay) && is_hit(cubed, Ax, Ay) == x_ray_hit)
 		{
 			// printf("The x ray has a hit on coordinates x(%f) and y(%f)\n", cubed->posX + Ax, cubed->posY + Ax * sin(pa) / cos(pa));
 			*hit = true;
+			// printf("ray_loop --> on index %zu the coordinates are: (x: %f, y: %f)\n", cubed->intersections_index, cubed->intersections[cubed->intersections_index].x, cubed->intersections[cubed->intersections_index].y);
 			return ;
 		}
 		drawPoint(cubed, cubed->posX, cubed->posY + Ay, colorGreen, 3);
@@ -462,6 +491,7 @@ void	ray_loop(t_cubed *cubed, double Ax, double Ay, bool *hit)
 				Ay -= cubed->heightBlock;
 		}
 	}
+	// printf("ray_loop --> on index %zu the coordinates are: (x: %f, y: %f)\n", cubed->intersections_index, cubed->intersections[cubed->intersections_index].x, cubed->intersections[cubed->intersections_index].y);
 }
 
 // Start direction with there corresponding pa
@@ -474,32 +504,29 @@ void	ray_loop(t_cubed *cubed, double Ax, double Ay, bool *hit)
 // 30 degrees to the left --> pa -= pi / 6
 // 30 degrees to the right --> pa += pi / 6
 
-void	raycasting(void *param)
+void	raycasting(t_cubed *cubed)
 {
-	t_cubed *cubed;
-	double	Ax = 0;
-	double	Ay = 0;
 	bool	hit = false;
 
-	cubed = param;
 	cubed->tempPosX = cubed->posX;
 	cubed->tempPosY = cubed->posY;	
-	getAxAy(cubed, &Ax, &Ay);
-	ray_loop(cubed, Ax, Ay, &hit);
+	getAxAy(cubed, &cubed->Ax, &cubed->Ay);
+	ray_loop(cubed, cubed->Ax, cubed->Ay, &hit);
 
 	// INTERSECTIONS
 	// we have to be able to read out cubed->intersections right here
+	double	x = cubed->intersections[cubed->intersections_index -1].x;
+	double	y = cubed->intersections[cubed->intersections_index -1].y;
+	printf("on index %zu the coordinates are: (x: %f, y: %f)\n", cubed->intersections_index - 1, x, y);
+
 	if (cubed->fov >= pi / 6)
 		cubed->fov = pi / -6;
 	else
-		cubed->fov += 0.01;
+		cubed->fov += 1 / cubed->screen_width;
 }
 
-void	player(void *param)
+void	player(t_cubed *cubed)
 {
-	t_cubed *cubed;
-
-	cubed = param;
 	uint32_t colorYellow = ft_pixel(255, 165, 0, 0xFF);
 
 	int	y = 0;
@@ -520,6 +547,18 @@ void	player(void *param)
 		}
 		y++;
 	}
+}
+
+void draw_screen(void* param)
+{
+	t_cubed	*cubed;
+
+	cubed = param;
+	draw_floor_and_ceiling(cubed);
+	mini_map(cubed);
+	player(cubed);
+	raycasting(cubed);
+	draw_walls(cubed);
 }
 
 void ft_hook(void* param)
@@ -628,10 +667,10 @@ int32_t main(void)
 		return(EXIT_FAILURE);
 	}
 
-
-	mlx_loop_hook(cubed.mlx, mini_map, &cubed);
-	mlx_loop_hook(cubed.mlx, player, &cubed);
-	mlx_loop_hook(cubed.mlx, raycasting, &cubed);
+	mlx_loop_hook(cubed.mlx, draw_screen, &cubed);
+	// mlx_loop_hook(cubed.mlx, mini_map, &cubed);
+	// mlx_loop_hook(cubed.mlx, player, &cubed);
+	// mlx_loop_hook(cubed.mlx, raycasting, &cubed);
 
 	// INTERSECTIONS
 	// I also think we have to be able to read out cubed->intersections here
