@@ -26,6 +26,7 @@ typedef enum e_hit
 	x_ray_hit,
 	y_ray_hit,
 	no_hit,
+	done,
 }	t_hit;
 
 typedef struct s_intersections
