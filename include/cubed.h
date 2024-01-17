@@ -28,6 +28,12 @@ typedef enum e_hit
 	no_hit,
 }	t_hit;
 
+typedef struct s_intersections
+{
+	double	x;
+	double	y;
+}			t_intersections;
+
 
 // structures
 typedef struct s_cubed
@@ -56,7 +62,8 @@ typedef struct s_cubed
 	bool	side;
 	double	Ax;
 	double	Ay;
-
+	t_intersections	*intersections;
+	size_t			intersections_index;
 }			t_cubed;
 
 	

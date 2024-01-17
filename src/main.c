@@ -370,27 +370,52 @@ void	draw_wall(t_cubed *cubed, double Ax, double Ay, int x)
 		
 }
 
+// INTERSECTIONS
+// 1) in this function our program will spot a hit with the x-ray or y-ray (with a wall)
+// 2) instead of immediately using the x- and y-coordinate in the drawPoint (for drawing 
+// the orange dot in the minimap) and in the draw_wall (for drawing the wall), we want to
+// save every x- and y-coordinate in a array of coordinates. I have already created a struct
+// s_intersections and added this struct with pointer to s_cubed so it will function as an
+// array.
+// 3) in initialize_cubed I have already initialized cubed->intersections to intersections_array[1024],
+// 1024 will be enough, because it is bigger then the screen width (512). And it only draws vertical lines.
+// Maybe intersections_array[cubed->screen_width + 1] will also work but that is an optimization and
+// not important now.
+// 4) So we want to save every time we have a hit it's coordinates to the array cubed->intersections and increase
+// the intersections_index variable to keep track.
+// 5) when we are able to access the array of coordinates in another mlx_loop_hook we can try to draw every vertical 
+// line for the coordinates in there.
+// 6) if that works we must make sure that every time the hooks (A, D, W, S and the arrows left / right) are used
+// cubed->intersections and cubed->intersections_index are both updated.
 t_hit	is_hit(t_cubed *cubed, double Ax, double Ay)
 {
 	uint32_t	colorOrange = ft_pixel(255, 140, 0, 0xFF);
 	double		pa = cubed->pa + cubed->fov;
+	int			x;
+	int			y;
 
-	if (x_ray_is_shortest(cubed, Ax, Ay) == true)
+	x = 0;
+	y = 0;
+	if (x_ray_is_shortest(cubed, Ax, Ay) == true) // if true the x-ray has a hit, that means a wall is hit horizontally
 	{
-		if (checkRay(cubed, cubed->tempPosX + Ax, cubed->tempPosY + Ax * sin(pa) / cos(pa)))
+		x = cubed->tempPosX + Ax;						// x-coordinate of hit
+		y = cubed->tempPosY + Ax * sin(pa) / cos(pa);	// y-coordinate of hit
+		if (checkRay(cubed, x, y))
 		{
-			drawPoint(cubed, cubed->tempPosX + Ax, cubed->tempPosY + Ax * sin(pa) / cos(pa), colorOrange, 4);
-			draw_wall(cubed, Ax, Ay, cubed->tempPosX + Ax);
+			drawPoint(cubed, x, y, colorOrange, 4); // we want to move these to another function to draw everything at once
+			draw_wall(cubed, Ax, Ay, x);			// we want to move these to another function to draw everything at once
 			cubed->side = false;
 			return (x_ray_hit);
 		}
 	}
-	else
+	else // the y-ray has a hit, that means a wall is hit vertically
 	{
-		if (checkRay(cubed, cubed->tempPosX + Ay * cos(pa) / sin(pa), cubed->tempPosY + Ay))
+		x = cubed->tempPosX + Ay * cos(pa) / sin(pa);	// x-coordinate of hit
+		y = cubed->tempPosY + Ay;						// y-coordinate of hit
+		if (checkRay(cubed, x, y))
 		{
-			drawPoint(cubed, cubed->tempPosX + Ay * cos(pa) / sin(pa), cubed->tempPosY + Ay, colorOrange, 4);
-			draw_wall(cubed, Ax, Ay, cubed->tempPosX + Ay * cos(pa) / sin(pa));
+			drawPoint(cubed, x, y, colorOrange, 4);	// we want to move these to another function to draw everything at once
+			draw_wall(cubed, Ax, Ay, x);			// we want to move these to another function to draw everything at once
 			cubed->side = true;
 			return (y_ray_hit);
 		}
@@ -461,6 +486,9 @@ void	raycasting(void *param)
 	cubed->tempPosY = cubed->posY;	
 	getAxAy(cubed, &Ax, &Ay);
 	ray_loop(cubed, Ax, Ay, &hit);
+
+	// INTERSECTIONS
+	// we have to be able to read out cubed->intersections right here
 	if (cubed->fov >= pi / 6)
 		cubed->fov = pi / -6;
 	else
@@ -545,6 +573,8 @@ void ft_hook(void* param)
 
 bool	initialize_cubed(t_cubed *cubed)
 {
+	t_intersections	intersections_array[1024];
+
 	cubed->posX = 33;
 	cubed->posY = 33;
 	cubed->dirX = -1.0;
@@ -566,6 +596,8 @@ bool	initialize_cubed(t_cubed *cubed)
 	cubed->side = false;
 	cubed->Ax = 0;
 	cubed->Ay = 0;
+	cubed->intersections = intersections_array;
+	cubed->intersections_index = 0;
 	return (true);
 }
 
@@ -600,6 +632,10 @@ int32_t main(void)
 	mlx_loop_hook(cubed.mlx, mini_map, &cubed);
 	mlx_loop_hook(cubed.mlx, player, &cubed);
 	mlx_loop_hook(cubed.mlx, raycasting, &cubed);
+
+	// INTERSECTIONS
+	// I also think we have to be able to read out cubed->intersections here
+
 	mlx_loop_hook(cubed.mlx, ft_hook, &cubed);
 
 	mlx_loop(cubed.mlx);
