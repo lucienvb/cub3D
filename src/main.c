@@ -433,12 +433,17 @@ t_hit	is_hit(t_cubed *cubed, double Ax, double Ay, bool x_ray_is_shortest)
 	double		x;
 	double		y;
 	size_t		i;
+	double		dot_thickness;
 
+	dot_thickness = 2;
 	x = 0;
 	y = 0;
 	i = cubed->intersections_index;
-	if (i >= 100)
+	if (i >= cubed->iterations)
+	{
+		printf("done\n");
 		return (done);
+	}
 	if (x_ray_is_shortest) // if true the x-ray has a hit, that means a wall is hit horizontally
 	{
 		x = cubed->posX + Ax;						// x-coordinate of hit
@@ -449,7 +454,7 @@ t_hit	is_hit(t_cubed *cubed, double Ax, double Ay, bool x_ray_is_shortest)
 			cubed->intersections[i].y = y;
 			// printf("x-ray --> on index %zu the coordinates are: (x: %f, y: %f)\n", i, x, y);
 			cubed->intersections_index++;
-			drawPoint(cubed, x, y, colorOrange, 4); // we want to move these to another function to draw everything at once
+			drawPoint(cubed, x, y, colorOrange, dot_thickness); // we want to move these to another function to draw everything at once
 			// draw_wall(cubed, Ax, Ay, x);			// we want to move these to another function to draw everything at once
 			cubed->side = false;
 			return (x_ray_hit);
@@ -465,7 +470,7 @@ t_hit	is_hit(t_cubed *cubed, double Ax, double Ay, bool x_ray_is_shortest)
 			cubed->intersections[i].y = y;
 			// printf("y-ray --> on index %zu the coordinates are: (x: %f, y: %f)\n", i, x, y);
 			cubed->intersections_index++;
-			drawPoint(cubed, x, y, colorOrange, 4);	// we want to move these to another function to draw everything at once
+			drawPoint(cubed, x, y, colorOrange, dot_thickness);	// we want to move these to another function to draw everything at once
 			// draw_wall(cubed, Ax, Ay, x);			// we want to move these to another function to draw everything at once
 			cubed->side = true;
 			return (y_ray_hit);
@@ -486,6 +491,8 @@ void	ray_loop(t_cubed *cubed, double Ax, double Ay, bool *hit)
 	is_hit_result = no_hit;
 	while (!(*hit))
 	{
+		if (cubed->intersections_index >= cubed->iterations)
+			return ;
 		xRay_is_shortest_bool = x_ray_is_shortest(cubed, Ax, Ay);
 		is_hit_result = is_hit(cubed, Ax, Ay, xRay_is_shortest_bool);
 		if (!xRay_is_shortest_bool && is_hit_result == y_ray_hit)
@@ -502,8 +509,6 @@ void	ray_loop(t_cubed *cubed, double Ax, double Ay, bool *hit)
 			// printf("ray_loop --> on index %zu the coordinates are: (x: %f, y: %f)\n", cubed->intersections_index, cubed->intersections[cubed->intersections_index].x, cubed->intersections[cubed->intersections_index].y);
 			return ;
 		}
-		if (cubed->intersections_index >= 100)
-			return ;
 		// drawPoint(cubed, cubed->posX, cubed->posY + Ay, colorGreen, 3);
 		// drawPoint(cubed, cubed->posX + Ax, cubed->posY, colorGreen, 3);
 		if (xRay_is_shortest_bool)
@@ -691,7 +696,8 @@ bool	initialize_cubed(t_cubed *cubed)
 	cubed->Ay = 0; // length_till_y_axis
 	cubed->intersections = intersections_array;
 	cubed->intersections_index = 0;
-	cubed->step_size_fov = 0.01;
+	cubed->step_size_fov = 0.02;
+	cubed->iterations = 50;
 	return (true);
 }
 

@@ -64,6 +64,7 @@ typedef struct s_cubed
 	double	Ax;
 	double	Ay;
 	double	step_size_fov;
+	size_t	iterations;
 	t_intersections	*intersections;
 	size_t			intersections_index;
 }			t_cubed;
