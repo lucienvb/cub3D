@@ -33,6 +33,7 @@ typedef struct s_intersections
 {
 	double	x;
 	double	y;
+	double	ray_length;
 }			t_intersections;
 
 
@@ -54,7 +55,6 @@ typedef struct s_cubed
 	double	pdy;
 	double	widthBlock;
 	double	heightBlock;
-	bool	plus30;
 	double	screen_width;
 	double	screen_height;
 	double	mini_map_start_y;
@@ -65,6 +65,8 @@ typedef struct s_cubed
 	double	Ay;
 	double	step_size_fov;
 	size_t	iterations;
+	bool	raycasting_is_done;
+	bool	draw_screen;
 	t_intersections	*intersections;
 	size_t			intersections_index;
 }			t_cubed;

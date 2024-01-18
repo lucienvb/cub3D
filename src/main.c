@@ -36,6 +36,7 @@ double	diff_x;
 double	diff_y;
 double	pi = 3.14159265359;
 double	angle;
+double	DR = 0.0174533;
 
 // -----------------------------------------------------------------------------
 
@@ -319,10 +320,10 @@ void	draw_vertical(int x, int drawStart, int endStart, uint32_t color)
 
 	int y = drawStart;
 
-	printf("y(drawStart): %i, endStart: %i\n", y, endStart);
+	// printf("y(drawStart): %i, endStart: %i\n", y, endStart);
 	while (y < endStart)
 	{
-		printf("test draw vertical in while loop\n");
+		// printf("test draw vertical in while loop\n");
 		mlx_put_pixel(image, x, y, color);
 		y++;
 	}
@@ -407,6 +408,20 @@ void	draw_walls(void *param)
 	}
 }
 
+void	set_intersections(t_cubed *cubed, double x, double y, bool x_ray_is_shortest)
+{
+	size_t		i;
+
+	i = cubed->intersections_index;
+	cubed->intersections[i].x = x;
+	cubed->intersections[i].y = y;
+	if (x_ray_is_shortest)
+		cubed->intersections[i].ray_length = cubed->x_ray_length;
+	else
+		cubed->intersections[i].ray_length = cubed->y_ray_length;
+	cubed->intersections_index++;
+}
+
 // maybe not nessecary hot check shortest hit with ray in is_hit
 
 // INTERSECTIONS
@@ -432,16 +447,15 @@ t_hit	is_hit(t_cubed *cubed, double Ax, double Ay, bool x_ray_is_shortest)
 	double		pa = cubed->pa + cubed->fov;
 	double		x;
 	double		y;
-	size_t		i;
 	double		dot_thickness;
 
 	dot_thickness = 2;
 	x = 0;
 	y = 0;
-	i = cubed->intersections_index;
-	if (i >= cubed->iterations)
+	if (cubed->intersections_index >= cubed->iterations)
 	{
 		printf("done\n");
+		cubed->raycasting_is_done = true;
 		return (done);
 	}
 	if (x_ray_is_shortest) // if true the x-ray has a hit, that means a wall is hit horizontally
@@ -450,10 +464,10 @@ t_hit	is_hit(t_cubed *cubed, double Ax, double Ay, bool x_ray_is_shortest)
 		y = cubed->posY + Ax * sin(pa) / cos(pa);	// y-coordinate of hit
 		if (checkRay(cubed, x, y)) // change name
 		{
-			cubed->intersections[i].x = x;
-			cubed->intersections[i].y = y;
+			// set_intersections(cubed, x, y, x_ray_is_shortest);
+			
+
 			// printf("x-ray --> on index %zu the coordinates are: (x: %f, y: %f)\n", i, x, y);
-			cubed->intersections_index++;
 			drawPoint(cubed, x, y, colorOrange, dot_thickness); // we want to move these to another function to draw everything at once
 			// draw_wall(cubed, Ax, Ay, x);			// we want to move these to another function to draw everything at once
 			cubed->side = false;
@@ -466,10 +480,9 @@ t_hit	is_hit(t_cubed *cubed, double Ax, double Ay, bool x_ray_is_shortest)
 		y = cubed->posY + Ay;						// y-coordinate of hit
 		if (checkRay(cubed, x, y))
 		{
-			cubed->intersections[i].x = x;
-			cubed->intersections[i].y = y;
+			// set_intersections(cubed, x, y, x_ray_is_shortest);
 			// printf("y-ray --> on index %zu the coordinates are: (x: %f, y: %f)\n", i, x, y);
-			cubed->intersections_index++;
+			
 			drawPoint(cubed, x, y, colorOrange, dot_thickness);	// we want to move these to another function to draw everything at once
 			// draw_wall(cubed, Ax, Ay, x);			// we want to move these to another function to draw everything at once
 			cubed->side = true;
@@ -491,7 +504,7 @@ void	ray_loop(t_cubed *cubed, double Ax, double Ay, bool *hit)
 	is_hit_result = no_hit;
 	while (!(*hit))
 	{
-		if (cubed->intersections_index >= cubed->iterations)
+		if (cubed->raycasting_is_done)
 			return ;
 		xRay_is_shortest_bool = x_ray_is_shortest(cubed, Ax, Ay);
 		is_hit_result = is_hit(cubed, Ax, Ay, xRay_is_shortest_bool);
@@ -546,19 +559,53 @@ void	raycasting(void *param)
 	bool	hit = false;
 	t_cubed	*cubed = param;
 
-	getAxAy(cubed, &cubed->Ax, &cubed->Ay);
-	ray_loop(cubed, cubed->Ax, cubed->Ay, &hit);
+	// size_t	i = 0;
+	// while (i < 10)
+	// {
+		getAxAy(cubed, &cubed->Ax, &cubed->Ay);
+		ray_loop(cubed, cubed->Ax, cubed->Ay, &hit);
+		if (cubed->fov >= pi / 6)
+			cubed->fov = pi / -6;
+		else
+			cubed->fov += DR;
+	// 	i++;
+	// }
+
+
+	// if (!cubed->raycasting_is_done)
+	// {
+		// getAxAy(cubed, &cubed->Ax, &cubed->Ay);
+		// ray_loop(cubed, cubed->Ax, cubed->Ay, &hit);
+		// if (cubed->raycasting_is_done)
+		// 	return ;
+		// printf
+		// 	("%zu; %f; %f; %f\n", // index; x; y; ray_length 
+		// 	cubed->intersections_index - 1, 
+		// 	cubed->intersections[cubed->intersections_index -1].x,
+		// 	cubed->intersections[cubed->intersections_index -1].y,
+		// 	cubed->intersections[cubed->intersections_index -1].ray_length
+		// 	);
+		// if (cubed->fov >= pi / 6)
+		// 	cubed->fov = pi / -6;
+		// else
+		// 	cubed->fov += cubed->step_size_fov;
+
+	// }
+	// else
+	// {
+		// draw_walls(cubed);
+		// uint32_t	colorGreen = ft_pixel(60, 179, 113, 0xFF);
+		// size_t	i = 0;
+		// while (i < cubed->iterations)
+		// {
+		// 	draw_vertical(10 + i, 200, 200 + cubed->intersections[i].ray_length, colorGreen);
+		// 	i++;
+		// }
+
+	// }
 
 	// INTERSECTIONS
 	// we have to be able to read out cubed->intersections right here
-	double	x = cubed->intersections[cubed->intersections_index -1].x;
-	double	y = cubed->intersections[cubed->intersections_index -1].y;
-	printf("on index %zu the coordinates are: (x: %f, y: %f)\n", cubed->intersections_index - 1, x, y);
-
-	if (cubed->fov >= pi / 6)
-		cubed->fov = pi / -6;
-	else
-		cubed->fov += cubed->step_size_fov;
 
 	// printf("cubed->fov = pi / -6: %f\n", cubed->fov = pi / -6);
 	// printf("cubed->fov: %f\n", cubed->fov);
@@ -602,14 +649,26 @@ void	player(void *param)
 
 void draw_screen(void* param)
 {
-	// t_cubed	*cubed;
+	t_cubed	*cubed;
 
-	// cubed = param;
-	draw_floor_and_ceiling(param);
-	mini_map(param);
-	player(param);
+	cubed = param;
+	if (cubed->draw_screen)
+	{
+		draw_floor_and_ceiling(param);
+		mini_map(param);
+		cubed->draw_screen = false;
+	}
+	player(param); // move to mini_map
 	raycasting(param);
 	// draw_walls(cubed);
+}
+
+void	reset_settings(t_cubed *cubed)
+{
+	cubed->fov = pi / -6;
+	cubed->intersections_index = 0;
+	cubed->raycasting_is_done = false;
+	cubed->draw_screen = true;
 }
 
 void ft_hook(void* param)
@@ -628,8 +687,7 @@ void ft_hook(void* param)
 			cubed->posY += cubed->pdy;
 
 		}
-		cubed->fov = pi / -6;
-		cubed->intersections_index = 0;
+		reset_settings(cubed);
 	}
 	if (mlx_is_key_down(cubed->mlx, MLX_KEY_S)) // move backward (zoom out)
 	{
@@ -638,8 +696,7 @@ void ft_hook(void* param)
 			cubed->posX -= cubed->pdx;
 			cubed->posY	-= cubed->pdy;
 		}
-		cubed->fov = pi / -6;
-		cubed->intersections_index = 0;
+		reset_settings(cubed);
 	}
 	// if (mlx_is_key_down(cubed->mlx, MLX_KEY_A)) // move to the left (change position in map)
 	// {
@@ -654,8 +711,7 @@ void ft_hook(void* param)
 			cubed->pa += 2 * pi;
 		cubed->pdx = cos(cubed->pa)	* 2;
 		cubed->pdy = sin(cubed->pa) * 2;
-		cubed->fov = pi / -6;
-		cubed->intersections_index = 0;
+		reset_settings(cubed);
 	}
 	if (mlx_is_key_down(cubed->mlx, MLX_KEY_RIGHT)) // change screen to the right
 	{
@@ -664,8 +720,7 @@ void ft_hook(void* param)
 			cubed->pa -= 2 * pi;
 		cubed->pdx = cos(cubed->pa)	* 2;
 		cubed->pdy = sin(cubed->pa) * 2;
-		cubed->fov = pi / -6;
-		cubed->intersections_index = 0;
+		reset_settings(cubed);
 	}
 }
 
@@ -677,10 +732,10 @@ bool	initialize_cubed(t_cubed *cubed)
 	cubed->posY = 33;
 	cubed->dirX = -1.0;
 	cubed->dirY = -1.0;
-	cubed->screen_width = 800;
+	cubed->screen_width = 840;
 	cubed->screen_height = 800;
-	cubed->mapWidth = 150;
-	cubed->mapHeight = 150;
+	cubed->mapWidth = 300;
+	cubed->mapHeight = 300;
 	cubed->mini_map_start_y = cubed->screen_height - cubed->mapHeight;
 	cubed->pa = pi / 6;
 	cubed->fov = pi / -6;
@@ -688,7 +743,7 @@ bool	initialize_cubed(t_cubed *cubed)
 	cubed->pdy = 0;
 	cubed->widthBlock = cubed->mapWidth / (double)row;
 	cubed->heightBlock = cubed->mapHeight / (double)column;
-	cubed->plus30 = false;
+	cubed->raycasting_is_done = false;
 	cubed->x_ray_length = 0;
 	cubed->y_ray_length = 0;
 	cubed->side = false;
@@ -696,8 +751,10 @@ bool	initialize_cubed(t_cubed *cubed)
 	cubed->Ay = 0; // length_till_y_axis
 	cubed->intersections = intersections_array;
 	cubed->intersections_index = 0;
-	cubed->step_size_fov = 0.02;
-	cubed->iterations = 50;
+	cubed->intersections->ray_length = 0;
+	cubed->step_size_fov = 0.00125;
+	cubed->iterations = 120;
+	cubed->draw_screen = true;
 	return (true);
 }
 
