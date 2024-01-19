@@ -49,6 +49,9 @@ typedef struct s_cubed
 	double	dirY;
 	double	pa;
 	double	fov;
+	double	fov_start;
+	double	fov_step;
+	double	fov_end;
 	double	mapWidth;
 	double	mapHeight;
 	double	pdx;
