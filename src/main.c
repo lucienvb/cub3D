@@ -265,8 +265,9 @@ bool	checkRay(t_cubed *cubed, double x_target, double y_target)
 		{
 			if (worldMap[y][x] == 1)
 			{
-				// if (x_target < cubed->widthBlock -1 || x_target > cubed->widthBlock * (row - 1))
-				// 	return (false);
+				if ((x_target < cubed->widthBlock -1 || x_target > cubed->widthBlock * (row - 1)) || // maybe a solution
+					(y_target < cubed->heightBlock -1 || y_target > cubed->heightBlock * (column - 1)))
+					return (false);
 
 				if ((x_target >= x * cubed->widthBlock  && x_target <= (x + 1) * cubed->widthBlock + 1) &&
 						(y_target >= y * cubed->heightBlock && y_target <= (y + 1) * cubed->heightBlock + 1))
@@ -326,6 +327,8 @@ bool	x_ray_is_shortest(t_cubed *cubed, double Ax, double Ay)
 
 	cubed->x_ray_length = sqrt(Ax * Ax + (Ax * sin(pa) / cos(pa)) * (Ax * sin(pa) / cos(pa)));
 	cubed->y_ray_length = sqrt((Ay * cos(pa) / sin(pa)) * (Ay * cos(pa) / sin(pa)) + Ay * Ay);
+
+	printf("x_ray_length: %f, y_ray_length: %f\n", cubed->x_ray_length, cubed->y_ray_length);
 
 	if (cubed->x_ray_length < cubed->y_ray_length)
 		return (true);
@@ -537,13 +540,14 @@ void	ray_loop(t_cubed *cubed, double Ax, double Ay)
 		// printf("posY: %f\n", cubed->posY);
 		// printf("widthBlock: %f\n", cubed->widthBlock);
 		// printf("y: %f\n", cubed->posY + Ay);
+		printf("ray_loop => Ax: %f, Ay: %f\n", Ax, Ay);
 		if (xRay_is_shortest_bool)
 		{
 			if (cubed->dirX == 1)
 				Ax += cubed->widthBlock;
 			else
 				Ax -= cubed->widthBlock;
-			// printf("Ax after increase: %f\n", Ax);
+			printf("Ax after increase: %f\n", Ax);
 		}
 		else
 		{
@@ -551,7 +555,7 @@ void	ray_loop(t_cubed *cubed, double Ax, double Ay)
 				Ay += cubed->heightBlock;
 			else
 				Ay -= cubed->heightBlock;
-			// printf("Ay after increase: %f\n", Ay);
+			printf("Ay after increase: %f\n", Ay);
 		}
 	}
 	// printf("ray_loop --> on index %zu the coordinates are: (x: %f, y: %f)\n", cubed->intersections_index, cubed->intersections[cubed->intersections_index].x, cubed->intersections[cubed->intersections_index].y);
@@ -572,7 +576,7 @@ void	raycasting(void *param)
 	t_cubed	*cubed = param;
 
 	getAxAy(cubed, &cubed->Ax, &cubed->Ay);
-	printf("Ax: %f, Ay: %f\n", cubed->Ax, cubed->Ay);
+	printf("\nraycasting => Ax: %f, Ay: %f\n", cubed->Ax, cubed->Ay);
 
 	// printf("%f < (fov: %f) > %f\n", pi / -6, cubed->fov, pi / 6);
 	// while (cubed->fov <= cubed->fov_end)
@@ -582,8 +586,8 @@ void	raycasting(void *param)
 	// }
 	// cubed->fov = cubed->fov_start;
 
-	cubed->fov = 0.196401;
-	ray_loop(cubed, cubed->Ax, cubed->Ay);
+	// cubed->fov = 0.196401;
+	// ray_loop(cubed, cubed->Ax, cubed->Ay);
 	cubed->fov = 0.406401;
 	ray_loop(cubed, cubed->Ax, cubed->Ay);
 
