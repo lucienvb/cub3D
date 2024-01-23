@@ -66,10 +66,10 @@ typedef struct s_cubed
 	bool	side;
 	double	Ax;
 	double	Ay;
-	double	step_size_fov;
 	size_t	iterations;
 	bool	raycasting_is_done;
 	bool	draw_screen;
+	mlx_image_t	*image;
 
 }			t_cubed;
 
@@ -107,6 +107,6 @@ typedef struct s_cubed
 // void	initialization(t_cubed *cubed, t_mlx *mlx, t_screen *screen, char *argv);
 // int		input_parsing();
 int32_t	ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a);
-void	draw_color_stripe(int32_t startX, int32_t endX, int32_t startY, int32_t endY, uint32_t color);
+void	draw_color_stripe(int32_t startX, int32_t endX, int32_t startY, int32_t endY, uint32_t color, t_cubed *cubed);
 
 #endif

@@ -27,7 +27,6 @@
 #define BLOCK_WIDTH 25
 #define BLOCK_HEIGHT 25
 
-static	mlx_image_t* image;
 double	obstacle_startX;
 double	obstacle_endX;
 double	obstacle_startY;
@@ -85,7 +84,7 @@ double	angle;
 //     return (r << 24 | g << 16 | b << 8 | a);
 // }
 
-void draw_color_stripe(int32_t startX, int32_t endX, int32_t startY, int32_t endY, uint32_t color)
+void draw_color_stripe(int32_t startX, int32_t endX, int32_t startY, int32_t endY, uint32_t color, t_cubed *cubed)
 {
 	int32_t	y;
 	int32_t	x;
@@ -96,7 +95,7 @@ void draw_color_stripe(int32_t startX, int32_t endX, int32_t startY, int32_t end
 		x = startX;
        while(x < endX)
         {
-            mlx_put_pixel(image, x, y, color);
+            mlx_put_pixel(cubed->image, x, y, color);
 			x++;
         }
 		y++;
@@ -150,8 +149,8 @@ void	draw_floor_and_ceiling(t_cubed *cubed)
 	uint32_t colorBrown = ft_pixel(139, 69, 19, 0xFF);
 	uint32_t colorPurple = ft_pixel(160, 32, 240, 0xFF);
 
-	draw_color_stripe(0, cubed->screen_width - 1, 0, cubed->screen_height / 2 - 1, colorPurple);
-	draw_color_stripe(0, cubed->screen_width - 1, cubed->screen_height / 2 - 1, cubed->screen_height - 1, colorBrown);
+	draw_color_stripe(0, cubed->screen_width - 1, 0, cubed->screen_height / 2 - 1, colorPurple, cubed);
+	draw_color_stripe(0, cubed->screen_width - 1, cubed->screen_height / 2 - 1, cubed->screen_height - 1, colorBrown, cubed);
 }
 
 void	draw_visor(int x, int y, t_cubed *cubed)
@@ -164,7 +163,7 @@ void	draw_visor(int x, int y, t_cubed *cubed)
 	line = 15;
 	while (line > 0)
 	{
-		mlx_put_pixel(image, x + cos(pa) * line, y + sin(pa) * line, colorYellow);
+		mlx_put_pixel(cubed->image, x + cos(pa) * line, y + sin(pa) * line, colorYellow);
 		line--;
 	}
 }
@@ -187,7 +186,7 @@ void	player(void *param)
 			if ((x > cubed->posX - player_size && x < cubed->posX + player_size)
 					&& (y > cubed->posY - player_size && y < cubed->posY + player_size))
 			{
-				mlx_put_pixel(image, x, y + cubed->mini_map_start_y, colorYellow);
+				mlx_put_pixel(cubed->image, x, y + cubed->mini_map_start_y, colorYellow);
 				if ((x > cubed->posX - visor_thickness && x < cubed->posX + visor_thickness)
 					&& (y > cubed->posY - visor_thickness && y < cubed->posY + visor_thickness))
 					draw_visor(x, y + cubed->mini_map_start_y, cubed);
@@ -225,11 +224,11 @@ void mini_map(void *param)
 		{
 			if (worldMap[y][x] == 0)
 			{
-				draw_color_stripe(startX, endX, startY, endY, colorBlack);
+				draw_color_stripe(startX, endX, startY, endY, colorBlack, cubed);
 			}
 			else if (worldMap[y][x] == 1)
 			{
-				draw_color_stripe(startX+1, endX-1, startY+1, endY-1, colorWhite);
+				draw_color_stripe(startX+1, endX-1, startY+1, endY-1, colorWhite, cubed);
 			}
 			startX = endX;
 			endX += stepX;
@@ -254,7 +253,7 @@ void	drawPoint(t_cubed *cubed, double posX, double posY, uint32_t color, int thi
 			if ((x > posX - thickness && x < posX + thickness)
 						&& (y > posY - thickness && y < posY + thickness)
 						&& (x != posX && y != posY))
-					mlx_put_pixel(image, round(x), round(y) + cubed->mini_map_start_y, color);
+					mlx_put_pixel(cubed->image, round(x), round(y) + cubed->mini_map_start_y, color);
 			x++;
 		}
 		y++;
@@ -347,21 +346,21 @@ bool	x_ray_is_shortest(t_cubed *cubed, double Ax, double Ay)
 	return (false);
 }
 
-void	draw_vertical(int x, int drawStart, int endStart, uint32_t color)
-{
-	// (void)cubed;
-	// uint32_t	colorYellow = ft_pixel(255, 165, 0, 0xFF);
+// void	draw_vertical(int x, int drawStart, int endStart, uint32_t color, t_cubed *cubed)
+// {
+// 	// (void)cubed;
+// 	// uint32_t	colorYellow = ft_pixel(255, 165, 0, 0xFF);
 
-	int y = drawStart;
+// 	int y = drawStart;
 
-	// printf("y(drawStart): %i, endStart: %i\n", y, endStart);
-	while (y < endStart)
-	{
-		// printf("test draw vertical in while loop\n");
-		mlx_put_pixel(image, x, y, color);
-		y++;
-	}
-}
+// 	// printf("y(drawStart): %i, endStart: %i\n", y, endStart);
+// 	while (y < endStart)
+// 	{
+// 		// printf("test draw vertical in while loop\n");
+// 		mlx_put_pixel(image, x, y, color);
+// 		y++;
+// 	}
+// }
 
 // void	draw_walls(void *param)
 // {
@@ -485,7 +484,7 @@ void	raycasting(void *param)
 
 	iterations = 0.01;
 	cubed->fov = pi / -6;
-	while (cubed->fov <= cubed->fov_end)
+	while (cubed->fov <= pi / 6)
 	{
 		getAxAy(cubed, &cubed->Ax, &cubed->Ay);
 		ray_loop(cubed, cubed->Ax, cubed->Ay);
@@ -501,7 +500,6 @@ void draw_screen(void* param)
 	cubed = param;
 	draw_floor_and_ceiling(param);
 	mini_map(param);
-	// player(param);
 	raycasting(param);
 	cubed->draw_screen = false;
 }
@@ -579,11 +577,7 @@ bool	initialize_cubed(t_cubed *cubed)
 	cubed->mapHeight = 200;
 	cubed->mini_map_start_y = cubed->screen_height - cubed->mapHeight;
 	cubed->pa = 1.973598;
-	cubed->fov_step = 0.0033;
-	cubed->fov_start = 0; 
-	// cubed->fov_start = (pi / -6) + (250 * cubed->fov_step);
-	cubed->fov = cubed->fov_start;
-	cubed->fov_end = pi / 6; 
+	cubed->fov = 0;
 	cubed->pdx = 0;
 	cubed->pdy = 0;
 	cubed->widthBlock = cubed->mapWidth / (double)row;
@@ -594,7 +588,6 @@ bool	initialize_cubed(t_cubed *cubed)
 	cubed->side = false;
 	cubed->Ax = 0; // length_till_x_axis
 	cubed->Ay = 0; // length_till_y_axis
-	cubed->step_size_fov = 0.00125;
 	cubed->draw_screen = true;
 	return (true);
 }
@@ -605,36 +598,25 @@ int32_t main(void)
 	
 	if (!initialize_cubed(&cubed))
 		return (1);
-
 	if (!(cubed.mlx = mlx_init(cubed.screen_width, cubed.screen_height, "MLX42", true)))
 	{
 		puts(mlx_strerror(mlx_errno));
 		return(EXIT_FAILURE);
 	}
-	
-	if (!(image = mlx_new_image(cubed.mlx, cubed.screen_width, cubed.screen_height)))
+	if (!(cubed.image = mlx_new_image(cubed.mlx, cubed.screen_width, cubed.screen_height)))
 	{
 		mlx_close_window(cubed.mlx);
 		puts(mlx_strerror(mlx_errno));
 		return(EXIT_FAILURE);
 	}
-
-	if (mlx_image_to_window(cubed.mlx, image, 0, 0) == -1)
+	if (mlx_image_to_window(cubed.mlx, cubed.image, 0, 0) == -1)
 	{
 		mlx_close_window(cubed.mlx);
 		puts(mlx_strerror(mlx_errno));
 		return(EXIT_FAILURE);
 	}
-
 	draw_screen(&cubed);
-	// mlx_loop_hook(cubed.mlx, draw_screen, &cubed);
-	// mlx_loop_hook(cubed.mlx, mini_map, &cubed);
-	// mlx_loop_hook(cubed.mlx, player, &cubed);
-	// mlx_loop_hook(cubed.mlx, raycasting, &cubed);
-	// mlx_loop_hook(cubed.mlx, draw_walls, &cubed);
-
 	mlx_loop_hook(cubed.mlx, ft_hook, &cubed);
-
 	mlx_loop(cubed.mlx);
 	mlx_terminate(cubed.mlx);
 	return (EXIT_SUCCESS);
