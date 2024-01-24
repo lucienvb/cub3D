@@ -11,16 +11,6 @@
 # include "../lib/libft/ft_printf/ft_printf.h"
 # include "../lib/MLX42/include/MLX42/MLX42.h"
 
-// defines
-# define FAILURE		1
-# define SUCCESS		0
-# define NOT_FOUND		1
-# define FOUND			0
-# define TRUE			1
-# define FALSE			0
-# define SCREEN_WIDTH	640
-# define SCREEN_HEIGHT	480
-
 #define column 7
 #define row 7
 
@@ -30,7 +20,6 @@ typedef enum e_hit
 	x_ray_hit,
 	y_ray_hit,
 	no_hit,
-	done,
 }	t_hit;
 
 typedef struct s_intersections
@@ -68,6 +57,7 @@ typedef struct s_cubed
 	double	player_to_grid_y;
 	double	x_ray_length;
 	double	y_ray_length;
+	double	current_ray_length;
 	bool	side;
 	bool	raycasting_is_done;
 
@@ -106,22 +96,20 @@ typedef struct s_cubed
 // void	error_handling(int argc, char **argv);
 // void	initialization(t_cubed *cubed, t_mlx *mlx, t_screen *screen, char *argv);
 // int		input_parsing();
+
 int32_t	ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a);
 void	draw_color_stripe(int32_t startX, int32_t endX, int32_t startY, int32_t endY, uint32_t color, t_cubed *cubed);
-void	mini_map(void *cubed);
+void	mini_map(t_cubed *cubed);
 void	hooks(void* param);
 void	reset_settings(t_cubed *cubed);
-void	raycasting(void *param);
-void draw_color_stripe(int32_t startX, int32_t endX, int32_t startY, int32_t endY, uint32_t color, t_cubed *cubed);
+void	raycasting(t_cubed *cubed);
+void 	draw_color_stripe(int32_t startX, int32_t endX, int32_t startY, int32_t endY, uint32_t color, t_cubed *cubed);
 void	draw_floor_and_ceiling(t_cubed *cubed);
 void	drawPoint(t_cubed *cubed, double posX, double posY, uint32_t color, int thickness);
-
 void	get_player_to_grid(t_cubed *cubed, double *player_to_grid_x, double *player_to_grid_y);
-void draw_screen(void* param);
+void 	draw_screen(t_cubed *cubed);
 void	reset_settings(t_cubed *cubed);
 int32_t start_cubed(void);
-
-
-
+void    draw_wall(t_cubed *cubed, size_t *wall_position);
 
 #endif

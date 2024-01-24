@@ -1,13 +1,10 @@
 #include "../../include/cubed.h"
 
-void draw_screen(void* param)
+void draw_screen(t_cubed *cubed)
 {
-	t_cubed	*cubed;
-
-	cubed = param;
-	draw_floor_and_ceiling(param);
-	mini_map(param);
-	raycasting(param);
+	draw_floor_and_ceiling(cubed);
+	mini_map(cubed);
+	raycasting(cubed);
 	cubed->draw_screen = false;
 }
 
@@ -42,6 +39,7 @@ static bool	initialize_cubed(t_cubed *cubed)
 	cubed->raycasting_is_done = false;
 	cubed->x_ray_length = 0;
 	cubed->y_ray_length = 0;
+    cubed->current_ray_length = 0;
 	cubed->side = false;
 	cubed->player_to_grid_x = 0;
 	cubed->player_to_grid_y = 0;

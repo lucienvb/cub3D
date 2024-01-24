@@ -19,7 +19,11 @@ static bool	x_ray_is_shortest(t_cubed *cubed, double player_to_grid_x, double pl
 	cubed->y_ray_length = sqrt((player_to_grid_y * cos(pa) / sin(pa)) * (player_to_grid_y * cos(pa) / sin(pa)) + player_to_grid_y * player_to_grid_y);
 
 	if (cubed->x_ray_length < cubed->y_ray_length)
+    {
+        cubed->current_ray_length = cubed->x_ray_length;
 		return (true);
+    }
+    cubed->current_ray_length = cubed->y_ray_length;
 	return (false);
 }
 
@@ -65,7 +69,8 @@ static t_hit	is_hit(t_cubed *cubed, double player_to_grid_x, double player_to_gr
 		if (ray_hits_wall(cubed, x, y)) // change name
 		{
 			drawPoint(cubed, x, y, colorOrange, dot_thickness); // we want to move these to another function to draw everything at once
-			cubed->side = false;
+			
+            cubed->side = true;
 			return (x_ray_hit);
 		}
 	} // i < cubed->screen_width
@@ -77,14 +82,14 @@ static t_hit	is_hit(t_cubed *cubed, double player_to_grid_x, double player_to_gr
 		{
 			drawPoint(cubed, x, y, colorOrange, dot_thickness);	// we want to move these to another function to draw everything at once
 			// draw_wall(cubed, Ax, Ay, x);			// we want to move these to another function to draw everything at once
-			cubed->side = true;
+			cubed->side = false;
 			return (y_ray_hit);
 		}
 	}
 	return (no_hit);
 }
 
-static void	ray_loop(t_cubed *cubed, double player_to_grid_x, double player_to_grid_y)
+static void	ray_loop(t_cubed *cubed, double player_to_grid_x, double player_to_grid_y, size_t *wall_position)
 {
 	bool		xRay_is_shortest_bool;
 	t_hit		is_hit_result;
@@ -96,9 +101,15 @@ static void	ray_loop(t_cubed *cubed, double player_to_grid_x, double player_to_g
 		xRay_is_shortest_bool = x_ray_is_shortest(cubed, player_to_grid_x, player_to_grid_y);
 		is_hit_result = is_hit(cubed, player_to_grid_x, player_to_grid_y, xRay_is_shortest_bool);
 		if (!xRay_is_shortest_bool && is_hit_result == y_ray_hit)
+        {
+            draw_wall(cubed, wall_position);
 			return ;
+        }
 		else if (xRay_is_shortest_bool && is_hit_result == x_ray_hit)
+		{
+            draw_wall(cubed, wall_position);
 			return ;
+        }
 		if (xRay_is_shortest_bool)
 		{
 			if (cubed->dirX == 1)
@@ -116,17 +127,18 @@ static void	ray_loop(t_cubed *cubed, double player_to_grid_x, double player_to_g
 	}
 }
 
-void	raycasting(void *param)
+void	raycasting(t_cubed *cubed)
 {
-	t_cubed	*cubed = param;
 	double 	iterations;
+    size_t  wall_position;
 
+    wall_position = 0;
 	iterations = 0.01;
 	cubed->fov = M_PI / -6;
 	while (cubed->fov <= M_PI / 6)
 	{
 		get_player_to_grid(cubed, &cubed->player_to_grid_x, &cubed->player_to_grid_y);
-		ray_loop(cubed, cubed->player_to_grid_x, cubed->player_to_grid_y);
+		ray_loop(cubed, cubed->player_to_grid_x, cubed->player_to_grid_y, &wall_position);
 		cubed->fov += iterations;
 	}
 }

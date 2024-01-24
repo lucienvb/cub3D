@@ -55,12 +55,10 @@ static void	player(t_cubed *cubed)
 }
 
 // TO DO: does not work perfectly on all maps
-void mini_map(void *param)
+void mini_map(t_cubed *cubed)
 {
 	uint32_t colorBlack = ft_pixel(0, 0, 0, 0xFF);
 	uint32_t colorWhite = ft_pixel(255, 255, 255, 0xFF);
-	t_cubed	*cubed = param;
-
 	int	y;
 	int	border;
 
@@ -98,5 +96,5 @@ void mini_map(void *param)
 		endY += stepY;
 		y++;
 	}
-	player(param);
+	player(cubed);
 }
