@@ -24,7 +24,8 @@ LIBFT 		= ./lib/libft/libft.a
 SRCS	:= \
 	src/main.c \
 	src/drawing/screen.c \
-	src/drawing/mini_map.c
+	src/drawing/mini_map.c \
+	# src/drawing/temp_maps.c
 
 
 OBJS	:= ${SRCS:.c=.o}

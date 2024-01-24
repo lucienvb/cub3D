@@ -1,49 +1,47 @@
 #include "../../include/cubed.h"
-// #include "../../lib/MLX42/include/MLX42/MLX42.h"
 
-// static void	draw_visor(int x, int y, t_cubed *cubed)
-// {
-// 	uint32_t	colorYellow = ft_pixel(255, 165, 0, 0xFF);
-// 	double		pa;
-// 	int	line;
+void	draw_visor(int x, int y, t_cubed *cubed)
+{
+	uint32_t	colorYellow = ft_pixel(255, 165, 0, 0xFF);
+	double		pa;
+	int	line;
 	
-// 	pa = cubed->pa;
-// 	line = 15;
-// 	while (line > 0)
-// 	{
-// 		mlx_put_pixel(image, x + cos(pa) * line, y + sin(pa) * line, colorYellow);
-// 		line--;
-// 	}
-// }
+	pa = cubed->pa;
+	line = 15;
+	while (line > 0)
+	{
+		mlx_put_pixel(cubed->image, x + cos(pa) * line, y + sin(pa) * line, colorYellow);
+		line--;
+	}
+}
 
-// static void	player(void *param)
-// {
-// 	uint32_t colorYellow = ft_pixel(255, 165, 0, 0xFF);
-// 	t_cubed	*cubed = param;
-// 	double	player_size;
-// 	double	visor_thickness;
+void	player(t_cubed *cubed)
+{
+	uint32_t colorYellow = ft_pixel(255, 165, 0, 0xFF);
+	double	player_size;
+	double	visor_thickness;
 
-// 	player_size = 4;
-// 	visor_thickness = 1.5;
-// 	int	y = 0;
-// 	while (y < cubed->mapHeight && cubed->posY > 0 && cubed->posY < cubed->mapHeight)
-// 	{
-// 		int x = 0;
-// 		while (x < cubed->mapWidth && cubed->posX > 0 && cubed->posX < cubed->mapWidth)
-// 		{
-// 			if ((x > cubed->posX - player_size && x < cubed->posX + player_size)
-// 					&& (y > cubed->posY - player_size && y < cubed->posY + player_size))
-// 			{
-// 				mlx_put_pixel(image, x, y + cubed->mini_map_start_y, colorYellow);
-// 				if ((x > cubed->posX - visor_thickness && x < cubed->posX + visor_thickness)
-// 					&& (y > cubed->posY - visor_thickness && y < cubed->posY + visor_thickness))
-// 					draw_visor(x, y + cubed->mini_map_start_y, cubed);
-// 			}
-// 			x++;
-// 		}
-// 		y++;
-// 	}
-// }
+	player_size = 4;
+	visor_thickness = 1.5;
+	int	y = 0;
+	while (y < cubed->mapHeight && cubed->posY > 0 && cubed->posY < cubed->mapHeight)
+	{
+		int x = 0;
+		while (x < cubed->mapWidth && cubed->posX > 0 && cubed->posX < cubed->mapWidth)
+		{
+			if ((x > cubed->posX - player_size && x < cubed->posX + player_size)
+					&& (y > cubed->posY - player_size && y < cubed->posY + player_size))
+			{
+				mlx_put_pixel(cubed->image, x, y + cubed->mini_map_start_y, colorYellow);
+				if ((x > cubed->posX - visor_thickness && x < cubed->posX + visor_thickness)
+					&& (y > cubed->posY - visor_thickness && y < cubed->posY + visor_thickness))
+					draw_visor(x, y + cubed->mini_map_start_y, cubed);
+			}
+			x++;
+		}
+		y++;
+	}
+}
 
 // void mini_map(void *param)
 // {
