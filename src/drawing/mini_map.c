@@ -1,6 +1,17 @@
 #include "../../include/cubed.h"
 
-void	draw_visor(int x, int y, t_cubed *cubed)
+static int worldMap[column][row]=
+{
+	{1, 1, 1, 1, 1, 1, 1},
+	{1, 1, 0, 0, 1, 0, 1},
+	{1, 0, 0, 0, 0, 0, 1},
+	{1, 0, 1, 0, 0, 0, 1},
+	{1, 0, 1, 0, 0, 0, 1},
+	{1, 0, 0, 0, 0, 0, 1},
+	{1, 1, 1, 1, 1, 1, 1}
+};
+
+static void	draw_visor(int x, int y, t_cubed *cubed)
 {
 	uint32_t	colorYellow = ft_pixel(255, 165, 0, 0xFF);
 	double		pa;
@@ -15,7 +26,7 @@ void	draw_visor(int x, int y, t_cubed *cubed)
 	}
 }
 
-void	player(t_cubed *cubed)
+static void	player(t_cubed *cubed)
 {
 	uint32_t colorYellow = ft_pixel(255, 165, 0, 0xFF);
 	double	player_size;
@@ -43,48 +54,48 @@ void	player(t_cubed *cubed)
 	}
 }
 
-// void mini_map(void *param)
-// {
-// 	uint32_t colorBlack = ft_pixel(0, 0, 0, 0xFF);
-// 	uint32_t colorWhite = ft_pixel(255, 255, 255, 0xFF);
-// 	t_cubed	*cubed = param;
+// TO DO: does not work perfectly on all maps
+void mini_map(void *param)
+{
+	uint32_t colorBlack = ft_pixel(0, 0, 0, 0xFF);
+	uint32_t colorWhite = ft_pixel(255, 255, 255, 0xFF);
+	t_cubed	*cubed = param;
 
-// 	int	y = 0;
-// 	int	stepY = cubed->mapHeight / column;
-// 	int stepX = cubed->mapWidth / row;
-// 	int	startY = cubed->screen_height - cubed->mapHeight;
-// 	int	endY = startY + stepY;
-// 	while (y < (int)column)
-// 	{
-// 		int	startX = 0;
-// 		int endX = stepX;
-// 		int x = 0;
-// 		while (x < (int)row)
-// 		{
-// 			if (worldMap[y][x] == 0)
-// 			{
-// 				draw_color_stripe(startX, endX, startY, endY, colorBlack);
-// 			}
-// 			else if (worldMap[y][x] == 1)
-// 			{
-// 				draw_color_stripe(startX+1, endX-1, startY+1, endY-1, colorWhite);
-// 			}
-// 			startX = endX;
-// 			endX += stepX;
-// 			x++;
-// 		}
-// 		startY = endY;
-// 		endY += stepY;
-// 		y++;
-// 	}
-// 	player(param);
-// }
+	int	y;
+	int	border;
 
-// void	draw_floor_and_ceiling(t_cubed *cubed)
-// {
-// 	uint32_t colorBrown = ft_pixel(139, 69, 19, 0xFF);
-// 	uint32_t colorPurple = ft_pixel(160, 32, 240, 0xFF);
+	y = 0;
+	border = 1;
 
-// 	draw_color_stripe(0, cubed->screen_width - 1, 0, cubed->screen_height / 2 - 1, colorPurple);
-// 	draw_color_stripe(0, cubed->screen_width - 1, cubed->screen_height / 2 - 1, cubed->screen_height - 1, colorBrown);
-// }
+	double	stepY = cubed->mapHeight / column;
+	double stepX = cubed->mapWidth / row;
+	double	startY = cubed->screen_height - cubed->mapHeight;
+	double	endY = startY + stepY;
+
+	// printf("startY: %f\n", startY);
+
+	while (y < (int)column)
+	{
+		int	startX = 0;
+		int endX = stepX;
+		int x = 0;
+		while (x < (int)row)
+		{
+			if (worldMap[y][x] == 0)
+			{
+				draw_color_stripe(startX, endX, startY, endY, colorBlack, cubed);
+			}
+			else if (worldMap[y][x] == 1)
+			{
+				draw_color_stripe(startX + border, endX - border, startY + border, endY - border, colorWhite, cubed);
+			}
+			startX = endX;
+			endX += stepX;
+			x++;
+		}
+		startY = endY;
+		endY += stepY;
+		y++;
+	}
+	player(param);
+}

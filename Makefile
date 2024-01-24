@@ -25,6 +25,7 @@ SRCS	:= \
 	src/main.c \
 	src/drawing/screen.c \
 	src/drawing/mini_map.c \
+	src/drawing/hooks.c \
 	# src/drawing/temp_maps.c
 
 

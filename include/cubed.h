@@ -21,6 +21,8 @@
 # define SCREEN_WIDTH	640
 # define SCREEN_HEIGHT	480
 
+#define column 7
+#define row 7
 
 // enum
 typedef enum e_hit
@@ -110,7 +112,8 @@ typedef struct s_cubed
 // int		input_parsing();
 int32_t	ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a);
 void	draw_color_stripe(int32_t startX, int32_t endX, int32_t startY, int32_t endY, uint32_t color, t_cubed *cubed);
-void	draw_visor(int x, int y, t_cubed *cubed);
-void	player(t_cubed *cubed);
+void	mini_map(void *cubed);
+void	hooks(void* param);
+void	reset_settings(t_cubed *cubed);
 
 #endif

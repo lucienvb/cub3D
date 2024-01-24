@@ -26,13 +26,10 @@ double	obstacle_startY;
 double	obstacle_endY;
 double	diff_x;
 double	diff_y;
-double	pi = 3.14159265359;
 double	angle;
 
 
-#define column 7
-#define row 7
-int worldMap[column][row]=
+static int worldMap[column][row]=
 {
 	{1, 1, 1, 1, 1, 1, 1},
 	{1, 1, 0, 0, 1, 0, 1},
@@ -68,52 +65,6 @@ void	draw_floor_and_ceiling(t_cubed *cubed)
 
 	draw_color_stripe(0, cubed->screen_width - 1, 0, cubed->screen_height / 2 - 1, colorPurple, cubed);
 	draw_color_stripe(0, cubed->screen_width - 1, cubed->screen_height / 2 - 1, cubed->screen_height - 1, colorBrown, cubed);
-}
-
-// TO DO: does not work perfectly on all maps
-void mini_map(void *param)
-{
-	uint32_t colorBlack = ft_pixel(0, 0, 0, 0xFF);
-	uint32_t colorWhite = ft_pixel(255, 255, 255, 0xFF);
-	t_cubed	*cubed = param;
-
-	int	y;
-	int	border;
-
-	y = 0;
-	border = 1;
-
-	double	stepY = cubed->mapHeight / column;
-	double stepX = cubed->mapWidth / row;
-	double	startY = cubed->screen_height - cubed->mapHeight;
-	double	endY = startY + stepY;
-
-	// printf("startY: %f\n", startY);
-
-	while (y < (int)column)
-	{
-		int	startX = 0;
-		int endX = stepX;
-		int x = 0;
-		while (x < (int)row)
-		{
-			if (worldMap[y][x] == 0)
-			{
-				draw_color_stripe(startX, endX, startY, endY, colorBlack, cubed);
-			}
-			else if (worldMap[y][x] == 1)
-			{
-				draw_color_stripe(startX + border, endX - border, startY + border, endY - border, colorWhite, cubed);
-			}
-			startX = endX;
-			endX += stepX;
-			x++;
-		}
-		startY = endY;
-		endY += stepY;
-		y++;
-	}
-	player(param);
 }
 
 void	drawPoint(t_cubed *cubed, double posX, double posY, uint32_t color, int thickness)
@@ -161,13 +112,13 @@ bool	checkRay(t_cubed *cubed, double x_target, double y_target)
 
 void	get_directions(t_cubed *cubed, double pa)
 {
-	if (pa > 2 * pi)
-		pa -= 2 * pi;
-	if (pa >= (pi / 2) && pa < (pi * 3/2)) 
+	if (pa > 2 * M_PI)
+		pa -= 2 * M_PI;
+	if (pa >= (M_PI / 2) && pa < (M_PI * 3/2)) 
 		cubed->dirX = -1;
 	else
 		cubed->dirX = 1;
-	if (pa >= 0 && pa < pi)
+	if (pa >= 0 && pa < M_PI)
 		cubed->dirY = 1;
 	else
 		cubed->dirY = -1;
@@ -320,24 +271,14 @@ void	ray_loop(t_cubed *cubed, double Ax, double Ay)
 	}
 }
 
-// Start direction with there corresponding pa
-// NO --> cubed->pa = pi * 3 / 2
-// SO --> cubed->pa = pi / 2
-// WE --> cubed->pa = pi
-// EA --> cubed->pa = 0
-
-// FOV
-// 30 degrees to the left --> pa -= pi / 6
-// 30 degrees to the right --> pa += pi / 6
-
 void	raycasting(void *param)
 {
 	t_cubed	*cubed = param;
 	double 	iterations;
 
 	iterations = 0.01;
-	cubed->fov = pi / -6;
-	while (cubed->fov <= pi / 6)
+	cubed->fov = M_PI / -6;
+	while (cubed->fov <= M_PI / 6)
 	{
 		getAxAy(cubed, &cubed->Ax, &cubed->Ay);
 		ray_loop(cubed, cubed->Ax, cubed->Ay);
@@ -363,59 +304,6 @@ void	reset_settings(t_cubed *cubed)
 	cubed->raycasting_is_done = false;
 	cubed->draw_screen = true;
 	draw_screen(cubed);
-}
-
-void ft_hook(void* param)
-{
-	t_cubed	*cubed;
-
-	cubed = param;
-
-	if (mlx_is_key_down(cubed->mlx, MLX_KEY_ESCAPE))
-		mlx_close_window(cubed->mlx);
-	if (mlx_is_key_down(cubed->mlx, MLX_KEY_W)) // move forward (zoom isn)
-	{
-		if (cubed->posX < cubed->mapWidth - cubed->pdx && cubed->posY < cubed->mapHeight - cubed->pdy) 
-		{
-			cubed->posX += cubed->pdx;
-			cubed->posY += cubed->pdy;
-
-		}
-		reset_settings(cubed);
-	}
-	if (mlx_is_key_down(cubed->mlx, MLX_KEY_S)) // move backward (zoom out)
-	{
-		if (cubed->posX >= 0 + cubed->pdx && cubed->posY >= 0 + cubed->pdy)
-		{
-			cubed->posX -= cubed->pdx;
-			cubed->posY	-= cubed->pdy;
-		}
-		reset_settings(cubed);
-	}
-	// if (mlx_is_key_down(cubed->mlx, MLX_KEY_A)) // move to the left (change position in map)
-	// {
-	// }
-	// if (mlx_is_key_down(cubed->mlx, MLX_KEY_D)) // move to the right (change position in map)
-	// {
-	// }
-	if (mlx_is_key_down(cubed->mlx, MLX_KEY_LEFT)) // change screen to the left
-	{
-		cubed->pa -= 0.05;
-		if (cubed->pa < 0)
-			cubed->pa += 2 * pi;
-		cubed->pdx = cos(cubed->pa)	* 2;
-		cubed->pdy = sin(cubed->pa) * 2;
-		reset_settings(cubed);
-	}
-	if (mlx_is_key_down(cubed->mlx, MLX_KEY_RIGHT)) // change screen to the right
-	{
-		cubed->pa += 0.05;
-		if (cubed->pa > 2 * pi)
-			cubed->pa -= 2 * pi;
-		cubed->pdx = cos(cubed->pa)	* 2;
-		cubed->pdy = sin(cubed->pa) * 2;
-		reset_settings(cubed);
-	}
 }
 
 bool	initialize_cubed(t_cubed *cubed)
@@ -469,7 +357,7 @@ int32_t main(void)
 		return(EXIT_FAILURE);
 	}
 	draw_screen(&cubed);
-	mlx_loop_hook(cubed.mlx, ft_hook, &cubed);
+	mlx_loop_hook(cubed.mlx, hooks, &cubed);
 	mlx_loop(cubed.mlx);
 	mlx_terminate(cubed.mlx);
 	return (EXIT_SUCCESS);
