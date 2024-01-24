@@ -284,7 +284,6 @@ void	raycasting(void *param)
 		ray_loop(cubed, cubed->Ax, cubed->Ay);
 		cubed->fov += iterations;
 	}
-	cubed->fov = cubed->fov_start; 
 }
 
 void draw_screen(void* param)
@@ -300,7 +299,6 @@ void draw_screen(void* param)
 
 void	reset_settings(t_cubed *cubed)
 {
-	cubed->fov = cubed->fov_start;
 	cubed->raycasting_is_done = false;
 	cubed->draw_screen = true;
 	draw_screen(cubed);
