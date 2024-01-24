@@ -40,7 +40,6 @@ typedef struct s_intersections
 	double	ray_length;
 }			t_intersections;
 
-
 // structures
 typedef struct s_cubed
 {
@@ -112,5 +111,17 @@ void	draw_color_stripe(int32_t startX, int32_t endX, int32_t startY, int32_t end
 void	mini_map(void *cubed);
 void	hooks(void* param);
 void	reset_settings(t_cubed *cubed);
+void	raycasting(void *param);
+void draw_color_stripe(int32_t startX, int32_t endX, int32_t startY, int32_t endY, uint32_t color, t_cubed *cubed);
+void	draw_floor_and_ceiling(t_cubed *cubed);
+void	drawPoint(t_cubed *cubed, double posX, double posY, uint32_t color, int thickness);
+
+void	get_player_to_grid(t_cubed *cubed, double *player_to_grid_x, double *player_to_grid_y);
+void draw_screen(void* param);
+void	reset_settings(t_cubed *cubed);
+int32_t start_cubed(void);
+
+
+
 
 #endif

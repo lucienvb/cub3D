@@ -26,7 +26,10 @@ SRCS	:= \
 	src/drawing/screen.c \
 	src/drawing/mini_map.c \
 	src/drawing/hooks.c \
-	# src/drawing/temp_maps.c
+	src/drawing/raycasting.c \
+	src/drawing/get_player_to_grid.c \
+	src/drawing/start_cubed.c
+# src/drawing/temp_maps.c
 
 
 OBJS	:= ${SRCS:.c=.o}
