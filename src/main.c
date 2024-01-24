@@ -317,8 +317,8 @@ bool	initialize_cubed(t_cubed *cubed)
 	cubed->mini_map_start_y = cubed->screen_height - cubed->mapHeight;
 	cubed->pa = 1.973598;
 	cubed->fov = 0;
-	cubed->pdx = 0;
-	cubed->pdy = 0;
+	cubed->stepX = 0;
+	cubed->stepY = 0;
 	cubed->widthBlock = cubed->mapWidth / (double)row;
 	cubed->heightBlock = cubed->mapHeight / (double)column;
 	cubed->raycasting_is_done = false;

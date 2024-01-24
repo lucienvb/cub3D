@@ -10,20 +10,20 @@ void hooks(void* param)
 		mlx_close_window(cubed->mlx);
 	if (mlx_is_key_down(cubed->mlx, MLX_KEY_W)) // move forward (zoom isn)
 	{
-		if (cubed->posX < cubed->mapWidth - cubed->pdx && cubed->posY < cubed->mapHeight - cubed->pdy) 
+		if (cubed->posX < cubed->mapWidth - cubed->stepX && cubed->posY < cubed->mapHeight - cubed->stepY) 
 		{
-			cubed->posX += cubed->pdx;
-			cubed->posY += cubed->pdy;
+			cubed->posX += cubed->stepX;
+			cubed->posY += cubed->stepY;
 
 		}
 		reset_settings(cubed);
 	}
 	if (mlx_is_key_down(cubed->mlx, MLX_KEY_S)) // move backward (zoom out)
 	{
-		if (cubed->posX >= 0 + cubed->pdx && cubed->posY >= 0 + cubed->pdy)
+		if (cubed->posX >= 0 + cubed->stepX && cubed->posY >= 0 + cubed->stepY)
 		{
-			cubed->posX -= cubed->pdx;
-			cubed->posY	-= cubed->pdy;
+			cubed->posX -= cubed->stepX;
+			cubed->posY	-= cubed->stepY;
 		}
 		reset_settings(cubed);
 	}
@@ -38,8 +38,8 @@ void hooks(void* param)
 		cubed->pa -= 0.05;
 		if (cubed->pa < 0)
 			cubed->pa += 2 * M_PI;
-		cubed->pdx = cos(cubed->pa)	* 2;
-		cubed->pdy = sin(cubed->pa) * 2;
+		cubed->stepX = cos(cubed->pa)	* 2;
+		cubed->stepY = sin(cubed->pa) * 2;
 		reset_settings(cubed);
 	}
 	if (mlx_is_key_down(cubed->mlx, MLX_KEY_RIGHT)) // change screen to the right
@@ -47,8 +47,8 @@ void hooks(void* param)
 		cubed->pa += 0.05;
 		if (cubed->pa > 2 * M_PI)
 			cubed->pa -= 2 * M_PI;
-		cubed->pdx = cos(cubed->pa)	* 2;
-		cubed->pdy = sin(cubed->pa) * 2;
+		cubed->stepX = cos(cubed->pa)	* 2;
+		cubed->stepY = sin(cubed->pa) * 2;
 		reset_settings(cubed);
 	}
 }

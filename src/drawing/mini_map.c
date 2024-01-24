@@ -83,11 +83,12 @@ void mini_map(void *param)
 		{
 			if (worldMap[y][x] == 0)
 			{
-				draw_color_stripe(startX, endX, startY, endY, colorBlack, cubed);
+				draw_color_stripe((int) startX, (int) endX, (int) startY, (int) endY, colorBlack, cubed);
 			}
 			else if (worldMap[y][x] == 1)
 			{
-				draw_color_stripe(startX + border, endX - border, startY + border, endY - border, colorWhite, cubed);
+				draw_color_stripe((int) startX + border, (int) endX - border, (int) startY + border, 
+					(int) endY - border, colorWhite, cubed);
 			}
 			startX = endX;
 			endX += stepX;

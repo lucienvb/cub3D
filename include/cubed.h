@@ -55,8 +55,8 @@ typedef struct s_cubed
 	double	fov;
 	double	mapWidth;
 	double	mapHeight;
-	double	pdx;
-	double	pdy;
+	double	stepX;
+	double	stepY;
 	double	widthBlock;
 	double	heightBlock;
 	double	screen_width;
