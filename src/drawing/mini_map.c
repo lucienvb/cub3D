@@ -35,10 +35,10 @@ static void	player(t_cubed *cubed)
 	player_size = 4;
 	visor_thickness = 1.5;
 	int	y = 0;
-	while (y < cubed->mapHeight && cubed->posY > 0 && cubed->posY < cubed->mapHeight)
+	while (y < cubed->mini_map_height && cubed->posY > 0 && cubed->posY < cubed->mini_map_height)
 	{
 		int x = 0;
-		while (x < cubed->mapWidth && cubed->posX > 0 && cubed->posX < cubed->mapWidth)
+		while (x < cubed->mini_map_width && cubed->posX > 0 && cubed->posX < cubed->mini_map_width)
 		{
 			if ((x > cubed->posX - player_size && x < cubed->posX + player_size)
 					&& (y > cubed->posY - player_size && y < cubed->posY + player_size))
@@ -67,9 +67,9 @@ void mini_map(void *param)
 	y = 0;
 	border = 1;
 
-	double	stepY = cubed->mapHeight / column;
-	double stepX = cubed->mapWidth / row;
-	double	startY = cubed->screen_height - cubed->mapHeight;
+	double	stepY = cubed->mini_map_height / column;
+	double stepX = cubed->mini_map_width / row;
+	double	startY = cubed->screen_height - cubed->mini_map_height;
 	double	endY = startY + stepY;
 
 	// printf("startY: %f\n", startY);

@@ -71,10 +71,10 @@ void	drawPoint(t_cubed *cubed, double posX, double posY, uint32_t color, int thi
 {
 	int	y = 0;
 
-	while (y < cubed->mapHeight && posY > 0 && posY < cubed->mapHeight)
+	while (y < cubed->mini_map_height && posY > 0 && posY < cubed->mini_map_height)
 	{
 		int x = 0;
-		while (x < cubed->mapWidth && posX > 0 && posX < cubed->mapWidth)
+		while (x < cubed->mini_map_width && posX > 0 && posX < cubed->mini_map_width)
 		{
 			if ((x > posX - thickness && x < posX + thickness)
 						&& (y > posY - thickness && y < posY + thickness)
@@ -99,8 +99,8 @@ bool	checkRay(t_cubed *cubed, double x_target, double y_target)
 		{
 			if (worldMap[y][x] == 1)
 			{
-				if ((x_target >= x * cubed->widthBlock  && x_target <= (x + 1) * cubed->widthBlock + 1) &&
-						(y_target >= y * cubed->heightBlock && y_target <= (y + 1) * cubed->heightBlock + 1))
+				if ((x_target >= x * cubed->grid_width  && x_target <= (x + 1) * cubed->grid_width + 1) &&
+						(y_target >= y * cubed->grid_height && y_target <= (y + 1) * cubed->grid_height + 1))
 					return (true);
 			}
 			x++;
@@ -124,41 +124,41 @@ void	get_directions(t_cubed *cubed, double pa)
 		cubed->dirY = -1;
 }
 
-void	getAxAy(t_cubed *cubed, double *Ax, double *Ay)
+void	get_player_to_grid(t_cubed *cubed, double *player_to_grid_x, double *player_to_grid_y)
 {
 	double	pa = cubed->pa + cubed->fov;
 
 	get_directions(cubed, pa);
 	if (cubed->dirX == 1)
-		*Ax = cubed->posX;
+		*player_to_grid_x = cubed->posX;
 	else if (cubed->dirX == -1)
-		*Ax = cubed->mapWidth - cubed->posX;
+		*player_to_grid_x = cubed->mini_map_width - cubed->posX;
 	// else // not sure about this
-	// 	*Ax = 0;
+	// 	*player_to_grid_x = 0;
 	if (cubed->dirY == 1)
-		*Ay = cubed->posY;
+		*player_to_grid_y = cubed->posY;
 	else if (cubed->dirY == -1)
-		*Ay = cubed->mapHeight - cubed->posY;
+		*player_to_grid_y = cubed->mini_map_height - cubed->posY;
 	// else // not sure about this
-	// 	*Ay = 0;
+	// 	*player_to_grid_y = 0;
 
-	while (*Ax >= 0)
-		*Ax -= cubed->widthBlock;
+	while (*player_to_grid_x >= 0)
+		*player_to_grid_x -= cubed->grid_width;
 	if (cubed->dirX == 1)
-		*Ax *= -1;
+		*player_to_grid_x *= -1;
 	
-	while (*Ay >= 0)
-		*Ay -= cubed->heightBlock;
+	while (*player_to_grid_y >= 0)
+		*player_to_grid_y -= cubed->grid_height;
 	if (cubed->dirY == 1)
-		*Ay *= -1;
+		*player_to_grid_y *= -1;
 }
 
-bool	x_ray_is_shortest(t_cubed *cubed, double Ax, double Ay)
+bool	x_ray_is_shortest(t_cubed *cubed, double player_to_grid_x, double player_to_grid_y)
 {
 	double	pa = cubed->pa + cubed->fov;
 
-	cubed->x_ray_length = sqrt(Ax * Ax + (Ax * sin(pa) / cos(pa)) * (Ax * sin(pa) / cos(pa)));
-	cubed->y_ray_length = sqrt((Ay * cos(pa) / sin(pa)) * (Ay * cos(pa) / sin(pa)) + Ay * Ay);
+	cubed->x_ray_length = sqrt(player_to_grid_x * player_to_grid_x + (player_to_grid_x * sin(pa) / cos(pa)) * (player_to_grid_x * sin(pa) / cos(pa)));
+	cubed->y_ray_length = sqrt((player_to_grid_y * cos(pa) / sin(pa)) * (player_to_grid_y * cos(pa) / sin(pa)) + player_to_grid_y * player_to_grid_y);
 
 	if (cubed->x_ray_length < cubed->y_ray_length)
 		return (true);
@@ -202,7 +202,7 @@ bool	x_ray_is_shortest(t_cubed *cubed, double Ax, double Ay)
 // 	}
 // }
 
-t_hit	is_hit(t_cubed *cubed, double Ax, double Ay, bool x_ray_is_shortest)
+t_hit	is_hit(t_cubed *cubed, double player_to_grid_x, double player_to_grid_y, bool x_ray_is_shortest)
 {
 	uint32_t	colorOrange = ft_pixel(255, 140, 0, 0xFF);
 	double		pa = cubed->pa + cubed->fov;
@@ -215,8 +215,8 @@ t_hit	is_hit(t_cubed *cubed, double Ax, double Ay, bool x_ray_is_shortest)
 	y = 0;
 	if (x_ray_is_shortest) // if true the x-ray has a hit, that means a wall is hit horizontally
 	{
-		x = cubed->posX + Ax;						// x-coordinate of hit
-		y = cubed->posY + Ax * sin(pa) / cos(pa);	// y-coordinate of hit
+		x = cubed->posX + player_to_grid_x;						// x-coordinate of hit
+		y = cubed->posY + player_to_grid_x * sin(pa) / cos(pa);	// y-coordinate of hit
 		if (checkRay(cubed, x, y)) // change name
 		{
 			drawPoint(cubed, x, y, colorOrange, dot_thickness); // we want to move these to another function to draw everything at once
@@ -226,8 +226,8 @@ t_hit	is_hit(t_cubed *cubed, double Ax, double Ay, bool x_ray_is_shortest)
 	} // i < cubed->screen_width
 	else // the y-ray has a hit, that means a wall is hit vertically
 	{
-		x = cubed->posX + Ay * cos(pa) / sin(pa);	// x-coordinate of hit
-		y = cubed->posY + Ay;						// y-coordinate of hit
+		x = cubed->posX + player_to_grid_y * cos(pa) / sin(pa);	// x-coordinate of hit
+		y = cubed->posY + player_to_grid_y;						// y-coordinate of hit
 		if (checkRay(cubed, x, y))
 		{
 			drawPoint(cubed, x, y, colorOrange, dot_thickness);	// we want to move these to another function to draw everything at once
@@ -239,7 +239,7 @@ t_hit	is_hit(t_cubed *cubed, double Ax, double Ay, bool x_ray_is_shortest)
 	return (no_hit);
 }
 
-void	ray_loop(t_cubed *cubed, double Ax, double Ay)
+void	ray_loop(t_cubed *cubed, double player_to_grid_x, double player_to_grid_y)
 {
 	bool		xRay_is_shortest_bool;
 	t_hit		is_hit_result;
@@ -248,8 +248,8 @@ void	ray_loop(t_cubed *cubed, double Ax, double Ay)
 	is_hit_result = no_hit;
 	while (1)
 	{
-		xRay_is_shortest_bool = x_ray_is_shortest(cubed, Ax, Ay);
-		is_hit_result = is_hit(cubed, Ax, Ay, xRay_is_shortest_bool);
+		xRay_is_shortest_bool = x_ray_is_shortest(cubed, player_to_grid_x, player_to_grid_y);
+		is_hit_result = is_hit(cubed, player_to_grid_x, player_to_grid_y, xRay_is_shortest_bool);
 		if (!xRay_is_shortest_bool && is_hit_result == y_ray_hit)
 			return ;
 		else if (xRay_is_shortest_bool && is_hit_result == x_ray_hit)
@@ -257,16 +257,16 @@ void	ray_loop(t_cubed *cubed, double Ax, double Ay)
 		if (xRay_is_shortest_bool)
 		{
 			if (cubed->dirX == 1)
-				Ax += cubed->widthBlock;
+				player_to_grid_x += cubed->grid_width;
 			else
-				Ax -= cubed->widthBlock;
+				player_to_grid_x -= cubed->grid_width;
 		}
 		else
 		{
 			if (cubed->dirY == 1)
-				Ay += cubed->heightBlock;
+				player_to_grid_y += cubed->grid_height;
 			else
-				Ay -= cubed->heightBlock;
+				player_to_grid_y -= cubed->grid_height;
 		}
 	}
 }
@@ -280,8 +280,8 @@ void	raycasting(void *param)
 	cubed->fov = M_PI / -6;
 	while (cubed->fov <= M_PI / 6)
 	{
-		getAxAy(cubed, &cubed->Ax, &cubed->Ay);
-		ray_loop(cubed, cubed->Ax, cubed->Ay);
+		get_player_to_grid(cubed, &cubed->player_to_grid_x, &cubed->player_to_grid_y);
+		ray_loop(cubed, cubed->player_to_grid_x, cubed->player_to_grid_y);
 		cubed->fov += iterations;
 	}
 }
@@ -312,21 +312,21 @@ bool	initialize_cubed(t_cubed *cubed)
 	cubed->dirY = 0.0;
 	cubed->screen_width = 840;
 	cubed->screen_height = 800;
-	cubed->mapWidth = 200;
-	cubed->mapHeight = 200;
-	cubed->mini_map_start_y = cubed->screen_height - cubed->mapHeight;
+	cubed->mini_map_width = 200;
+	cubed->mini_map_height = 200;
+	cubed->mini_map_start_y = cubed->screen_height - cubed->mini_map_height;
 	cubed->pa = 1.973598;
 	cubed->fov = 0;
 	cubed->stepX = 0;
 	cubed->stepY = 0;
-	cubed->widthBlock = cubed->mapWidth / (double)row;
-	cubed->heightBlock = cubed->mapHeight / (double)column;
+	cubed->grid_width = cubed->mini_map_width / (double)row;
+	cubed->grid_height = cubed->mini_map_height / (double)column;
 	cubed->raycasting_is_done = false;
 	cubed->x_ray_length = 0;
 	cubed->y_ray_length = 0;
 	cubed->side = false;
-	cubed->Ax = 0; // length_till_x_axis
-	cubed->Ay = 0; // length_till_y_axis
+	cubed->player_to_grid_x = 0; // length_till_x_axis
+	cubed->player_to_grid_y = 0; // length_till_y_player_to_grid_xis
 	cubed->draw_screen = true;
 	return (true);
 }
