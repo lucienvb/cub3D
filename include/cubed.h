@@ -44,7 +44,19 @@ typedef struct s_intersections
 // structures
 typedef struct s_cubed
 {
-	mlx_t	*mlx;
+	// screen variables
+	mlx_t		*mlx;
+	mlx_image_t	*image;
+	double		screen_width;
+	double		screen_height;
+	double		mini_map_width;
+	double		mini_map_height;
+	double		mini_map_start_y;
+	double		grid_width;
+	double		grid_height;
+	bool		draw_screen;
+
+	// player variables
 	double	posX;
 	double	posY;
 	double	dirX;
@@ -55,20 +67,10 @@ typedef struct s_cubed
 	double	stepY;
 	double	player_to_grid_x;
 	double	player_to_grid_y;
-	double	mini_map_width;
-	double	mini_map_height;
-	double	grid_width;
-	double	grid_height;
-	double	screen_width;
-	double	screen_height;
-	double	mini_map_start_y;
 	double	x_ray_length;
 	double	y_ray_length;
 	bool	side;
-	size_t	iterations;
 	bool	raycasting_is_done;
-	bool	draw_screen;
-	mlx_image_t	*image;
 
 }			t_cubed;
 

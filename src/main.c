@@ -306,28 +306,31 @@ void	reset_settings(t_cubed *cubed)
 
 bool	initialize_cubed(t_cubed *cubed)
 {
-	cubed->posX = 50;
-	cubed->posY = 60;
-	cubed->dirX = 0.0;
-	cubed->dirY = 0.0;
+	// screen variables
 	cubed->screen_width = 840;
 	cubed->screen_height = 800;
 	cubed->mini_map_width = 200;
 	cubed->mini_map_height = 200;
 	cubed->mini_map_start_y = cubed->screen_height - cubed->mini_map_height;
+	cubed->grid_width = cubed->mini_map_width / (double)row;
+	cubed->grid_height = cubed->mini_map_height / (double)column;
+	cubed->draw_screen = true;
+
+	// player variables
+	cubed->posX = 50;
+	cubed->posY = 60;
+	cubed->dirX = 0.0;
+	cubed->dirY = 0.0;
 	cubed->pa = 1.973598;
 	cubed->fov = 0;
 	cubed->stepX = 0;
 	cubed->stepY = 0;
-	cubed->grid_width = cubed->mini_map_width / (double)row;
-	cubed->grid_height = cubed->mini_map_height / (double)column;
 	cubed->raycasting_is_done = false;
 	cubed->x_ray_length = 0;
 	cubed->y_ray_length = 0;
 	cubed->side = false;
-	cubed->player_to_grid_x = 0; // length_till_x_axis
-	cubed->player_to_grid_y = 0; // length_till_y_player_to_grid_xis
-	cubed->draw_screen = true;
+	cubed->player_to_grid_x = 0;
+	cubed->player_to_grid_y = 0;
 	return (true);
 }
 
