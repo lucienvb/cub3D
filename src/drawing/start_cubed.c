@@ -3,8 +3,8 @@
 void draw_screen(t_cubed *cubed)
 {
 	draw_floor_and_ceiling(cubed);
-	raycasting(cubed);
 	mini_map(cubed);
+	raycasting(cubed);
 	cubed->draw_screen = false;
 }
 
@@ -32,7 +32,7 @@ static bool	initialize_cubed(t_cubed *cubed)
 	cubed->posY = 75;
 	cubed->dirX = 0.0;
 	cubed->dirY = 0.0;
-	cubed->pa = 0;
+	cubed->pa = 1.5 * M_PI;
 	cubed->fov = 0;
 	cubed->stepX = 0;
 	cubed->stepY = 0;

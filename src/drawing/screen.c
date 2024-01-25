@@ -15,12 +15,16 @@ void    draw_wall(t_cubed *cubed, size_t *wall_position)
 	double	wall_height;
 
     double	max_length = get_length_to_map_edge(cubed);
+	// double	max_length = 100;
 	if (cubed->side == true)
 		color = colorOrange;
 	else
 		color = colorYellow;
 	wall_height = cubed->screen_height * (1 - cubed->current_ray_length / max_length);
-	// printf("ray_len / max_len: %f\n", cubed->current_ray_length / max_length);
+	printf("ray_len: %f\t", cubed->current_ray_length);
+	printf("max_len: %f\t",max_length);
+	printf("ray_len / max_len: %f\n", cubed->current_ray_length / max_length);
+	// printf("ray_len: %f\n", cubed->current_ray_length);
 	x = 0;
 	y = (cubed->screen_height / 2) - (wall_height / 2);
 	wall_height += y;

@@ -2,23 +2,30 @@
 
 double   get_length_to_map_edge(t_cubed *cubed)
 {
-    double  x_length;
+	double  x_length;
     double  y_length;
 
+	x_length = 0;
+	y_length = 0;
     if (cubed->dirX == 1)
         x_length = cubed->mini_map_width - cubed->posX;
     else if (cubed->dirX == -1)
-        x_length = cubed->mini_map_width - (cubed->mini_map_width - cubed->posX);
+        x_length = cubed->posX;
     else
         x_length = 0;
     if (cubed->dirY == 1)
         y_length = cubed->mini_map_height - cubed->posY;
     else if (cubed->dirY == -1)
-        y_length = cubed->mini_map_height - (cubed->mini_map_height - cubed->posY);
+        y_length = cubed->posY;
     else
+	{
         y_length = 0;
+
+	}
     
-    return (sqrt(x_length * x_length + y_length * y_length));
+	printf("get => %f, %f (x_length, y_length)\t", x_length, y_length);
+
+    return (sqrt((x_length * x_length) + (y_length * y_length)));
 }
 
 static void	get_ray_direction(t_cubed *cubed, double pa)
@@ -44,14 +51,14 @@ void	get_player_to_grid(t_cubed *cubed, double *player_to_grid_x, double *player
 		*player_to_grid_x = cubed->posX;
 	else if (cubed->dirX == -1)
 		*player_to_grid_x = cubed->mini_map_width - cubed->posX;
-	// else // not sure about this
-	// 	*player_to_grid_x = 0;
+	else // not sure about this
+		*player_to_grid_x = 0;
 	if (cubed->dirY == 1)
 		*player_to_grid_y = cubed->posY;
 	else if (cubed->dirY == -1)
 		*player_to_grid_y = cubed->mini_map_height - cubed->posY;
-	// else // not sure about this
-	// 	*player_to_grid_y = 0;
+	else // not sure about this
+		*player_to_grid_y = 0;
 
 	while (*player_to_grid_x >= 0)
 		*player_to_grid_x -= cubed->grid_width;
