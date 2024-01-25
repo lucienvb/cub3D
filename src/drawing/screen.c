@@ -10,8 +10,6 @@ static double   length_to_map_edge(t_cubed *cubed)
     double  x_length;
     double  y_length;
 
-	printf("posX: %f, posY: %f\n", cubed->posX, cubed->posY);
-
     if (cubed->dirX == 1)
         x_length = cubed->mini_map_width - cubed->posX;
     else if (cubed->dirX == -1)
@@ -33,20 +31,20 @@ void    draw_wall(t_cubed *cubed, size_t *wall_position)
     uint32_t	colorYellow = ft_pixel(255, 165, 0, 0xFF);
 	uint32_t	colorOrange = ft_pixel(255, 140, 0, 0xFF);
 	uint32_t	color;
-    size_t y = 0;
-    size_t x = 0;
-	(void)wall_position;
+    size_t		x;
+    size_t 		y;
+	double	wall_height;
+
     double	max_length = length_to_map_edge(cubed);
 	if (cubed->side == true)
 		color = colorOrange;
 	else
 		color = colorYellow;
-
-    printf("ray_length: %f\n", cubed->current_ray_length);
-    printf("max_length: %f\n", max_length);
-	printf("wall_pos: %ld\n", *wall_position);
-
-    while (y < cubed->screen_height * (cubed->current_ray_length / max_length))
+	wall_height = cubed->screen_height * (1 - cubed->current_ray_length / max_length);
+	x = 0;
+	y = (cubed->screen_height / 2) - (wall_height / 2);
+	wall_height += y;
+    while (y < wall_height)
 	{
         x = *wall_position;
         while (x < (*wall_position) + 8)

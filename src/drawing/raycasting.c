@@ -53,13 +53,13 @@ static bool	ray_hits_wall(t_cubed *cubed, double x_target, double y_target)
 
 static t_hit	is_hit(t_cubed *cubed, double player_to_grid_x, double player_to_grid_y, bool x_ray_is_shortest)
 {
-	uint32_t	colorOrange = ft_pixel(255, 140, 0, 0xFF);
+	// uint32_t	colorOrange = ft_pixel(255, 140, 0, 0xFF);
 	double		pa = cubed->pa + cubed->fov;
 	double		x;
 	double		y;
-	double		dot_thickness;
+	// double		dot_thickness;
 
-	dot_thickness = 2;
+	// dot_thickness = 2;
 	x = 0;
 	y = 0;
 	if (x_ray_is_shortest) // if true the x-ray has a hit, that means a wall is hit horizontally
@@ -68,7 +68,7 @@ static t_hit	is_hit(t_cubed *cubed, double player_to_grid_x, double player_to_gr
 		y = cubed->posY + player_to_grid_x * sin(pa) / cos(pa);	// y-coordinate of hit
 		if (ray_hits_wall(cubed, x, y)) // change name
 		{
-			drawPoint(cubed, x, y, colorOrange, dot_thickness); // we want to move these to another function to draw everything at once
+			// drawPoint(cubed, x, y, colorOrange, dot_thickness); // we want to move these to another function to draw everything at once
 			
             cubed->side = true;
 			return (x_ray_hit);
@@ -80,7 +80,7 @@ static t_hit	is_hit(t_cubed *cubed, double player_to_grid_x, double player_to_gr
 		y = cubed->posY + player_to_grid_y;						// y-coordinate of hit
 		if (ray_hits_wall(cubed, x, y))
 		{
-			drawPoint(cubed, x, y, colorOrange, dot_thickness);	// we want to move these to another function to draw everything at once
+			// drawPoint(cubed, x, y, colorOrange, dot_thickness);	// we want to move these to another function to draw everything at once
 			// draw_wall(cubed, Ax, Ay, x);			// we want to move these to another function to draw everything at once
 			cubed->side = false;
 			return (y_ray_hit);
