@@ -11,8 +11,8 @@
 # include "../lib/libft/ft_printf/ft_printf.h"
 # include "../lib/MLX42/include/MLX42/MLX42.h"
 
-#define column 7
-#define row 7
+#define column 8
+#define row 8
 
 // enum
 typedef enum e_hit
