@@ -27,7 +27,7 @@ SRCS	:= \
 	src/drawing/mini_map.c \
 	src/drawing/hooks.c \
 	src/drawing/raycasting.c \
-	src/drawing/get_player_to_grid.c \
+	src/drawing/getters.c \
 	src/drawing/start_cubed.c
 # src/drawing/temp_maps.c
 

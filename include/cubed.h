@@ -111,5 +111,6 @@ void 	draw_screen(t_cubed *cubed);
 void	reset_settings(t_cubed *cubed);
 int32_t start_cubed(void);
 void    draw_wall(t_cubed *cubed, size_t *wall_position);
+double   get_length_to_map_edge(t_cubed *cubed);
 
 #endif

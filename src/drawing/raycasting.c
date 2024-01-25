@@ -3,10 +3,10 @@
 static int worldMap[column][row]=
 {
 	{1, 1, 1, 1, 1, 1, 1, 1},
-	{1, 1, 0, 0, 1, 0, 0, 1},
 	{1, 0, 0, 0, 0, 0, 0, 1},
-	{1, 0, 1, 0, 0, 0, 0, 1},
-	{1, 0, 1, 0, 0, 0, 0, 1},
+	{1, 0, 0, 0, 0, 0, 0, 1},
+	{1, 0, 0, 0, 0, 0, 0, 1},
+	{1, 0, 0, 0, 0, 0, 0, 1},
 	{1, 0, 0, 0, 0, 0, 0, 1},
 	{1, 0, 0, 0, 0, 0, 0, 1},
 	{1, 1, 1, 1, 1, 1, 1, 1}
@@ -58,9 +58,11 @@ static bool	x_ray_is_shortest(t_cubed *cubed, double player_to_grid_x, double pl
 
 static bool	ray_hits_wall(t_cubed *cubed, double x_target, double y_target)
 {
-	int	x;
-	int	y;
+	size_t	x;
+	size_t	y;
+	int		addition;
 
+	addition = 1;
 	y = 0;
 	while (y < column)
 	{
@@ -69,8 +71,10 @@ static bool	ray_hits_wall(t_cubed *cubed, double x_target, double y_target)
 		{
 			if (worldMap[y][x] == 1)
 			{
-				if ((x_target >= x * cubed->grid_width  && x_target <= (x + 1) * cubed->grid_width + 1) &&
-						(y_target >= y * cubed->grid_height && y_target <= (y + 1) * cubed->grid_height + 1))
+				printf("%f < x_target: %f < %f\n",  x * cubed->grid_width, x_target, (x + 1) * cubed->grid_width + addition);
+				printf("%f < y_target: %f < %f\n",  y * cubed->grid_height, y_target, (y + 1) * cubed->grid_height + addition);
+				if ((x_target >= x * cubed->grid_width  && x_target < (x + 1) * cubed->grid_width + addition) &&
+						(y_target >= y * cubed->grid_height && y_target < (y + 1) * cubed->grid_height + addition))
 					return (true);
 			}
 			x++;

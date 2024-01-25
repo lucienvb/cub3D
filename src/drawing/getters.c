@@ -1,5 +1,26 @@
 #include "../../include/cubed.h"
 
+double   get_length_to_map_edge(t_cubed *cubed)
+{
+    double  x_length;
+    double  y_length;
+
+    if (cubed->dirX == 1)
+        x_length = cubed->mini_map_width - cubed->posX;
+    else if (cubed->dirX == -1)
+        x_length = cubed->mini_map_width - (cubed->mini_map_width - cubed->posX);
+    else
+        x_length = 0;
+    if (cubed->dirY == 1)
+        y_length = cubed->mini_map_height - cubed->posY;
+    else if (cubed->dirY == -1)
+        y_length = cubed->mini_map_height - (cubed->mini_map_height - cubed->posY);
+    else
+        y_length = 0;
+    
+    return (sqrt(x_length * x_length + y_length * y_length));
+}
+
 static void	get_ray_direction(t_cubed *cubed, double pa)
 {
 	if (pa > 2 * M_PI)
