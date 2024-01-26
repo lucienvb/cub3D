@@ -1,33 +1,5 @@
 #include "../../include/cubed.h"
 
-double   get_length_to_map_edge(t_cubed *cubed)
-{
-	double  x_length;
-    double  y_length;
-
-	x_length = 0;
-	y_length = 0;
-    if (cubed->dirX == 1)
-        x_length = cubed->mini_map_width - cubed->posX;
-    else if (cubed->dirX == -1)
-        x_length = cubed->posX;
-    else
-        x_length = 0;
-    if (cubed->dirY == 1)
-        y_length = cubed->mini_map_height - cubed->posY;
-    else if (cubed->dirY == -1)
-        y_length = cubed->posY;
-    else
-	{
-        y_length = 0;
-
-	}
-    
-	printf("get => %f, %f (x_length, y_length)\t", x_length, y_length);
-
-    return (sqrt((x_length * x_length) + (y_length * y_length)));
-}
-
 static void	get_ray_direction(t_cubed *cubed, double pa)
 {
 	if (pa > 2 * M_PI)
@@ -61,7 +33,7 @@ void	get_player_to_grid(t_cubed *cubed, double *player_to_grid_x, double *player
 		*player_to_grid_y = 0;
 
 	while (*player_to_grid_x >= 0)
-		*player_to_grid_x -= cubed->grid_width;
+		*player_to_grid_x -= cubed->grid_width ;
 	if (cubed->dirX == 1)
 		*player_to_grid_x *= -1;
 	
