@@ -60,6 +60,7 @@ typedef struct s_cubed
 	double	perp_wall_dist;
 	bool	side;
 	bool	raycasting_is_done;
+	double	diff;
 
 }			t_cubed;
 
@@ -111,5 +112,6 @@ void 	draw_screen(t_cubed *cubed);
 void	reset_settings(t_cubed *cubed);
 int32_t start_cubed(void);
 void    draw_wall(t_cubed *cubed, size_t *wall_position);
+void	get_perp_wall_dist(t_cubed *cubed, bool x_ray_is_shortest);
 
 #endif

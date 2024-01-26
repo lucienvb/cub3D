@@ -48,14 +48,11 @@ static bool	x_ray_is_shortest(t_cubed *cubed, double player_to_grid_x, double pl
 
 	pa = cubed->pa + cubed->fov;
 
-
-
 	y_calc_x_ray = player_to_grid_x * sin(pa) / cos(pa);
 	x_calc_y_ray = player_to_grid_y * cos(pa) / sin(pa);
+
 	cubed->x_ray_length = sqrt(player_to_grid_x * player_to_grid_x + y_calc_x_ray * y_calc_x_ray);
 	cubed->y_ray_length = sqrt(x_calc_y_ray * x_calc_y_ray + player_to_grid_y * player_to_grid_y);
-
-	// double	diff = cubed->x_ray_length - cubed->y_ray_length;
 
 	if (cubed->x_ray_length < cubed->y_ray_length)
 		return (true);
@@ -99,12 +96,18 @@ static t_hit	is_hit(t_cubed *cubed, double player_to_grid_x, double player_to_gr
 	double		y;
 	
 	uint32_t	colorOrange = ft_pixel(255, 140, 0, 0xFF);
-	uint32_t	colorBlue = ft_pixel(0, 0, 255, 0xFF);
+	uint32_t	colorYellow = ft_pixel(0, 0, 255, 0xFF);
 	double		dot_thickness;
-	dot_thickness = 2;
+	dot_thickness = 3;
 
 	x = 0;
 	y = 0;
+	// double	diff;
+	// diff = cubed->x_ray_length - cubed->y_ray_length;
+	// if (diff < 0)
+	// 	diff *= -1;
+	// if (diff < 1)
+	// 	return (no_hit);
 	if (x_ray_is_shortest) // if true the x-ray has a hit, that means a wall is hit horizontally
 	{
 		x = cubed->posX + player_to_grid_x;						// x-coordinate of hit
@@ -123,27 +126,12 @@ static t_hit	is_hit(t_cubed *cubed, double player_to_grid_x, double player_to_gr
 		y = cubed->posY + player_to_grid_y;						// y-coordinate of hit
 		if (ray_hits_wall(cubed, x, y))
 		{
-			drawPoint(cubed, x, y, colorBlue, dot_thickness);	// we want to move these to another function to draw everything at once
+			drawPoint(cubed, x, y, colorYellow, dot_thickness);	// we want to move these to another function to draw everything at once
 			cubed->side = false;
 			return (y_ray_hit);
 		}
 	}
 	return (no_hit);
-}
-
-void	get_perp_wall_dist(t_cubed *cubed, bool x_ray_is_shortest)
-{
-	double	temp_fov;
-	double	current_ray_length;
-
-	temp_fov = cubed->fov;
-	if (temp_fov < 0)
-		temp_fov *= -1;
-	if (x_ray_is_shortest)
-		current_ray_length = cubed->x_ray_length;
-	else
-		current_ray_length = cubed->y_ray_length;
-	cubed->perp_wall_dist = cos(temp_fov) * current_ray_length;
 }
 
 static void	ray_loop(t_cubed *cubed, double player_to_grid_x, double player_to_grid_y, size_t *wall_position)

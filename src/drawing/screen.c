@@ -22,10 +22,10 @@ void    draw_wall(t_cubed *cubed, size_t *wall_position)
 	// printf("ray_len: %f\t", cubed->current_ray_length);
 	// printf("max_len: %f\t",max_length);
 	// printf("ray_len / max_len: %f\n", cubed->current_ray_length / max_length);
-	// printf("ray_len: %f\n", cubed->current_ray_length);
+	// printf("ray_len: %f\n", cubed->5_ray_length);
 
 	wall_height = cubed->screen_height / cubed->perp_wall_dist * 10;
-	x = 1;
+	x = 0;
 	y = (cubed->screen_height / 2) - (wall_height / 2);
 	double	end_y = (cubed->screen_height / 2) + (wall_height / 2);
     while (y < end_y)
@@ -82,7 +82,7 @@ void	drawPoint(t_cubed *cubed, double posX, double posY, uint32_t color, int thi
 			if ((x > posX - thickness && x < posX + thickness)
 						&& (y > posY - thickness && y < posY + thickness)
 						&& (x != posX && y != posY))
-					mlx_put_pixel(cubed->image, round(x), round(y) + cubed->mini_map_start_y, color);
+					mlx_put_pixel(cubed->image, x, y + cubed->mini_map_start_y, color);
 			x++;
 		}
 		y++;

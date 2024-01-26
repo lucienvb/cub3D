@@ -35,16 +35,16 @@ void hooks(void* param)
 	// }
 	if (mlx_is_key_down(cubed->mlx, MLX_KEY_LEFT)) // change screen to the left
 	{
-		cubed->pa -= 0.05;
+		cubed->pa -= 0.03;
 		if (cubed->pa < 0)
 			cubed->pa += 2 * M_PI;
-		cubed->stepX = cos(cubed->pa)	* 2;
+		cubed->stepX = cos(cubed->pa) * 2;
 		cubed->stepY = sin(cubed->pa) * 2;
 		reset_settings(cubed);
 	}
 	if (mlx_is_key_down(cubed->mlx, MLX_KEY_RIGHT)) // change screen to the right
 	{
-		cubed->pa += 0.05;
+		cubed->pa += 0.03;
 		if (cubed->pa > 2 * M_PI)
 			cubed->pa -= 2 * M_PI;
 		cubed->stepX = cos(cubed->pa)	* 2;
