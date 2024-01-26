@@ -14,7 +14,6 @@ void    draw_wall(t_cubed *cubed, size_t *wall_position)
     size_t 		y;
 	double	wall_height;
 
-    // double	max_length = get_length_to_map_edge(cubed, first_dirX, first_dirY);
 	if (cubed->side == true)
 		color = colorOrange;
 	else
@@ -24,15 +23,16 @@ void    draw_wall(t_cubed *cubed, size_t *wall_position)
 	// printf("max_len: %f\t",max_length);
 	// printf("ray_len / max_len: %f\n", cubed->current_ray_length / max_length);
 	// printf("ray_len: %f\n", cubed->current_ray_length);
-	wall_height = cubed->screen_height / cubed->current_ray_length * 10;
+
+	wall_height = cubed->screen_height / cubed->perp_wall_dist * 10;
 	x = 1;
-	// y = (cubed->screen_height / 2) - (wall_height / 2);
 	y = (cubed->screen_height / 2) - (wall_height / 2);
-	// wall_height += y;
 	double	end_y = (cubed->screen_height / 2) + (wall_height / 2);
     while (y < end_y)
 	{
         x = *wall_position;
+		if (x >= cubed->screen_width)
+			break ;
         while (x < (*wall_position) + 8)
         {
 		    mlx_put_pixel(cubed->image, x, y, color);

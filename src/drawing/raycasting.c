@@ -7,7 +7,7 @@ static int worldMap[column][row]=
 	{1, 0, 0, 0, 0, 0, 0, 1},
 	{1, 0, 0, 0, 0, 0, 0, 1},
 	{1, 0, 0, 0, 0, 0, 0, 1},
-	{1, 0, 0, 0, 0, 0, 0, 1},
+	{1, 0, 1, 1, 1, 0, 0, 1},
 	{1, 0, 0, 0, 0, 0, 0, 1},
 	{1, 1, 1, 1, 1, 1, 1, 1}
 };
@@ -48,26 +48,17 @@ static bool	x_ray_is_shortest(t_cubed *cubed, double player_to_grid_x, double pl
 
 	pa = cubed->pa + cubed->fov;
 
-	double	x_addition;
-	double	y_addition;
-	x_addition = 0;
-	y_addition = 0;
-	// if (cubed->dirX == -1)
-	// 	x_addition = 10;
-	// if (cubed->dirY == -1)
-	// 	y_addition = 10;
+
 
 	y_calc_x_ray = player_to_grid_x * sin(pa) / cos(pa);
 	x_calc_y_ray = player_to_grid_y * cos(pa) / sin(pa);
 	cubed->x_ray_length = sqrt(player_to_grid_x * player_to_grid_x + y_calc_x_ray * y_calc_x_ray);
 	cubed->y_ray_length = sqrt(x_calc_y_ray * x_calc_y_ray + player_to_grid_y * player_to_grid_y);
 
-	if (cubed->x_ray_length + x_addition < cubed->y_ray_length + y_addition)
-    {
-        cubed->current_ray_length = cubed->x_ray_length;
+	// double	diff = cubed->x_ray_length - cubed->y_ray_length;
+
+	if (cubed->x_ray_length < cubed->y_ray_length)
 		return (true);
-    }
-    cubed->current_ray_length = cubed->y_ray_length;
 	return (false);
 }
 
@@ -140,6 +131,21 @@ static t_hit	is_hit(t_cubed *cubed, double player_to_grid_x, double player_to_gr
 	return (no_hit);
 }
 
+void	get_perp_wall_dist(t_cubed *cubed, bool x_ray_is_shortest)
+{
+	double	temp_fov;
+	double	current_ray_length;
+
+	temp_fov = cubed->fov;
+	if (temp_fov < 0)
+		temp_fov *= -1;
+	if (x_ray_is_shortest)
+		current_ray_length = cubed->x_ray_length;
+	else
+		current_ray_length = cubed->y_ray_length;
+	cubed->perp_wall_dist = cos(temp_fov) * current_ray_length;
+}
+
 static void	ray_loop(t_cubed *cubed, double player_to_grid_x, double player_to_grid_y, size_t *wall_position)
 {
 	bool		xRay_is_shortest_bool;
@@ -151,17 +157,24 @@ static void	ray_loop(t_cubed *cubed, double player_to_grid_x, double player_to_g
 	{
 		xRay_is_shortest_bool = x_ray_is_shortest(cubed, player_to_grid_x, player_to_grid_y);
 		is_hit_result = is_hit(cubed, player_to_grid_x, player_to_grid_y, xRay_is_shortest_bool);
+		double	diff = cubed->x_ray_length - cubed->y_ray_length;
+		if (diff < 0)
+			diff *= -1;
 		if (!xRay_is_shortest_bool && is_hit_result == y_ray_hit)
         {
-			printf("y_ray has a hit\t");
+			printf("y_ray hits |\t");
+			printf("diff: %f |\t", diff);
 			printf("x_ray_len: %f, y_ray_len: %f\n", cubed->x_ray_length, cubed->y_ray_length);
+			get_perp_wall_dist(cubed, 0);
             draw_wall(cubed, wall_position);
 			return ;
         }
 		else if (xRay_is_shortest_bool && is_hit_result == x_ray_hit)
 		{
-			printf("x_ray has a hit\t");
+			printf("x_ray hits |\t");
+			printf("diff: %f |\t", diff);
 			printf("x_ray_len: %f, y_ray_len: %f\n", cubed->x_ray_length, cubed->y_ray_length);
+			get_perp_wall_dist(cubed, 1);
             draw_wall(cubed, wall_position);
 			return ;
         }

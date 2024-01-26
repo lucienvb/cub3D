@@ -33,7 +33,7 @@ void	get_player_to_grid(t_cubed *cubed, double *player_to_grid_x, double *player
 		*player_to_grid_y = 0;
 
 	while (*player_to_grid_x >= 0)
-		*player_to_grid_x -= cubed->grid_width ;
+		*player_to_grid_x -= cubed->grid_width;
 	if (cubed->dirX == 1)
 		*player_to_grid_x *= -1;
 	

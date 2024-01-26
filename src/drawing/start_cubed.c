@@ -18,7 +18,7 @@ void	reset_settings(t_cubed *cubed)
 static bool	initialize_cubed(t_cubed *cubed)
 {
 	// screen variables
-	cubed->screen_width = 840;
+	cubed->screen_width = 800;
 	cubed->screen_height = 800;
 	cubed->mini_map_width = 300;
 	cubed->mini_map_height = 300;
@@ -39,7 +39,6 @@ static bool	initialize_cubed(t_cubed *cubed)
 	cubed->raycasting_is_done = false;
 	cubed->x_ray_length = 0;
 	cubed->y_ray_length = 0;
-    cubed->current_ray_length = 0;
 	cubed->side = false;
 	cubed->player_to_grid_x = 0;
 	cubed->player_to_grid_y = 0;
