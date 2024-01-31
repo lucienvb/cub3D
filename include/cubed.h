@@ -13,6 +13,8 @@
 
 #define column 8
 #define row 8
+// #define column 24
+// #define row 24
 
 // enum
 typedef enum e_hit

@@ -154,18 +154,18 @@ static void	ray_loop(t_cubed *cubed, double player_to_grid_x, double player_to_g
 			diff *= -1;
 		if (!xRay_is_shortest_bool && is_hit_result == y_ray_hit)
         {
-			printf("y_ray hits |\t");
-			printf("diff: %f |\t", diff);
-			printf("x_ray_len: %f, y_ray_len: %f\n", cubed->x_ray_length, cubed->y_ray_length);
+			// printf("y_ray hits |\t");
+			// printf("diff: %f |\t", diff);
+			// printf("x_ray_len: %f, y_ray_len: %f\n", cubed->x_ray_length, cubed->y_ray_length);
 			get_perp_wall_dist(cubed, 0);
             draw_wall(cubed, wall_position);
 			return ;
         }
 		else if (xRay_is_shortest_bool && is_hit_result == x_ray_hit)
 		{
-			printf("x_ray hits |\t");
-			printf("diff: %f |\t", diff);
-			printf("x_ray_len: %f, y_ray_len: %f\n", cubed->x_ray_length, cubed->y_ray_length);
+			// printf("x_ray hits |\t");
+			// printf("diff: %f |\t", diff);
+			// printf("x_ray_len: %f, y_ray_len: %f\n", cubed->x_ray_length, cubed->y_ray_length);
 			get_perp_wall_dist(cubed, 1);
             draw_wall(cubed, wall_position);
 			return ;
@@ -205,19 +205,22 @@ void	raycasting(t_cubed *cubed)
     size_t  wall_position;
 
 	printf("\nnew raycasting cycle\n\n");
+	printf("max pos (%f, %f)\n", cubed->map_width, cubed->map_height);
     wall_position = 0;
-	iterations = 0.01;
 
+	cubed->mapX = (int)cubed->posX;
+	cubed->mapY = (int)cubed->posY;
 	// int	x;
 
 	// x = 0;
-	// iterations = 0.0015625
-	// while (x < cubed->screen_width)
+	iterations = 0.0015625;
+	iterations = 0.01;
 	cubed->fov = M_PI / -6;
 	while (cubed->fov <= M_PI / 6)
+	// while (x < cubed->screen_width)
 	{
 		get_player_to_grid(cubed, &cubed->player_to_grid_x, &cubed->player_to_grid_y);
-		printf("ptg (%f, %f)\t", cubed->player_to_grid_x, cubed->player_to_grid_y);
+		// printf("ptg (%f, %f)\t", cubed->player_to_grid_x, cubed->player_to_grid_y);
 		ray_loop(cubed, cubed->player_to_grid_x, cubed->player_to_grid_y, &wall_position);
 		cubed->fov += iterations;
 		// x++;

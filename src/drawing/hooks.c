@@ -14,6 +14,7 @@ void hooks(void* param)
 		{
 			cubed->posX += cubed->stepX;
 			cubed->posY += cubed->stepY;
+			printf("pos (%f, %f\n)", cubed->posX, cubed->posY);
 
 		}
 		reset_settings(cubed);
@@ -24,6 +25,7 @@ void hooks(void* param)
 		{
 			cubed->posX -= cubed->stepX;
 			cubed->posY	-= cubed->stepY;
+			printf("pos (%f, %f\n)", cubed->posX, cubed->posY);
 		}
 		reset_settings(cubed);
 	}
@@ -38,8 +40,9 @@ void hooks(void* param)
 		cubed->pa -= 0.03;
 		if (cubed->pa < 0)
 			cubed->pa += 2 * M_PI;
-		cubed->stepX = cos(cubed->pa) * 2;
-		cubed->stepY = sin(cubed->pa) * 2;
+		cubed->stepX = cos(cubed->pa) * 0.01;
+		cubed->stepY = sin(cubed->pa) * 0.01;
+		printf("step (%f, %f\n)", cubed->stepX, cubed->stepY);
 		reset_settings(cubed);
 	}
 	if (mlx_is_key_down(cubed->mlx, MLX_KEY_RIGHT)) // change screen to the right
@@ -47,8 +50,9 @@ void hooks(void* param)
 		cubed->pa += 0.03;
 		if (cubed->pa > 2 * M_PI)
 			cubed->pa -= 2 * M_PI;
-		cubed->stepX = cos(cubed->pa) * 2;
-		cubed->stepY = sin(cubed->pa) * 2;
+		cubed->stepX = cos(cubed->pa) * 0.01;
+		cubed->stepY = sin(cubed->pa) * 0.01;
+		printf("step (%f, %f\n)", cubed->stepX, cubed->stepY);
 		reset_settings(cubed);
 	}
 }
