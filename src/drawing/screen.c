@@ -24,7 +24,8 @@ void    draw_wall(t_cubed *cubed, size_t *wall_position)
 	// printf("ray_len / max_len: %f\n", cubed->current_ray_length / max_length);
 	// printf("ray_len: %f\n", cubed->5_ray_length);
 
-	wall_height = cubed->screen_height / cubed->perp_wall_dist * 10;
+	wall_height = cubed->screen_height / cubed->perp_wall_dist / 10;
+	printf("{wall_heigth=%f}\n", wall_height);
 	x = 0;
 	y = (cubed->screen_height / 2) - (wall_height / 2);
 	double	end_y = (cubed->screen_height / 2) + (wall_height / 2);

@@ -10,7 +10,7 @@ void hooks(void* param)
 		mlx_close_window(cubed->mlx);
 	if (mlx_is_key_down(cubed->mlx, MLX_KEY_W)) // move forward (zoom isn)
 	{
-		if (cubed->posX < cubed->mini_map_width - cubed->stepX && cubed->posY < cubed->mini_map_height - cubed->stepY) 
+		if (cubed->posX < cubed->map_width - cubed->stepX && cubed->posY < cubed->map_height - cubed->stepY) 
 		{
 			cubed->posX += cubed->stepX;
 			cubed->posY += cubed->stepY;
@@ -47,7 +47,7 @@ void hooks(void* param)
 		cubed->pa += 0.03;
 		if (cubed->pa > 2 * M_PI)
 			cubed->pa -= 2 * M_PI;
-		cubed->stepX = cos(cubed->pa)	* 2;
+		cubed->stepX = cos(cubed->pa) * 2;
 		cubed->stepY = sin(cubed->pa) * 2;
 		reset_settings(cubed);
 	}

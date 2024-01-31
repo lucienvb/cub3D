@@ -37,6 +37,8 @@ typedef struct s_cubed
 	mlx_image_t	*image;
 	double		screen_width;
 	double		screen_height;
+	double		map_width;
+	double		map_height;
 	double		mini_map_width;
 	double		mini_map_height;
 	double		mini_map_start_y;
@@ -61,6 +63,8 @@ typedef struct s_cubed
 	bool	side;
 	bool	raycasting_is_done;
 	double	diff;
+	int		mapX;
+	int		mapY;
 
 }			t_cubed;
 
