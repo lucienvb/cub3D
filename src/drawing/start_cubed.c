@@ -3,15 +3,15 @@
 void draw_screen(t_cubed *cubed)
 {
 	draw_floor_and_ceiling(cubed);
-	// mini_map(cubed);
 	raycasting(cubed);
-	cubed->draw_screen = false;
+	mini_map(cubed);
+	// cubed->draw_screen = false;
 }
 
 void	reset_settings(t_cubed *cubed)
 {
-	cubed->raycasting_is_done = false;
-	cubed->draw_screen = true;
+	// cubed->raycasting_is_done = false;
+	// cubed->draw_screen = true;
 	draw_screen(cubed);
 }
 
@@ -22,21 +22,23 @@ static bool	initialize_cubed(t_cubed *cubed)
 	cubed->screen_height = 480;
 	cubed->map_width = (double)column;
 	cubed->map_height = (double)row;
-	cubed->mini_map_width = 200;
-	cubed->mini_map_height = 200;
+	cubed->mini_map_width = 150;
+	cubed->mini_map_height = 150;
 	cubed->mini_map_start_y = cubed->screen_height - cubed->mini_map_height;
+	// cubed->multiplier_mini_map_x = cubed->mini_map_width / column;
+	// cubed->multiplier_mini_map_y = cubed->mini_map_height / row;
 	cubed->grid_width = cubed->mini_map_width / (double)row;
 	cubed->grid_height = cubed->mini_map_height / (double)column;
 	cubed->draw_screen = true;
 
 	// player variables
-	cubed->posX = 3.5;
+	cubed->posX = 6;
 	cubed->posY = 3.3;
 	cubed->mapX = 0;
 	cubed->mapY = 0;
 	cubed->dirX = 0.0;
 	cubed->dirY = 0.0;
-	cubed->pa = 1.5 * M_PI;
+	cubed->pa = 0;
 	cubed->fov = 0;
 	cubed->stepX = 0;
 	cubed->stepY = 0;

@@ -44,6 +44,8 @@ typedef struct s_cubed
 	double		mini_map_width;
 	double		mini_map_height;
 	double		mini_map_start_y;
+	// double		multiplier_mini_map_x;
+	// double		multiplier_mini_map_y;
 	double		grid_width;
 	double		grid_height;
 	bool		draw_screen;

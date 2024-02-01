@@ -39,15 +39,27 @@ void	get_player_to_grid(t_cubed *cubed, double *player_to_grid_x, double *player
 
 
 	if (cubed->dirX == 1)
+	{
+		// cubed->mapX++;
 		*player_to_grid_x = cubed->posX;
+	}
 	else if (cubed->dirX == -1)
+	{
+		// cubed->mapX--;
 		*player_to_grid_x = cubed->map_width - cubed->posX;
+	}
 	else // not sure about this
 		*player_to_grid_x = 0;
 	if (cubed->dirY == 1)
+	{
+		// cubed->mapY++;
 		*player_to_grid_y = cubed->posY;
+	}
 	else if (cubed->dirY == -1)
+	{
+		// cubed->mapY--;
 		*player_to_grid_y = cubed->map_height - cubed->posY;
+	}
 	else // not sure about this
 		*player_to_grid_y = 0;
 

@@ -5,9 +5,9 @@ static int worldMap[column][row]=
 	{1, 1, 1, 1, 1, 1, 1, 1},
 	{1, 0, 0, 0, 0, 0, 0, 1},
 	{1, 0, 0, 0, 1, 1, 0, 1},
-	{1, 0, 0, 0, 0, 1, 1, 1},
-	{1, 0, 0, 0, 0, 0, 0, 1},
-	{1, 0, 1, 1, 1, 0, 0, 1},
+	{1, 0, 0, 0, 0, 1, 0, 1},
+	{1, 0, 0, 0, 0, 1, 0, 1},
+	{1, 0, 1, 1, 0, 0, 0, 1},
 	{1, 0, 0, 0, 0, 0, 0, 1},
 	{1, 1, 1, 1, 1, 1, 1, 1}
 };
@@ -60,21 +60,31 @@ static void	player(t_cubed *cubed)
 	uint32_t colorGreen = ft_pixel(60, 179, 113, 0xFF);
 	double	player_size;
 	double	visor_thickness;
+	double	player_posX;
+	double	player_posY;
+
+	// player_posX = cubed->posX * cubed->multiplier_mini_map_x;
+	// player_posY = cubed->posY * cubed->multiplier_mini_map_y;
+	player_posX = cubed->posX / column * cubed->mini_map_width;
+	player_posY = cubed->posY / row * cubed->mini_map_height;
+
+	// printf("pos (%f, %f)\n", cubed->posX, cubed->posY);
+	// printf("player_pos (%f, %f)\n", player_posX, player_posY);
 
 	player_size = 4;
 	visor_thickness = 1.5;
 	int	y = 0;
-	while (y < cubed->mini_map_height && cubed->posY > 0 && cubed->posY < cubed->mini_map_height)
+	while (y < cubed->mini_map_height && player_posY > 0 && player_posY < cubed->mini_map_height)
 	{
 		int x = 0;
-		while (x < cubed->mini_map_width && cubed->posX > 0 && cubed->posX < cubed->mini_map_width)
+		while (x < cubed->mini_map_width && player_posX > 0 && player_posX < cubed->mini_map_width)
 		{
-			if ((x > cubed->posX - player_size && x < cubed->posX + player_size)
-					&& (y > cubed->posY - player_size && y < cubed->posY + player_size))
+			if ((x > player_posX - player_size && x < player_posX + player_size)
+					&& (y > player_posY - player_size && y < player_posY + player_size))
 			{
 				mlx_put_pixel(cubed->image, x, y + cubed->mini_map_start_y, colorGreen);
-				if ((x > cubed->posX - visor_thickness && x < cubed->posX + visor_thickness)
-					&& (y > cubed->posY - visor_thickness && y < cubed->posY + visor_thickness))
+				if ((x > player_posX - visor_thickness && x < player_posX + visor_thickness)
+					&& (y > player_posY - visor_thickness && y < player_posY + visor_thickness))
 					draw_visor(x, y + cubed->mini_map_start_y, cubed);
 			}
 			x++;
@@ -97,11 +107,11 @@ static void	draw_black_background(t_cubed *cubed)
 	while (y < cubed->screen_height)
 	{
 		x = 0;
-		while (x < cubed->mini_map_width - 6)
+		while (x < cubed->mini_map_width)
 		{
 			if (y == cubed->screen_height - cubed->mini_map_height || 
 					y == cubed->screen_height -1 || x == 0 ||
-					x == cubed->mini_map_width - 7)
+					x == cubed->mini_map_width -1)
 				mlx_put_pixel(cubed->image, x, y, colorBlue);
 			else
 				mlx_put_pixel(cubed->image, x, y, colorBlack);
@@ -115,7 +125,7 @@ static void	draw_black_background(t_cubed *cubed)
 void	mini_map(t_cubed *cubed)
 {
 	// uint32_t colorBlack = ft_pixel(0, 0, 0, 0xFF);
-	uint32_t colorWhite = ft_pixel(255, 255, 255, 0xFF);
+	uint32_t colorLightGrey = ft_pixel(218, 223, 225, 0xFF);
 	int	y;
 	int	border;
 
@@ -140,7 +150,7 @@ void	mini_map(t_cubed *cubed)
 			if (worldMap[y][x] == 1)
 			{
 				draw_color_stripe((int) startX + border, (int) endX - border, (int) startY + border, 
-					(int) endY - border, colorWhite, cubed);
+					(int) endY - border, colorLightGrey, cubed);
 			}
 			startX = endX;
 			endX += stepX;

@@ -24,7 +24,7 @@ void    draw_wall(t_cubed *cubed, size_t *wall_position)
 	// printf("ray_len / max_len: %f\n", cubed->current_ray_length / max_length);
 	// printf("ray_len: %f\n", cubed->5_ray_length);
 
-	wall_height = cubed->screen_height / cubed->perp_wall_dist / 10;
+	wall_height = cubed->screen_height / cubed->perp_wall_dist * 0.5;
 	// printf("{wall_heigth=%f}\n", wall_height);
 	x = 0;
 	y = (cubed->screen_height / 2) - (wall_height / 2);
@@ -34,14 +34,14 @@ void    draw_wall(t_cubed *cubed, size_t *wall_position)
         x = *wall_position;
 		if (x >= cubed->screen_width)
 			break ;
-        while (x < (*wall_position) + 8)
+        while (x < (*wall_position) + 4)
         {
 		    mlx_put_pixel(cubed->image, x, y, color);
             x++;
         }
 		y++;
 	}
-	*wall_position += 8;
+	*wall_position += 4;
 }
 
 void draw_color_stripe(int32_t startX, int32_t endX, int32_t startY, int32_t endY, uint32_t color, t_cubed *cubed)
