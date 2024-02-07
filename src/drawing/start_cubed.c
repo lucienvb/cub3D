@@ -3,8 +3,8 @@
 void draw_screen(t_cubed *cubed)
 {
 	draw_floor_and_ceiling(cubed);
-	raycasting(cubed);
 	mini_map(cubed);
+	raycasting(cubed);
 	// cubed->draw_screen = false;
 }
 
@@ -18,7 +18,7 @@ void	reset_settings(t_cubed *cubed)
 static bool	initialize_cubed(t_cubed *cubed)
 {
 	// screen variables
-	cubed->screen_width = 640;
+	cubed->screen_width = 800;
 	cubed->screen_height = 480;
 	cubed->map_width = (double)column;
 	cubed->map_height = (double)row;
