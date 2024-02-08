@@ -22,18 +22,20 @@ static bool	initialize_cubed(t_cubed *cubed)
 	cubed->screen_height = 480;
 	cubed->map_width = (double)column;
 	cubed->map_height = (double)row;
-	cubed->mini_map_width = 150;
-	cubed->mini_map_height = 150;
+	cubed->mini_map_width = 300;
+	cubed->mini_map_height = 300;
 	cubed->mini_map_start_y = cubed->screen_height - cubed->mini_map_height;
 	// cubed->multiplier_mini_map_x = cubed->mini_map_width / column;
 	// cubed->multiplier_mini_map_y = cubed->mini_map_height / row;
-	cubed->grid_width = cubed->mini_map_width / (double)row;
-	cubed->grid_height = cubed->mini_map_height / (double)column;
+	// cubed->grid_width = cubed->mini_map_width / (double)row;
+	// cubed->grid_height = cubed->mini_map_height / (double)column;0
+	cubed->grid_width = 20;
+	cubed->grid_height = 20;
 	cubed->draw_screen = true;
 
 	// player variables
-	cubed->posX = 6;
-	cubed->posY = 3.3;
+	cubed->posX = 1.5;
+	cubed->posY = 1.5;
 	cubed->mapX = 0;
 	cubed->mapY = 0;
 	cubed->dirX = 0.0;

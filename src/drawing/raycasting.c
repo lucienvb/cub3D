@@ -4,13 +4,31 @@ static int worldMap[column][row]=
 {
 	{1, 1, 1, 1, 1, 1, 1, 1},
 	{1, 0, 0, 0, 0, 0, 0, 1},
-	{1, 0, 0, 0, 1, 1, 0, 1},
-	{1, 0, 0, 0, 0, 1, 0, 1},
-	{1, 0, 0, 0, 0, 1, 0, 1},
-	{1, 0, 1, 1, 0, 0, 0, 1},
+	{1, 0, 0, 0, 0, 0, 0, 1},
+	{1, 0, 0, 0, 0, 0, 0, 1},
+	{1, 0, 0, 0, 0, 0, 0, 1},
+	{1, 0, 0, 0, 0, 0, 0, 1},
+	{1, 0, 0, 0, 0, 0, 0, 1},
+	{1, 0, 0, 0, 0, 0, 0, 1},
+	{1, 0, 0, 0, 0, 0, 0, 1},
+	{1, 0, 0, 0, 0, 0, 0, 1},
+	{1, 0, 0, 0, 0, 0, 0, 1},
 	{1, 0, 0, 0, 0, 0, 0, 1},
 	{1, 1, 1, 1, 1, 1, 1, 1}
 };
+
+
+// static int worldMap[column][row]=
+// {
+// 	{1, 1, 1, 1, 1, 1, 1, 1},
+// 	{1, 0, 0, 0, 0, 0, 0, 1},
+// 	{1, 0, 0, 0, 1, 1, 0, 1},
+// 	{1, 0, 0, 0, 0, 1, 0, 1},
+// 	{1, 0, 0, 0, 0, 1, 0, 1},
+// 	{1, 0, 1, 1, 0, 0, 0, 1},
+// 	{1, 0, 0, 0, 0, 0, 0, 1},
+// 	{1, 1, 1, 1, 1, 1, 1, 1}
+// };
 
 // static int worldMap[column][row]=
 // {
@@ -109,8 +127,8 @@ static t_hit	is_hit(t_cubed *cubed, double player_to_grid_x, double player_to_gr
 	printf("maps (%i, %i)\n", cubed->mapX, cubed->mapY);
 	if (x_ray_is_shortest) // if true the x-ray has a hit, that means a wall is hit horizontally
 	{
-		x = (cubed->posX + player_to_grid_x) / column * cubed->mini_map_width;						// x-coordinate of hit
-		y = (cubed->posY + player_to_grid_x * sin(pa) / cos(pa)) / row * cubed->mini_map_height;	// y-coordinate of hit
+		x = ((cubed->posX + player_to_grid_x) * cubed->grid_width);						// x-coordinate of hit
+		y = ((cubed->posY + player_to_grid_x * sin(pa) / cos(pa)) * cubed->grid_height);	// y-coordinate of hit
 		// if (ray_hits_wall(cubed, x, y)) // change name
 		if (worldMap[cubed->mapY][cubed->mapX + (int)cubed->dirX] == 1)
 		{
@@ -122,8 +140,8 @@ static t_hit	is_hit(t_cubed *cubed, double player_to_grid_x, double player_to_gr
 	}
 	else // the y-ray has a hit, that means a wall is hit vertically
 	{
-		x = (cubed->posX + player_to_grid_y * cos(pa) / sin(pa)) / column * cubed->mini_map_width;;	// x-coordinate of hit
-		y = (cubed->posY + player_to_grid_y)  / row * cubed->mini_map_height;						// y-coordinate of hit
+		x = ((cubed->posX + player_to_grid_y * cos(pa) / sin(pa)) * cubed->grid_width);	// x-coordinate of hit
+		y = ((cubed->posY + player_to_grid_y) * cubed->grid_height);						// y-coordinate of hit
 		// if (ray_hits_wall(cubed, x, y))
 		if (worldMap[cubed->mapY + (int)cubed->dirY][cubed->mapX] == 1)
 		{
@@ -154,7 +172,7 @@ static void	ray_loop(t_cubed *cubed, double player_to_grid_x, double player_to_g
 			// printf("diff: %f |\t", diff);
 			// printf("x_ray_len: %f, y_ray_len: %f\n", cubed->x_ray_length, cubed->y_ray_length);
 			get_perp_wall_dist(cubed, 0);
-            draw_wall(cubed, wall_position);
+            // draw_wall(cubed, wall_position);
 			return ;
         }
 		else if (xRay_is_shortest_bool && is_hit_result == x_ray_hit)
@@ -163,7 +181,7 @@ static void	ray_loop(t_cubed *cubed, double player_to_grid_x, double player_to_g
 			// printf("diff: %f |\t", diff);
 			// printf("x_ray_len: %f, y_ray_len: %f\n", cubed->x_ray_length, cubed->y_ray_length);
 			get_perp_wall_dist(cubed, 1);
-            draw_wall(cubed, wall_position);
+            // draw_wall(cubed, wall_position);
 			return ;
         }
 		if (xRay_is_shortest_bool)

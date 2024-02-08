@@ -4,13 +4,30 @@ static int worldMap[column][row]=
 {
 	{1, 1, 1, 1, 1, 1, 1, 1},
 	{1, 0, 0, 0, 0, 0, 0, 1},
-	{1, 0, 0, 0, 1, 1, 0, 1},
-	{1, 0, 0, 0, 0, 1, 0, 1},
-	{1, 0, 0, 0, 0, 1, 0, 1},
-	{1, 0, 1, 1, 0, 0, 0, 1},
+	{1, 0, 0, 0, 0, 0, 0, 1},
+	{1, 0, 0, 0, 0, 0, 0, 1},
+	{1, 0, 0, 0, 0, 0, 0, 1},
+	{1, 0, 0, 0, 0, 0, 0, 1},
+	{1, 0, 0, 0, 0, 0, 0, 1},
+	{1, 0, 0, 0, 0, 0, 0, 1},
+	{1, 0, 0, 0, 0, 0, 0, 1},
+	{1, 0, 0, 0, 0, 0, 0, 1},
+	{1, 0, 0, 0, 0, 0, 0, 1},
 	{1, 0, 0, 0, 0, 0, 0, 1},
 	{1, 1, 1, 1, 1, 1, 1, 1}
 };
+
+// static int worldMap[column][row]=
+// {
+// 	{1, 1, 1, 1, 1, 1, 1, 1},
+// 	{1, 0, 0, 0, 0, 0, 0, 1},
+// 	{1, 0, 0, 0, 1, 1, 0, 1},
+// 	{1, 0, 0, 0, 0, 1, 0, 1},
+// 	{1, 0, 0, 0, 0, 1, 0, 1},
+// 	{1, 0, 1, 1, 0, 0, 0, 1},
+// 	{1, 0, 0, 0, 0, 0, 0, 1},
+// 	{1, 1, 1, 1, 1, 1, 1, 1}
+// };
 
 // static int worldMap[column][row]=
 // {
@@ -65,8 +82,10 @@ static void	player(t_cubed *cubed)
 
 	// player_posX = cubed->posX * cubed->multiplier_mini_map_x;
 	// player_posY = cubed->posY * cubed->multiplier_mini_map_y;
-	player_posX = cubed->posX / column * cubed->mini_map_width;
-	player_posY = cubed->posY / row * cubed->mini_map_height;
+	// player_posX = cubed->posX / column * cubed->mini_map_width;
+	// player_posY = cubed->posY / row * cubed->mini_map_height;
+	player_posX = cubed->posX * cubed->grid_width;
+	player_posY = cubed->posY * cubed->grid_height;
 
 	// printf("pos (%f, %f)\n", cubed->posX, cubed->posY);
 	// printf("player_pos (%f, %f)\n", player_posX, player_posY);
@@ -132,8 +151,8 @@ void	mini_map(t_cubed *cubed)
 	y = 0;
 	border = 1;
 
-	double	stepY = cubed->mini_map_height / column;
-	double	stepX = cubed->mini_map_width / row;
+	double	stepY = cubed->grid_width;
+	double	stepX = cubed->grid_height;
 	double	startY = cubed->screen_height - cubed->mini_map_height;
 	double	endY = startY + stepY;
 
