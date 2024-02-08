@@ -5,14 +5,14 @@ static int worldMap[column][row]=
 	{1, 1, 1, 1, 1, 1, 1, 1},
 	{1, 0, 0, 0, 0, 0, 0, 1},
 	{1, 0, 0, 0, 0, 0, 0, 1},
+	{1, 0, 0, 0, 1, 0, 0, 1},
 	{1, 0, 0, 0, 0, 0, 0, 1},
-	{1, 0, 0, 0, 0, 0, 0, 1},
-	{1, 0, 0, 0, 0, 0, 0, 1},
-	{1, 0, 0, 0, 0, 0, 0, 1},
-	{1, 0, 0, 0, 0, 0, 0, 1},
-	{1, 0, 0, 0, 0, 0, 0, 1},
-	{1, 0, 0, 0, 0, 0, 0, 1},
-	{1, 0, 0, 0, 0, 0, 0, 1},
+	{1, 0, 0, 0, 0, 1, 0, 1},
+	{1, 0, 0, 0, 0, 1, 0, 1},
+	{1, 0, 1, 0, 0, 0, 0, 1},
+	{1, 0, 1, 1, 0, 0, 0, 1},
+	{1, 0, 0, 1, 1, 0, 0, 1},
+	{1, 0, 0, 0, 1, 0, 0, 1},
 	{1, 0, 0, 0, 0, 0, 0, 1},
 	{1, 1, 1, 1, 1, 1, 1, 1}
 };
@@ -123,8 +123,8 @@ static t_hit	is_hit(t_cubed *cubed, double player_to_grid_x, double player_to_gr
 	(void)player_to_grid_x;
 	(void)player_to_grid_y;
 	
-	printf("rays (%f, %f)\n", cubed->x_ray_length, cubed->y_ray_length);
-	printf("maps (%i, %i)\n", cubed->mapX, cubed->mapY);
+	// printf("rays (%f, %f)\n", cubed->x_ray_length, cubed->y_ray_length);
+	// printf("maps (%i, %i)\n", cubed->mapX, cubed->mapY);
 	if (x_ray_is_shortest) // if true the x-ray has a hit, that means a wall is hit horizontally
 	{
 		x = ((cubed->posX + player_to_grid_x) * cubed->grid_width);						// x-coordinate of hit
@@ -239,7 +239,7 @@ void	raycasting(t_cubed *cubed)
 	{
 		cubed->mapX = (int)cubed->posX;
 		cubed->mapY = (int)cubed->posY;
-		printf("maps start (%d, %d)\n", cubed->mapX, cubed->mapY);
+		// printf("maps start (%d, %d)\n", cubed->mapX, cubed->mapY);
 		get_player_to_grid(cubed, &cubed->player_to_grid_x, &cubed->player_to_grid_y);
 		// printf("dirs (%f, %f)\n", cubed->dirX, cubed->dirY);
 		// printf("ptg (%f, %f)\t", cubed->player_to_grid_x, cubed->player_to_grid_y);

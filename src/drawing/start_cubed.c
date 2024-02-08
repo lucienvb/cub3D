@@ -34,8 +34,8 @@ static bool	initialize_cubed(t_cubed *cubed)
 	cubed->draw_screen = true;
 
 	// player variables
-	cubed->posX = 1.5;
-	cubed->posY = 1.5;
+	cubed->posX = 2;
+	cubed->posY = 2;
 	cubed->mapX = 0;
 	cubed->mapY = 0;
 	cubed->dirX = 0.0;
