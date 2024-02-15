@@ -160,7 +160,7 @@ void	mini_map(t_cubed *cubed)
 	// int		tempPosY = (int)cubed->posY - scope;
 	
 
-	printf("pos (%f, %f)\n", cubed->posX, cubed->posY);
+	// printf("pos (%f, %f)\n", cubed->posX, cubed->posY);
 
 	draw_black_background(cubed);
 	while (y < (int)column)

@@ -64,8 +64,7 @@ int32_t start_cubed(void)
 	
 	if (!initialize_cubed(&cubed))
 		return (1);
-	printf("mini map (%f, %f)\n", cubed.mini_map_width, cubed.mini_map_height);
-	if (!(cubed.mlx = mlx_init(cubed.mini_map_width, cubed.mini_map_height, "MLX42", true)))
+	if (!(cubed.mlx = mlx_init(400, 800, "MLX42", true)))
 	{
 		puts(mlx_strerror(mlx_errno));
 		return(EXIT_FAILURE);

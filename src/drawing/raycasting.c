@@ -222,7 +222,7 @@ void	raycasting(t_cubed *cubed)
 	double 	iterations;
     size_t  wall_position;
 
-	printf("\nnew raycasting cycle\n\n");
+	// printf("\nnew raycasting cycle\n\n");
     wall_position = 0;
 
 	// cubed->mapX = (int)cubed->posX;
