@@ -154,21 +154,22 @@ void	mini_map(t_cubed *cubed)
 	double	stepY = cubed->grid_width;
 	double	stepX = cubed->grid_height;
 	double	startY = cubed->screen_height - cubed->mini_map_height;
+	// double startY = 0;
 	double	endY = startY + stepY;
-	int		scope = 3;
-	int		tempPosY = (int)cubed->posY - scope;
+	// int		scope = 3;
+	// int		tempPosY = (int)cubed->posY - scope;
 	
 
 	printf("pos (%f, %f)\n", cubed->posX, cubed->posY);
 
 	draw_black_background(cubed);
-	while (y < (int)column && y >= (int)cubed->posY - scope && y <= (int)cubed->posY + scope)
+	while (y < (int)column)
 	{
-		printf("%d < %d < %d ||\t", (int)cubed->posY - scope, y, (int)cubed->posY + scope);
+		// printf("%d < %d < %d ||\t", (int)cubed->posY - scope, y, (int)cubed->posY + scope);
 		int	startX = 0;
 		int endX = stepX;
 		int x = 0;
-		while (x < (int)row && x >= (int)cubed->posX - scope && x <= (int)cubed->posX + scope)
+		while (x < (int)row)
 		{
 			if (worldMap[y][x] == 1)
 			{
