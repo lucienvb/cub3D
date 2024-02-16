@@ -85,7 +85,7 @@ void	drawPoint(t_cubed *cubed, double posX, double posY, uint32_t color, int thi
 			if ((x > posX - thickness && x < posX + thickness)
 						&& (y > posY - thickness && y < posY + thickness)
 						&& (x != posX && y != posY))
-					mlx_put_pixel(cubed->image, x, y + cubed->mini_map_start_y, color);
+					mlx_put_pixel(cubed->image, x, y, color);
 			x++;
 		}
 		y++;

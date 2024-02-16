@@ -230,7 +230,7 @@ void	raycasting(t_cubed *cubed)
 	// int	x;
 
 	// x = 0;
-	iterations = 0.0015625;
+	// iterations = 0.0015625;
 	iterations = 0.005;
 	cubed->fov = 0;
 	cubed->fov = M_PI / -6;

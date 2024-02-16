@@ -101,10 +101,10 @@ static void	player(t_cubed *cubed)
 			if ((x > player_posX - player_size && x < player_posX + player_size)
 					&& (y > player_posY - player_size && y < player_posY + player_size))
 			{
-				mlx_put_pixel(cubed->image, x, y + cubed->mini_map_start_y, colorGreen);
+				mlx_put_pixel(cubed->image, x, y, colorGreen);
 				if ((x > player_posX - visor_thickness && x < player_posX + visor_thickness)
 					&& (y > player_posY - visor_thickness && y < player_posY + visor_thickness))
-					draw_visor(x, y + cubed->mini_map_start_y, cubed);
+					draw_visor(x, y, cubed);
 			}
 			x++;
 		}
@@ -122,15 +122,14 @@ static void	draw_black_background(t_cubed *cubed)
 	colorBlack = ft_pixel(0, 0, 0, 0xFF);
 	colorBlue = ft_pixel(52, 126, 133, 0xFF);
 
-	y = cubed->screen_height - cubed->mini_map_height;
-	while (y < cubed->screen_height)
+	y = 0;
+	while (y < cubed->mini_map_height)
 	{
 		x = 0;
 		while (x < cubed->mini_map_width)
 		{
-			if (y == cubed->screen_height - cubed->mini_map_height || 
-					y == cubed->screen_height -1 || x == 0 ||
-					x == cubed->mini_map_width -1)
+			if (x == 0 || x == cubed->mini_map_width -1 || 
+				y == 0 || y == cubed->mini_map_height -1)
 				mlx_put_pixel(cubed->image, x, y, colorBlue);
 			else
 				mlx_put_pixel(cubed->image, x, y, colorBlack);
@@ -147,25 +146,20 @@ void	mini_map(t_cubed *cubed)
 	uint32_t colorLightGrey = ft_pixel(218, 223, 225, 0xFF);
 	int	y;
 	int	border;
+	double	stepX;
+	double	stepY;
 
 	border = 1;
 	y = 0;
 
-	double	stepY = cubed->grid_width;
-	double	stepX = cubed->grid_height;
-	double	startY = cubed->screen_height - cubed->mini_map_height;
-	// double startY = 0;
-	double	endY = startY + stepY;
-	// int		scope = 3;
-	// int		tempPosY = (int)cubed->posY - scope;
+	stepY = cubed->grid_width;
 	
-
-	// printf("pos (%f, %f)\n", cubed->posX, cubed->posY);
-
+	stepX = cubed->grid_height;
+	double startY = 0;
+	double	endY = startY + stepY;
 	draw_black_background(cubed);
 	while (y < (int)column)
 	{
-		// printf("%d < %d < %d ||\t", (int)cubed->posY - scope, y, (int)cubed->posY + scope);
 		int	startX = 0;
 		int endX = stepX;
 		int x = 0;
