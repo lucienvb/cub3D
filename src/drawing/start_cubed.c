@@ -17,16 +17,16 @@ void draw_screen(t_cubed *cubed)
 {
 	// draw_floor_and_ceiling(cubed);
 	mini_map(cubed);
-	// raycasting(cubed);
+	raycasting(cubed);
 	position_mini_map(cubed);
 	draw_player_mini_map(cubed);
 }
 
 void	reset_settings(t_cubed *cubed)
 {
-	// raycasting(cubed);
 	position_mini_map(cubed);
 	draw_player_mini_map(cubed);
+	raycasting(cubed);
 
 }
 

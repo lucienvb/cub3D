@@ -86,79 +86,46 @@ static bool	x_ray_is_shortest(t_cubed *cubed, double player_to_grid_x, double pl
 	return (false);
 }
 
-// static bool	ray_hits_wall(t_cubed *cubed, double x_target, double y_target)
-// {
-// 	size_t	x;
-// 	size_t	y;
-// 	int		addition;
-
-// 	addition = 1;
-// 	y = 0;
-// 	while (y < column)
-// 	{
-// 		x = 0;
-// 		while (x < row)
-// 		{
-// 			if (worldMap[y][x] == 1)
-// 			{
-// 				if ((x_target >= x * cubed->grid_width  && x_target < ((x + 1) * cubed->grid_width) + addition) &&
-// 						(y_target >= y * cubed->grid_height && y_target < ((y + 1) * cubed->grid_height) + addition))
-// 						{
-// 							// printf("%f < x_target: %f < %f\t",  x * cubed->grid_width, x_target, (x + 1) * cubed->grid_width + addition);
-// 							// printf("%f < y_target: %f < %f\n",  y * cubed->grid_height, y_target, (y + 1) * cubed->grid_height + addition);
-// 					return (true);
-// 						}
-// 			}
-// 			x++;
-// 		} 
-// 		y++;
-// 	}
-// 	return (false);
-// }
-
 static t_hit	is_hit(t_cubed *cubed, double player_to_grid_x, double player_to_grid_y, bool x_ray_is_shortest)
 {
-	double		pa = cubed->pa + cubed->fov;
+	double		dot_thickness;
+	double		draw_ray_hit;
+	uint32_t	colorOrange;
+	uint32_t	colorBlue;
+	double		pa;
 	double		x;
 	double		y;
-	uint32_t	colorOrange = ft_pixel(255, 140, 0, 0xFF);
-	uint32_t	colorBlue = ft_pixel(0, 0, 255, 0xFF);
-	// uint32_t	colorYellow = ft_pixel(255, 255, 0, 0xFF);
-	double		dot_thickness;
-	dot_thickness = 3;
-
+	
+	colorOrange = ft_pixel(255, 140, 0, 0xFF);
+	colorBlue = ft_pixel(0, 0, 255, 0xFF);
+	pa = cubed->pa + cubed->fov;
+	draw_ray_hit = false;
+	dot_thickness = 2;
 	x = 0;
 	y = 0;
-	(void)player_to_grid_x;
-	(void)player_to_grid_y;
-	
-	// printf("rays (%f, %f)\n", cubed->x_ray_length, cubed->y_ray_length);
-	// printf("maps (%i, %i)\n", cubed->mapX, cubed->mapY);
-	if (x_ray_is_shortest) // if true the x-ray has a hit, that means a wall is hit horizontally
+	if (x_ray_is_shortest)
 	{
-		x = ((cubed->posX + player_to_grid_x) * cubed->grid_width);						// x-coordinate of hit
-		y = ((cubed->posY + player_to_grid_x * sin(pa) / cos(pa)) * cubed->grid_height);	// y-coordinate of hit
-		// if (ray_hits_wall(cubed, x, y)) // change name
+		x = ((cubed->posX + player_to_grid_x) * cubed->grid_width);
+		y = ((cubed->posY + player_to_grid_x * sin(pa) / cos(pa)) * cubed->grid_height);
 		if (worldMap[cubed->mapY][cubed->mapX + (int)cubed->dirX] == 1)
 		{
-			drawPoint(cubed, x, y, colorOrange, dot_thickness); // we want to move these to another function to draw everything at once
+			if (draw_ray_hit)
+				drawPoint(cubed, x, y, colorOrange, dot_thickness);
             cubed->side = true;
 			return (x_ray_hit);
 		}
-		// drawPoint(cubed, x, y, colorYellow, dot_thickness); // we want to move these to another function to draw everything at once
 	}
-	else // the y-ray has a hit, that means a wall is hit vertically
+	else
 	{
-		x = ((cubed->posX + player_to_grid_y * cos(pa) / sin(pa)) * cubed->grid_width);	// x-coordinate of hit
-		y = ((cubed->posY + player_to_grid_y) * cubed->grid_height);						// y-coordinate of hit
-		// if (ray_hits_wall(cubed, x, y))
+		x = ((cubed->posX + player_to_grid_y * cos(pa) / sin(pa)) * cubed->grid_width);
+		y = ((cubed->posY + player_to_grid_y) * cubed->grid_height);
 		if (worldMap[cubed->mapY + (int)cubed->dirY][cubed->mapX] == 1)
 		{
-			drawPoint(cubed, x, y, colorBlue, dot_thickness);	// we want to move these to another function to draw everything at once
+			if (draw_ray_hit)
+				drawPoint(cubed, x, y, colorBlue, dot_thickness);
 			cubed->side = false;
 			return (y_ray_hit);
 		}
-		// drawPoint(cubed, x, y, colorYellow, dot_thickness); // we want to move these to another function to draw everything at once
 	}
 	return (no_hit);
 }
@@ -177,18 +144,12 @@ static void	ray_loop(t_cubed *cubed, double player_to_grid_x, double player_to_g
 		is_hit_result = is_hit(cubed, player_to_grid_x, player_to_grid_y, xRay_is_shortest_bool);
 		if (!xRay_is_shortest_bool && is_hit_result == y_ray_hit)
         {
-			// printf("y_ray hits |\t");
-			// printf("diff: %f |\t", diff);
-			// printf("x_ray_len: %f, y_ray_len: %f\n", cubed->x_ray_length, cubed->y_ray_length);
 			get_perp_wall_dist(cubed, 0);
             // draw_wall(cubed, wall_position);
 			return ;
         }
 		else if (xRay_is_shortest_bool && is_hit_result == x_ray_hit)
 		{
-			// printf("x_ray hits |\t");
-			// printf("diff: %f |\t", diff);
-			// printf("x_ray_len: %f, y_ray_len: %f\n", cubed->x_ray_length, cubed->y_ray_length);
 			get_perp_wall_dist(cubed, 1);
             // draw_wall(cubed, wall_position);
 			return ;
@@ -197,13 +158,11 @@ static void	ray_loop(t_cubed *cubed, double player_to_grid_x, double player_to_g
 		{
 			if (cubed->dirX == 1)
 			{
-				// player_to_grid_x += cubed->grid_width;
 				player_to_grid_x += 1;
 				cubed->mapX++;
 			}
 			else
 			{
-				// player_to_grid_x -= cubed->grid_width;
 				player_to_grid_x -= 1;
 				cubed->mapX--;
 			}
@@ -212,13 +171,11 @@ static void	ray_loop(t_cubed *cubed, double player_to_grid_x, double player_to_g
 		{
 			if (cubed->dirY == 1)
 			{
-				// player_to_grid_y += cubed->grid_height;
 				player_to_grid_y += 1;
 				cubed->mapY++;
 			}
 			else
 			{
-				// player_to_grid_y -= cubed->grid_height;
 				player_to_grid_y -= 1;
 				cubed->mapY--;
 			}
@@ -228,13 +185,13 @@ static void	ray_loop(t_cubed *cubed, double player_to_grid_x, double player_to_g
 
 void	raycasting(t_cubed *cubed)
 {
-	double 	iterations;
     size_t  wall_position;
+	double 	iterations;
 
 	// printf("\nnew raycasting cycle\n\n");
-    wall_position = 0;
 	iterations = 1 / cubed->screen_width;
 	cubed->fov = M_PI / -6;
+    wall_position = 0;
 	while (cubed->fov <= M_PI / 6)
 	{
 		cubed->mapX = (int)cubed->posX;
@@ -242,9 +199,5 @@ void	raycasting(t_cubed *cubed)
 		get_player_to_grid(cubed, &cubed->player_to_grid_x, &cubed->player_to_grid_y);
 		ray_loop(cubed, cubed->player_to_grid_x, cubed->player_to_grid_y, &wall_position);
 		cubed->fov += iterations;
-
-		// printf("maps start (%d, %d)\n", cubed->mapX, cubed->mapY);
-		// printf("dirs (%f, %f)\n", cubed->dirX, cubed->dirY);
-		// printf("ptg (%f, %f)\t", cubed->player_to_grid_x, cubed->player_to_grid_y);
 	}
 }
