@@ -68,60 +68,67 @@ static int worldMap[column][row]=
 //   {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 // };
 
-// static void	draw_visor(int x, int y, t_cubed *cubed)
-// {
-// 	uint32_t	colorPurple = ft_pixel(106, 90, 205, 0xFF);
-// 	double		pa;
-// 	int	line;
+static void	draw_visor(int x, int y, t_cubed *cubed)
+{
+	uint32_t	colorPurple = ft_pixel(106, 90, 205, 0xFF);
+	double		pa;
+	int	line;
 	
-// 	pa = cubed->pa;
-// 	line = 15;
-// 	while (line > 0)
-// 	{
-// 		mlx_put_pixel(cubed->image, x + cos(pa) * line, y + sin(pa) * line, colorPurple);
-// 		line--;
-// 	}
-// }
+	pa = cubed->pa;
+	line = 15;
+	while (line > 0)
+	{
+		mlx_put_pixel(cubed->image_game, x + cos(pa) * line, y + sin(pa) * line, colorPurple);
+		line--;
+	}
+}
 
-// static void	player(t_cubed *cubed)
-// {
-// 	uint32_t colorGreen = ft_pixel(60, 179, 113, 0xFF);
-// 	double	player_size;
-// 	double	visor_thickness;
-// 	double	player_posX;
-// 	double	player_posY;
+static void	clean_screen(t_cubed *cubed)
+{
+	uint32_t	colorTransparent;
+	size_t		x;
+	size_t		y;
 
-// 	// player_posX = cubed->posX * cubed->multiplier_mini_map_x;
-// 	// player_posY = cubed->posY * cubed->multiplier_mini_map_y;
-// 	// player_posX = cubed->posX / column * cubed->mini_map_width;
-// 	// player_posY = cubed->posY / row * cubed->mini_map_height;
-// 	player_posX = cubed->posX * cubed->grid_width;
-// 	player_posY = cubed->posY * cubed->grid_height;
+	colorTransparent = ft_pixel(0, 0, 0, 0);
+	y = 0;
+	while (y < cubed->mini_map_height)
+	{
+		x = 0;
+		while (x < cubed->mini_map_width)
+		{
+			mlx_put_pixel(cubed->image_game, x, y, colorTransparent);
+			x++;
+		}
+		y++;
+	}
+}
 
-// 	// printf("pos (%f, %f)\n", cubed->posX, cubed->posY);
-// 	// printf("player_pos (%f, %f)\n", player_posX, player_posY);
+void	draw_player_mini_map(t_cubed *cubed)
+{
+	size_t	x;
+	size_t	y;
+	double	player_size = 4;
+	uint32_t colorGreen;
+	
+	colorGreen = ft_pixel(60, 179, 113, 0xFF);
 
-// 	player_size = 4;
-// 	visor_thickness = 1.5;
-// 	int	y = 0;
-// 	while (y < cubed->mini_map_height && player_posY > 0 && player_posY < cubed->mini_map_height)
-// 	{
-// 		int x = 0;
-// 		while (x < cubed->mini_map_width && player_posX > 0 && player_posX < cubed->mini_map_width)
-// 		{
-// 			if ((x > player_posX - player_size && x < player_posX + player_size)
-// 					&& (y > player_posY - player_size && y < player_posY + player_size))
-// 			{
-// 				mlx_put_pixel(cubed->image, x, y, colorGreen);
-// 				if ((x > player_posX - visor_thickness && x < player_posX + visor_thickness)
-// 					&& (y > player_posY - visor_thickness && y < player_posY + visor_thickness))
-// 					draw_visor(x, y, cubed);
-// 			}
-// 			x++;
-// 		}
-// 		y++;
-// 	}
-// }
+	clean_screen(cubed);
+	y = cubed->mini_map_middle - player_size;
+	while (y < cubed->mini_map_middle + player_size)
+	{
+		x = cubed->mini_map_middle - player_size;
+		while (x < cubed->mini_map_middle + player_size)
+		{
+			mlx_put_pixel(cubed->image_game, x, y, colorGreen);
+			double	visor_thickness = 1.5;
+			if ((x > cubed->mini_map_middle - visor_thickness && x < cubed->mini_map_middle + visor_thickness) &&
+					(y > cubed->mini_map_middle - visor_thickness && y < cubed->mini_map_middle + visor_thickness))
+					draw_visor(x, y, cubed);
+			x++;
+		}
+		y++;
+	}
+}
 
 static void	draw_black_background(t_cubed *cubed)
 {

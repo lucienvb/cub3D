@@ -48,6 +48,7 @@ typedef struct s_cubed
 	double		mini_map_height;
 	double		mini_map_start_y;
 	double		mini_map_size;
+	double		mini_map_middle;
 
 	double		grid_width;
 	double		grid_height;
@@ -124,5 +125,6 @@ void	reset_settings(t_cubed *cubed);
 int32_t start_cubed(void);
 void    draw_wall(t_cubed *cubed, size_t *wall_position);
 void	get_perp_wall_dist(t_cubed *cubed, bool x_ray_is_shortest);
+void	draw_player_mini_map(t_cubed *cubed);
 
 #endif
