@@ -26,8 +26,6 @@ static int worldMap[column][row]=
 	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 };
 
-
-
 // static int worldMap[column][row]=
 // {
 // 	{1, 1, 1, 1, 1, 1, 1, 1},

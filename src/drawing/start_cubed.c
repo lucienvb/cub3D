@@ -50,12 +50,12 @@ static bool	initialize_cubed(t_cubed *cubed)
 
 	// player variables
 	cubed->posX = 2;
-	cubed->posY = 2;
+	cubed->posY = 3;
 	cubed->mapX = 0;
 	cubed->mapY = 0;
 	cubed->dirX = 0.0;
 	cubed->dirY = 0.0;
-	cubed->pa = 0;
+	cubed->pa = M_PI;
 	cubed->fov = 0;
 	cubed->stepX = 0;
 	cubed->stepY = 0;

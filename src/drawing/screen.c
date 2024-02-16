@@ -29,7 +29,7 @@ void    draw_wall(t_cubed *cubed, size_t *wall_position)
 
 	mini_map_surface = cubed->mini_map_size * cubed->grid_width;
 
-	wall_height = cubed->screen_height / cubed->perp_wall_dist;
+	wall_height = (cubed->screen_height / cubed->perp_wall_dist) * 0.5;
 	if (wall_height > cubed->screen_height)
 		wall_height = cubed->screen_height;
 	// printf("{wall_heigth=%f}\n", wall_height);
@@ -41,7 +41,7 @@ void    draw_wall(t_cubed *cubed, size_t *wall_position)
         x = *wall_position;
 		if (x >= cubed->screen_width)
 			break ;
-        while (x < (*wall_position) + 4)
+        while (x < (*wall_position) + 1)
         {
 			if (x < mini_map_surface && y < mini_map_surface)
 				mlx_put_pixel(cubed->image_game, x, y, colorTransparent);
@@ -51,7 +51,7 @@ void    draw_wall(t_cubed *cubed, size_t *wall_position)
         }
 		y++;
 	}
-	*wall_position += 4;
+	*wall_position += 1;
 }
 
 void draw_color_stripe(int32_t startX, int32_t endX, int32_t startY, int32_t endY, uint32_t color, t_cubed *cubed)
@@ -99,7 +99,8 @@ void	drawPoint(t_cubed *cubed, double posX, double posY, uint32_t color, int thi
 			if ((x > posX - thickness && x < posX + thickness)
 						&& (y > posY - thickness && y < posY + thickness)
 						&& (x != posX && y != posY))
-					mlx_put_pixel(cubed->image, x, y, color);
+					mlx_put_pixel(cubed->image_game, x, y, color);
+					// mlx_put_pixel(cubed->image_game, x -(cubed->posX - (cubed->mini_map_size / 2)), y -(cubed->posY - (cubed->mini_map_size / 2)), color);
 			x++;
 		}
 		y++;

@@ -96,10 +96,11 @@ static t_hit	is_hit(t_cubed *cubed, double player_to_grid_x, double player_to_gr
 	double		x;
 	double		y;
 	
+	draw_ray_hit = false;
+
 	colorOrange = ft_pixel(255, 140, 0, 0xFF);
 	colorBlue = ft_pixel(0, 0, 255, 0xFF);
 	pa = cubed->pa + cubed->fov;
-	draw_ray_hit = false;
 	dot_thickness = 2;
 	x = 0;
 	y = 0;
@@ -136,6 +137,8 @@ static void	ray_loop(t_cubed *cubed, double player_to_grid_x, double player_to_g
 	t_hit		is_hit_result;
 	(void)wall_position;
 
+	bool		draw_walls = true;
+
 	xRay_is_shortest_bool = false;
 	is_hit_result = no_hit;
 	while (1)
@@ -145,13 +148,15 @@ static void	ray_loop(t_cubed *cubed, double player_to_grid_x, double player_to_g
 		if (!xRay_is_shortest_bool && is_hit_result == y_ray_hit)
         {
 			get_perp_wall_dist(cubed, 0);
-            draw_wall(cubed, wall_position);
+			if (draw_walls)
+			    draw_wall(cubed, wall_position);
 			return ;
         }
 		else if (xRay_is_shortest_bool && is_hit_result == x_ray_hit)
 		{
 			get_perp_wall_dist(cubed, 1);
-            draw_wall(cubed, wall_position);
+			if (draw_walls)
+				draw_wall(cubed, wall_position);
 			return ;
         }
 		if (xRay_is_shortest_bool)
@@ -192,6 +197,7 @@ void	raycasting(t_cubed *cubed)
 	iterations = 1 / cubed->screen_width;
 	cubed->fov = M_PI / -6;
     wall_position = 0;
+	clean_screen(cubed);
 	while (cubed->fov <= M_PI / 6)
 	{
 		cubed->mapX = (int)cubed->posX;
