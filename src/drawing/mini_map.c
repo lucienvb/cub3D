@@ -85,12 +85,12 @@ void	clean_screen(t_cubed *cubed)
 {
 	double		mini_map_surface;
 	uint32_t	colorTransparent;
-	uint32_t	colorBlack;
+	// uint32_t	colorBlack;
 	size_t		x;
 	size_t		y;
 
 	colorTransparent = ft_pixel(0, 0, 0, 0);
-	colorBlack = ft_pixel(60, 60, 60, 0xFF);
+	// colorBlack = ft_pixel(60, 60, 60, 0xFF);
 	mini_map_surface = cubed->mini_map_size * cubed->grid_width;
 	y = 0;
 	while (y < cubed->screen_height)
@@ -100,8 +100,10 @@ void	clean_screen(t_cubed *cubed)
 		{
 			if (x < mini_map_surface && y < mini_map_surface)
 				mlx_put_pixel(cubed->image_game, x, y, colorTransparent);
+			else if (x < cubed->screen_width - 1 && y < cubed->screen_height / 2 - 1)
+				mlx_put_pixel(cubed->image_game, x, y, ft_pixel(60, 60, 60, 0xFF));
 			else
-				mlx_put_pixel(cubed->image_game, x, y, colorBlack);
+				mlx_put_pixel(cubed->image_game, x, y, ft_pixel(120, 120, 120, 0xFF));
 			x++;
 		}
 		y++;
