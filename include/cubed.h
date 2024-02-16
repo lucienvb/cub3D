@@ -13,9 +13,9 @@
 
 // #define column 13
 // #define row 8
-#define column 5
+// #define column 5
 #define row 24
-// #define column 24
+#define column 24
 // #define row 24
 
 // enum

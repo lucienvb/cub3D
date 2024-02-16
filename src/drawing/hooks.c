@@ -22,7 +22,9 @@ void hooks(void* param)
 	}
 	if (mlx_is_key_down(cubed->mlx, MLX_KEY_S)) // move backward (zoom out)
 	{
-		if (cubed->posX >= 0 + cubed->stepX && cubed->posY >= 0 + cubed->stepY)
+		if (cubed->posX > 1 + cubed->stepX && cubed->posX < cubed->map_width - 1 + cubed->stepX && 
+			cubed->posY > 1 + cubed->stepY && cubed->posY < cubed->map_height - 1 + cubed->stepY) 
+		// if (cubed->posX >= 0 + cubed->stepX && cubed->posY >= 0 + cubed->stepY)
 		{
 			cubed->posX -= cubed->stepX;
 			cubed->posY	-= cubed->stepY;
