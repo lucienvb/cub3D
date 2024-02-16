@@ -12,6 +12,8 @@ void	get_perp_wall_dist(t_cubed *cubed, bool x_ray_is_shortest)
 		current_ray_length = cubed->x_ray_length;
 	else
 		current_ray_length = cubed->y_ray_length;
+	// if (current_ray_length < cubed->shortest_ray_length)
+	// 	cubed->shortest_ray_length = current_ray_length;
 	cubed->perp_wall_dist = cos(temp_fov) * current_ray_length;
 }
 

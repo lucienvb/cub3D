@@ -10,8 +10,8 @@ void hooks(void* param)
 		mlx_close_window(cubed->mlx);
 	if (mlx_is_key_down(cubed->mlx, MLX_KEY_W)) // move forward (zoom isn)
 	{
-		if (cubed->posX > 1 - cubed->stepX && cubed->posX < cubed->map_width - 1 - cubed->stepX && 
-			cubed->posY > 1 - cubed->stepY && cubed->posY < cubed->map_height - 1 - cubed->stepY) 
+		if ((cubed->posX > 1 - cubed->stepX && cubed->posX < cubed->map_width - 1 - cubed->stepX) && 
+			(cubed->posY > 1 - cubed->stepY && cubed->posY < cubed->map_height - 1 - cubed->stepY))
 		{
 			cubed->posX += cubed->stepX;
 			cubed->posY += cubed->stepY;
@@ -32,12 +32,19 @@ void hooks(void* param)
 		}
 		reset_settings(cubed);
 	}
-	// if (mlx_is_key_down(cubed->mlx, MLX_KEY_A)) // move to the left (change position in map)
-	// {
-	// }
-	// if (mlx_is_key_down(cubed->mlx, MLX_KEY_D)) // move to the right (change position in map)
-	// {
-	// }
+	// TODO: fix ctrl A and D!
+	if (mlx_is_key_down(cubed->mlx, MLX_KEY_A)) // move to the left (change position in map)
+	{
+		cubed->posX -= cubed->stepX;
+		cubed->posY	+= cubed->stepY;
+		reset_settings(cubed);
+	}
+	if (mlx_is_key_down(cubed->mlx, MLX_KEY_D)) // move to the right (change position in map)
+	{
+		cubed->posX += cubed->stepX;
+		cubed->posY	-= cubed->stepY;
+		reset_settings(cubed);
+	}
 	if (mlx_is_key_down(cubed->mlx, MLX_KEY_LEFT)) // change screen to the left
 	{
 		cubed->pa -= 0.03;

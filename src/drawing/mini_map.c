@@ -85,12 +85,10 @@ void	clean_screen(t_cubed *cubed)
 {
 	double		mini_map_surface;
 	uint32_t	colorTransparent;
-	// uint32_t	colorBlack;
 	size_t		x;
 	size_t		y;
 
 	colorTransparent = ft_pixel(0, 0, 0, 0);
-	// colorBlack = ft_pixel(60, 60, 60, 0xFF);
 	mini_map_surface = cubed->mini_map_size * cubed->grid_width;
 	y = 0;
 	while (y < cubed->screen_height)
@@ -101,9 +99,9 @@ void	clean_screen(t_cubed *cubed)
 			if (x < mini_map_surface && y < mini_map_surface)
 				mlx_put_pixel(cubed->image_game, x, y, colorTransparent);
 			else if (x < cubed->screen_width - 1 && y < cubed->screen_height / 2 - 1)
-				mlx_put_pixel(cubed->image_game, x, y, ft_pixel(60, 60, 60, 0xFF));
+				mlx_put_pixel(cubed->image_game, x, y, ft_pixel(255, 243, 231, 0xFF));
 			else
-				mlx_put_pixel(cubed->image_game, x, y, ft_pixel(120, 120, 120, 0xFF));
+				mlx_put_pixel(cubed->image_game, x, y, ft_pixel(255, 0, 0, 0xFF));
 			x++;
 		}
 		y++;
@@ -163,10 +161,8 @@ static void	draw_black_background(t_cubed *cubed)
 	}
 }
 
-// TO DO: does not work perfectly on all maps
 void	mini_map(t_cubed *cubed)
 {
-	// uint32_t colorBlack = ft_pixel(0, 0, 0, 0xFF);
 	uint32_t colorLightGrey = ft_pixel(218, 223, 225, 0xFF);
 	int	y;
 	int	border;
@@ -175,7 +171,6 @@ void	mini_map(t_cubed *cubed)
 	double	startY;
 	double	endY;
 
-	printf("draw mini map\n");
 	border = 1;
 	y = 0;
 	stepY = cubed->grid_width;
@@ -203,5 +198,4 @@ void	mini_map(t_cubed *cubed)
 		endY += stepY;
 		y++;
 	}
-	// player(cubed);
 }

@@ -15,7 +15,6 @@ static void	position_mini_map(t_cubed *cubed)
 
 void draw_screen(t_cubed *cubed)
 {
-	// draw_floor_and_ceiling(cubed);
 	mini_map(cubed);
 	raycasting(cubed);
 	position_mini_map(cubed);
@@ -62,6 +61,7 @@ static bool	initialize_cubed(t_cubed *cubed)
 	cubed->raycasting_is_done = false;
 	cubed->x_ray_length = 0;
 	cubed->y_ray_length = 0;
+	cubed->shortest_ray_length = 1000;
 	cubed->side = false;
 	cubed->player_to_grid_x = 0;
 	cubed->player_to_grid_y = 0;

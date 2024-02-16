@@ -67,6 +67,7 @@ typedef struct s_cubed
 	double	player_to_grid_y;
 	double	x_ray_length;
 	double	y_ray_length;
+	double	shortest_ray_length;
 	double	perp_wall_dist;
 	bool	side;
 	bool	raycasting_is_done;
