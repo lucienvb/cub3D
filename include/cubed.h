@@ -126,5 +126,6 @@ int32_t start_cubed(void);
 void    draw_wall(t_cubed *cubed, size_t *wall_position);
 void	get_perp_wall_dist(t_cubed *cubed, bool x_ray_is_shortest);
 void	draw_player_mini_map(t_cubed *cubed);
+void	clean_screen(t_cubed *cubed);
 
 #endif

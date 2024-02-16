@@ -83,20 +83,27 @@ static void	draw_visor(int x, int y, t_cubed *cubed)
 	}
 }
 
-static void	clean_screen(t_cubed *cubed)
+void	clean_screen(t_cubed *cubed)
 {
+	double		mini_map_surface;
 	uint32_t	colorTransparent;
+	uint32_t	colorBlack;
 	size_t		x;
 	size_t		y;
 
 	colorTransparent = ft_pixel(0, 0, 0, 0);
+	colorBlack = ft_pixel(60, 60, 60, 0xFF);
+	mini_map_surface = cubed->mini_map_size * cubed->grid_width;
 	y = 0;
-	while (y < cubed->mini_map_height)
+	while (y < cubed->screen_height)
 	{
 		x = 0;
-		while (x < cubed->mini_map_width)
+		while (x < cubed->screen_width)
 		{
-			mlx_put_pixel(cubed->image_game, x, y, colorTransparent);
+			if (x < mini_map_surface && y < mini_map_surface)
+				mlx_put_pixel(cubed->image_game, x, y, colorTransparent);
+			else
+				mlx_put_pixel(cubed->image_game, x, y, colorBlack);
 			x++;
 		}
 		y++;
@@ -112,7 +119,6 @@ void	draw_player_mini_map(t_cubed *cubed)
 	
 	colorGreen = ft_pixel(60, 179, 113, 0xFF);
 
-	clean_screen(cubed);
 	y = cubed->mini_map_middle - player_size;
 	while (y < cubed->mini_map_middle + player_size)
 	{

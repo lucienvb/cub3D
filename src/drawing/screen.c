@@ -9,20 +9,25 @@ void    draw_wall(t_cubed *cubed, size_t *wall_position)
 {
     uint32_t	colorYellow = ft_pixel(255, 165, 0, 0xFF);
 	uint32_t	colorOrange = ft_pixel(255, 140, 0, 0xFF);
+	uint32_t	colorTransparent;
 	uint32_t	color;
     size_t		x;
     size_t 		y;
-	double	wall_height;
+	double		wall_height;
+	double		mini_map_surface;
 
 	if (cubed->side == true)
 		color = colorOrange;
 	else
 		color = colorYellow;
+	colorTransparent = ft_pixel(0, 0, 0, 0);
 	// wall_height = cubed->screen_height * (1 - cubed->current_ray_length / max_length);
 	// printf("ray_len: %f\t", cubed->current_ray_length);
 	// printf("max_len: %f\t",max_length);
 	// printf("ray_len / max_len: %f\n", cubed->current_ray_length / max_length);
 	// printf("ray_len: %f\n", cubed->5_ray_length);
+
+	mini_map_surface = cubed->mini_map_size * cubed->grid_width;
 
 	wall_height = cubed->screen_height / cubed->perp_wall_dist;
 	if (wall_height > cubed->screen_height)
@@ -38,7 +43,10 @@ void    draw_wall(t_cubed *cubed, size_t *wall_position)
 			break ;
         while (x < (*wall_position) + 4)
         {
-		    mlx_put_pixel(cubed->image, x, y, color);
+			if (x < mini_map_surface && y < mini_map_surface)
+				mlx_put_pixel(cubed->image_game, x, y, colorTransparent);
+			else
+			    mlx_put_pixel(cubed->image_game, x, y, color);
             x++;
         }
 		y++;
@@ -66,11 +74,17 @@ void draw_color_stripe(int32_t startX, int32_t endX, int32_t startY, int32_t end
 
 void	draw_floor_and_ceiling(t_cubed *cubed)
 {
-	uint32_t colorBrown = ft_pixel(139, 69, 19, 0xFF);
-	uint32_t colorPurple = ft_pixel(160, 32, 240, 0xFF);
+	double		mini_map_surface;
+	uint32_t	colorBrown;
+	uint32_t	colorPurple;
+
+	mini_map_surface = cubed->mini_map_size * cubed->grid_width;
+	colorBrown = ft_pixel(139, 69, 19, 0xFF);
+	colorPurple = ft_pixel(160, 32, 240, 0xFF);
 
 	draw_color_stripe(0, cubed->screen_width - 1, 0, cubed->screen_height / 2 - 1, colorPurple, cubed);
 	draw_color_stripe(0, cubed->screen_width - 1, cubed->screen_height / 2 - 1, cubed->screen_height - 1, colorBrown, cubed);
+	draw_color_stripe(0, mini_map_surface, 0, mini_map_surface, ft_pixel(0, 0, 0, 0), cubed);
 }
 
 void	drawPoint(t_cubed *cubed, double posX, double posY, uint32_t color, int thickness)

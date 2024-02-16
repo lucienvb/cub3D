@@ -145,13 +145,13 @@ static void	ray_loop(t_cubed *cubed, double player_to_grid_x, double player_to_g
 		if (!xRay_is_shortest_bool && is_hit_result == y_ray_hit)
         {
 			get_perp_wall_dist(cubed, 0);
-            // draw_wall(cubed, wall_position);
+            draw_wall(cubed, wall_position);
 			return ;
         }
 		else if (xRay_is_shortest_bool && is_hit_result == x_ray_hit)
 		{
 			get_perp_wall_dist(cubed, 1);
-            // draw_wall(cubed, wall_position);
+            draw_wall(cubed, wall_position);
 			return ;
         }
 		if (xRay_is_shortest_bool)
