@@ -11,8 +11,10 @@
 # include "../lib/libft/ft_printf/ft_printf.h"
 # include "../lib/MLX42/include/MLX42/MLX42.h"
 
-#define column 13
-#define row 8
+// #define column 13
+// #define row 8
+#define column 5
+#define row 24
 // #define column 24
 // #define row 24
 
@@ -37,6 +39,7 @@ typedef struct s_cubed
 	// screen variables
 	mlx_t		*mlx;
 	mlx_image_t	*image;
+	mlx_image_t	*image_game;
 	double		screen_width;
 	double		screen_height;
 	double		map_width;
@@ -44,8 +47,8 @@ typedef struct s_cubed
 	double		mini_map_width;
 	double		mini_map_height;
 	double		mini_map_start_y;
-	// double		multiplier_mini_map_x;
-	// double		multiplier_mini_map_y;
+	double		mini_map_size;
+
 	double		grid_width;
 	double		grid_height;
 	bool		draw_screen;

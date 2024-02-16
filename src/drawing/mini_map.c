@@ -1,21 +1,32 @@
 #include "../../include/cubed.h"
 
+// static int worldMap[column][row]=
+// {
+// 	{1, 1, 1, 1, 1, 1, 1, 1},
+// 	{1, 0, 0, 0, 0, 0, 0, 1},
+// 	{1, 0, 0, 0, 0, 0, 0, 1},
+// 	{1, 0, 0, 0, 1, 0, 0, 1},
+// 	{1, 0, 0, 0, 0, 0, 0, 1},
+// 	{1, 0, 0, 0, 0, 1, 0, 1},
+// 	{1, 0, 0, 0, 0, 1, 0, 1},
+// 	{1, 0, 1, 0, 0, 0, 0, 1},
+// 	{1, 0, 1, 1, 0, 0, 0, 1},
+// 	{1, 0, 0, 1, 1, 0, 0, 1},
+// 	{1, 0, 0, 0, 1, 0, 0, 1},
+// 	{1, 0, 0, 0, 0, 0, 0, 1},
+// 	{1, 1, 1, 1, 1, 1, 1, 1}
+// };
+
 static int worldMap[column][row]=
 {
-	{1, 1, 1, 1, 1, 1, 1, 1},
-	{1, 0, 0, 0, 0, 0, 0, 1},
-	{1, 0, 0, 0, 0, 0, 0, 1},
-	{1, 0, 0, 0, 1, 0, 0, 1},
-	{1, 0, 0, 0, 0, 0, 0, 1},
-	{1, 0, 0, 0, 0, 1, 0, 1},
-	{1, 0, 0, 0, 0, 1, 0, 1},
-	{1, 0, 1, 0, 0, 0, 0, 1},
-	{1, 0, 1, 1, 0, 0, 0, 1},
-	{1, 0, 0, 1, 1, 0, 0, 1},
-	{1, 0, 0, 0, 1, 0, 0, 1},
-	{1, 0, 0, 0, 0, 0, 0, 1},
-	{1, 1, 1, 1, 1, 1, 1, 1}
+	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 };
+
+
 
 // static int worldMap[column][row]=
 // {
@@ -57,60 +68,60 @@ static int worldMap[column][row]=
 //   {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 // };
 
-static void	draw_visor(int x, int y, t_cubed *cubed)
-{
-	uint32_t	colorPurple = ft_pixel(106, 90, 205, 0xFF);
-	double		pa;
-	int	line;
+// static void	draw_visor(int x, int y, t_cubed *cubed)
+// {
+// 	uint32_t	colorPurple = ft_pixel(106, 90, 205, 0xFF);
+// 	double		pa;
+// 	int	line;
 	
-	pa = cubed->pa;
-	line = 15;
-	while (line > 0)
-	{
-		mlx_put_pixel(cubed->image, x + cos(pa) * line, y + sin(pa) * line, colorPurple);
-		line--;
-	}
-}
+// 	pa = cubed->pa;
+// 	line = 15;
+// 	while (line > 0)
+// 	{
+// 		mlx_put_pixel(cubed->image, x + cos(pa) * line, y + sin(pa) * line, colorPurple);
+// 		line--;
+// 	}
+// }
 
-static void	player(t_cubed *cubed)
-{
-	uint32_t colorGreen = ft_pixel(60, 179, 113, 0xFF);
-	double	player_size;
-	double	visor_thickness;
-	double	player_posX;
-	double	player_posY;
+// static void	player(t_cubed *cubed)
+// {
+// 	uint32_t colorGreen = ft_pixel(60, 179, 113, 0xFF);
+// 	double	player_size;
+// 	double	visor_thickness;
+// 	double	player_posX;
+// 	double	player_posY;
 
-	// player_posX = cubed->posX * cubed->multiplier_mini_map_x;
-	// player_posY = cubed->posY * cubed->multiplier_mini_map_y;
-	// player_posX = cubed->posX / column * cubed->mini_map_width;
-	// player_posY = cubed->posY / row * cubed->mini_map_height;
-	player_posX = cubed->posX * cubed->grid_width;
-	player_posY = cubed->posY * cubed->grid_height;
+// 	// player_posX = cubed->posX * cubed->multiplier_mini_map_x;
+// 	// player_posY = cubed->posY * cubed->multiplier_mini_map_y;
+// 	// player_posX = cubed->posX / column * cubed->mini_map_width;
+// 	// player_posY = cubed->posY / row * cubed->mini_map_height;
+// 	player_posX = cubed->posX * cubed->grid_width;
+// 	player_posY = cubed->posY * cubed->grid_height;
 
-	// printf("pos (%f, %f)\n", cubed->posX, cubed->posY);
-	// printf("player_pos (%f, %f)\n", player_posX, player_posY);
+// 	// printf("pos (%f, %f)\n", cubed->posX, cubed->posY);
+// 	// printf("player_pos (%f, %f)\n", player_posX, player_posY);
 
-	player_size = 4;
-	visor_thickness = 1.5;
-	int	y = 0;
-	while (y < cubed->mini_map_height && player_posY > 0 && player_posY < cubed->mini_map_height)
-	{
-		int x = 0;
-		while (x < cubed->mini_map_width && player_posX > 0 && player_posX < cubed->mini_map_width)
-		{
-			if ((x > player_posX - player_size && x < player_posX + player_size)
-					&& (y > player_posY - player_size && y < player_posY + player_size))
-			{
-				mlx_put_pixel(cubed->image, x, y, colorGreen);
-				if ((x > player_posX - visor_thickness && x < player_posX + visor_thickness)
-					&& (y > player_posY - visor_thickness && y < player_posY + visor_thickness))
-					draw_visor(x, y, cubed);
-			}
-			x++;
-		}
-		y++;
-	}
-}
+// 	player_size = 4;
+// 	visor_thickness = 1.5;
+// 	int	y = 0;
+// 	while (y < cubed->mini_map_height && player_posY > 0 && player_posY < cubed->mini_map_height)
+// 	{
+// 		int x = 0;
+// 		while (x < cubed->mini_map_width && player_posX > 0 && player_posX < cubed->mini_map_width)
+// 		{
+// 			if ((x > player_posX - player_size && x < player_posX + player_size)
+// 					&& (y > player_posY - player_size && y < player_posY + player_size))
+// 			{
+// 				mlx_put_pixel(cubed->image, x, y, colorGreen);
+// 				if ((x > player_posX - visor_thickness && x < player_posX + visor_thickness)
+// 					&& (y > player_posY - visor_thickness && y < player_posY + visor_thickness))
+// 					draw_visor(x, y, cubed);
+// 			}
+// 			x++;
+// 		}
+// 		y++;
+// 	}
+// }
 
 static void	draw_black_background(t_cubed *cubed)
 {
@@ -148,15 +159,16 @@ void	mini_map(t_cubed *cubed)
 	int	border;
 	double	stepX;
 	double	stepY;
+	double	startY;
+	double	endY;
 
+	printf("draw mini map\n");
 	border = 1;
 	y = 0;
-
 	stepY = cubed->grid_width;
-	
 	stepX = cubed->grid_height;
-	double startY = 0;
-	double	endY = startY + stepY;
+	startY = 0;
+	endY = startY + stepY;
 	draw_black_background(cubed);
 	while (y < (int)column)
 	{
@@ -178,5 +190,5 @@ void	mini_map(t_cubed *cubed)
 		endY += stepY;
 		y++;
 	}
-	player(cubed);
+	// player(cubed);
 }

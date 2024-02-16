@@ -1,15 +1,53 @@
 #include "../../include/cubed.h"
 
+static void	position_mini_map(t_cubed *cubed)
+{
+	double	distanceX = (cubed->posX - (cubed->mini_map_size / 2));
+	double	distanceY = (cubed->posY - (cubed->mini_map_size / 2));
+	// if (distanceX < 0)
+		distanceX *= -1;
+	// if (distanceY < 0)
+		distanceY *= -1;
+	cubed->image->instances[0].x = distanceX * cubed->grid_width;
+	cubed->image->instances[0].y = distanceY * cubed->grid_height;
+}
+
 void draw_screen(t_cubed *cubed)
 {
 	// draw_floor_and_ceiling(cubed);
 	mini_map(cubed);
-	raycasting(cubed);
+	// raycasting(cubed);
+	position_mini_map(cubed);
+}
+
+void	draw_player_mini_map(t_cubed *cubed)
+{
+	size_t	x;
+	size_t	y;
+	double	player_size = 4;
+	uint32_t colorGreen;
+	
+	colorGreen = ft_pixel(60, 179, 113, 0xFF);
+
+	y = (cubed->mini_map_size * cubed->grid_height / 2) - player_size;
+	while (y < (cubed->mini_map_size * cubed->grid_height / 2) + player_size)
+	{
+		x = (cubed->mini_map_size * cubed->grid_width / 2) - player_size;
+		while (x < (cubed->mini_map_size * cubed->grid_width / 2) + player_size)
+		{
+			mlx_put_pixel(cubed->image_game, x, y, colorGreen);
+			x++;
+		}
+		y++;
+	}
 }
 
 void	reset_settings(t_cubed *cubed)
 {
-	draw_screen(cubed);
+	// raycasting(cubed);
+	position_mini_map(cubed);
+	draw_player_mini_map(cubed);
+
 }
 
 static bool	initialize_cubed(t_cubed *cubed)
@@ -17,13 +55,14 @@ static bool	initialize_cubed(t_cubed *cubed)
 	// screen variables
 	cubed->screen_width = 800;
 	cubed->screen_height = 800;
-	cubed->map_width = (double)column;
-	cubed->map_height = (double)row;
+	cubed->map_width = (double)row;
+	cubed->map_height = (double)column;
 	cubed->grid_width = 40;
 	cubed->grid_height = 40;
 	cubed->mini_map_width = (double)row * cubed->grid_width;
 	cubed->mini_map_height = (double)column * cubed->grid_height;
 	cubed->mini_map_start_y = cubed->screen_height - cubed->mini_map_height;
+	cubed->mini_map_size = 6;
 	cubed->draw_screen = true;
 
 	// player variables
@@ -55,7 +94,7 @@ int32_t start_cubed(void)
 	
 	if (!initialize_cubed(&cubed))
 		return (1);
-	if (!(cubed.mlx = mlx_init((int32_t)cubed.mini_map_width, (int32_t)cubed.mini_map_height, "MLX42", true)))
+	if (!(cubed.mlx = mlx_init((int32_t)(cubed.mini_map_size * cubed.grid_width), (int32_t)(cubed.mini_map_size * cubed.grid_height), "MLX42", true)))
 	{
 		puts(mlx_strerror(mlx_errno));
 		return(EXIT_FAILURE);
@@ -67,6 +106,18 @@ int32_t start_cubed(void)
 		return(EXIT_FAILURE);
 	}
 	if (mlx_image_to_window(cubed.mlx, cubed.image, 0, 0) == -1)
+	{
+		mlx_close_window(cubed.mlx);
+		puts(mlx_strerror(mlx_errno));
+		return(EXIT_FAILURE);
+	}
+	if (!(cubed.image_game = mlx_new_image(cubed.mlx, (int32_t)cubed.mini_map_width, (int32_t)cubed.mini_map_height)))
+	{
+		mlx_close_window(cubed.mlx);
+		puts(mlx_strerror(mlx_errno));
+		return(EXIT_FAILURE);
+	}
+	if (mlx_image_to_window(cubed.mlx, cubed.image_game, 0, 0) == -1)
 	{
 		mlx_close_window(cubed.mlx);
 		puts(mlx_strerror(mlx_errno));

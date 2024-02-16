@@ -33,48 +33,28 @@ static void	get_ray_direction(t_cubed *cubed, double pa)
 // fmod
 void	get_player_to_grid(t_cubed *cubed, double *player_to_grid_x, double *player_to_grid_y)
 {
-	double	pa = cubed->pa + cubed->fov;
-
+	double	pa;
+	
+	pa = cubed->pa + cubed->fov;
 	get_ray_direction(cubed, pa);
-
-
 	if (cubed->dirX == 1)
-	{
-		// cubed->mapX++;
 		*player_to_grid_x = cubed->posX;
-	}
 	else if (cubed->dirX == -1)
-	{
-		// cubed->mapX--;
 		*player_to_grid_x = cubed->map_width - cubed->posX;
-	}
 	else // not sure about this
 		*player_to_grid_x = 0;
 	if (cubed->dirY == 1)
-	{
-		// cubed->mapY++;
 		*player_to_grid_y = cubed->posY;
-	}
 	else if (cubed->dirY == -1)
-	{
-		// cubed->mapY--;
 		*player_to_grid_y = cubed->map_height - cubed->posY;
-	}
 	else // not sure about this
 		*player_to_grid_y = 0;
-
-	// *player_to_grid_x = fmod(*player_to_grid_x, cubed->grid_width);
-	// *player_to_grid_y = fmod(*player_to_grid_y, cubed->grid_height);
-
 	while (*player_to_grid_x >= 0)
 		(*player_to_grid_x)--;
-		// *player_to_grid_x -= cubed->grid_width;
 	if (cubed->dirX == 1)
 		*player_to_grid_x *= -1;
-	
 	while (*player_to_grid_y >= 0)
 		(*player_to_grid_y)--;
-		// *player_to_grid_y -= cubed->grid_height;
 	if (cubed->dirY == 1)
 		*player_to_grid_y *= -1;
 }

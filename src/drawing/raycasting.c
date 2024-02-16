@@ -1,20 +1,29 @@
 #include "../../include/cubed.h"
 
+// static int worldMap[column][row]=
+// {
+// 	{1, 1, 1, 1, 1, 1, 1, 1},
+// 	{1, 0, 0, 0, 0, 0, 0, 1},
+// 	{1, 0, 0, 0, 0, 0, 0, 1},
+// 	{1, 0, 0, 0, 1, 0, 0, 1},
+// 	{1, 0, 0, 0, 0, 0, 0, 1},
+// 	{1, 0, 0, 0, 0, 1, 0, 1},
+// 	{1, 0, 0, 0, 0, 1, 0, 1},
+// 	{1, 0, 1, 0, 0, 0, 0, 1},
+// 	{1, 0, 1, 1, 0, 0, 0, 1},
+// 	{1, 0, 0, 1, 1, 0, 0, 1},
+// 	{1, 0, 0, 0, 1, 0, 0, 1},
+// 	{1, 0, 0, 0, 0, 0, 0, 1},
+// 	{1, 1, 1, 1, 1, 1, 1, 1}
+// };
+
 static int worldMap[column][row]=
 {
-	{1, 1, 1, 1, 1, 1, 1, 1},
-	{1, 0, 0, 0, 0, 0, 0, 1},
-	{1, 0, 0, 0, 0, 0, 0, 1},
-	{1, 0, 0, 0, 1, 0, 0, 1},
-	{1, 0, 0, 0, 0, 0, 0, 1},
-	{1, 0, 0, 0, 0, 1, 0, 1},
-	{1, 0, 0, 0, 0, 1, 0, 1},
-	{1, 0, 1, 0, 0, 0, 0, 1},
-	{1, 0, 1, 1, 0, 0, 0, 1},
-	{1, 0, 0, 1, 1, 0, 0, 1},
-	{1, 0, 0, 0, 1, 0, 0, 1},
-	{1, 0, 0, 0, 0, 0, 0, 1},
-	{1, 1, 1, 1, 1, 1, 1, 1}
+	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 };
 
 
@@ -224,27 +233,18 @@ void	raycasting(t_cubed *cubed)
 
 	// printf("\nnew raycasting cycle\n\n");
     wall_position = 0;
-
-	// cubed->mapX = (int)cubed->posX;
-	// cubed->mapY = (int)cubed->posY;
-	// int	x;
-
-	// x = 0;
-	// iterations = 0.0015625;
-	iterations = 0.005;
-	cubed->fov = 0;
+	iterations = 1 / cubed->screen_width;
 	cubed->fov = M_PI / -6;
 	while (cubed->fov <= M_PI / 6)
-	// while (x < cubed->screen_width)
 	{
 		cubed->mapX = (int)cubed->posX;
 		cubed->mapY = (int)cubed->posY;
-		// printf("maps start (%d, %d)\n", cubed->mapX, cubed->mapY);
 		get_player_to_grid(cubed, &cubed->player_to_grid_x, &cubed->player_to_grid_y);
-		// printf("dirs (%f, %f)\n", cubed->dirX, cubed->dirY);
-		// printf("ptg (%f, %f)\t", cubed->player_to_grid_x, cubed->player_to_grid_y);
 		ray_loop(cubed, cubed->player_to_grid_x, cubed->player_to_grid_y, &wall_position);
 		cubed->fov += iterations;
-		// x++;
+
+		// printf("maps start (%d, %d)\n", cubed->mapX, cubed->mapY);
+		// printf("dirs (%f, %f)\n", cubed->dirX, cubed->dirY);
+		// printf("ptg (%f, %f)\t", cubed->player_to_grid_x, cubed->player_to_grid_y);
 	}
 }
