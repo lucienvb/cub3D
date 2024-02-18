@@ -63,6 +63,10 @@ typedef struct s_cubed
 	double	fov;
 	double	stepX;
 	double	stepY;
+	double	stepXctrlA;
+	double	stepYctrlA;
+	double	stepXctrlD;
+	double	stepYctrlD;
 	double	player_to_grid_x;
 	double	player_to_grid_y;
 	double	x_ray_length;

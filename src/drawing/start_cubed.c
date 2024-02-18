@@ -47,6 +47,11 @@ static bool	initialize_cubed(t_cubed *cubed)
 	cubed->mini_map_middle = cubed->mini_map_size * cubed->grid_width / 2;
 	cubed->draw_screen = true;
 
+	cubed->stepXctrlA = 0;
+	cubed->stepYctrlA = 0;
+	cubed->stepXctrlD = 0;
+	cubed->stepYctrlD = 0;
+
 	// player variables
 	cubed->posX = 2;
 	cubed->posY = 3;
@@ -54,7 +59,7 @@ static bool	initialize_cubed(t_cubed *cubed)
 	cubed->mapY = 0;
 	cubed->dirX = 0.0;
 	cubed->dirY = 0.0;
-	cubed->pa = M_PI;
+	cubed->pa = 0;
 	cubed->fov = 0;
 	cubed->stepX = 0;
 	cubed->stepY = 0;
