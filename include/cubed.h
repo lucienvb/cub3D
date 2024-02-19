@@ -5,9 +5,11 @@
 # include <stdlib.h>
 # include <stdio.h> 
 # include <unistd.h>
-// # include <MLX42/MLX42.h>
-# include "../libft/libft.h"
-# include "../libft/ft_printf/ft_printf.h"
+# include <math.h>
+# include "cubed.h"
+# include "../libs/libft/libft.h"
+# include "../libs/libft/ft_printf/ft_printf.h"
+# include "../libs/MLX42/include/MLX42/MLX42.h"
 
 // defines
 # define FAILURE		1
@@ -21,8 +23,25 @@
 # define SCREEN_HEIGHT	480
 # define Y				0
 # define X				1
+#define row 24
+#define column 24
+
+// enum
+typedef enum e_hit
+{
+	x_ray_hit,
+	y_ray_hit,
+	no_hit,
+}	t_hit;
 
 // structures
+typedef struct s_intersections
+{
+	double	x;
+	double	y;
+	double	ray_length;
+}			t_intersections;
+
 typedef struct s_cubed
 {
 	int			fd;
@@ -36,6 +55,44 @@ typedef struct s_cubed
 	int			floor[3];
 	int			width;
 	int			height;
+	mlx_t		*mlx;
+	mlx_image_t	*image;
+	mlx_image_t	*image_game;
+	double		screen_width;
+	double		screen_height;
+	double		map_width;
+	double		map_height;
+	double		mini_map_width;
+	double		mini_map_height;
+	double		mini_map_start_y;
+	double		mini_map_size;
+	double		mini_map_middle;
+	double		grid_width;
+	double		grid_height;
+	bool		draw_screen;
+	double		posX;
+	double		posY;
+	double		dirX;
+	double		dirY;
+	double		pa;
+	double		fov;
+	double		stepX;
+	double		stepY;
+	double		stepXctrlA;
+	double		stepYctrlA;
+	double		stepXctrlD;
+	double		stepYctrlD;
+	double		player_to_grid_x;
+	double		player_to_grid_y;
+	double		x_ray_length;
+	double		y_ray_length;
+	double		shortest_ray_length;
+	double		perp_wall_dist;
+	bool		side;
+	bool		raycasting_is_done;
+	double		diff;
+	int			mapX;
+	int			mapY;
 	// mlx_texture_t	*n_texture;
 	// mlx_texture_t	*e_texture;
 	// mlx_texture_t	*s_texture;
@@ -66,5 +123,23 @@ void	error_exit(char *message);
 //src/cleanup
 void	free_2d_array(char **array);
 void	free_allocations(t_cubed *cubed);
+
+int32_t	ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a);
+void	draw_color_stripe(int32_t startX, int32_t endX, int32_t startY, int32_t endY, uint32_t color, t_cubed *cubed);
+void	mini_map(t_cubed *cubed);
+void	hooks(void* param);
+void	reset_settings(t_cubed *cubed);
+void	raycasting(t_cubed *cubed);
+void 	draw_color_stripe(int32_t startX, int32_t endX, int32_t startY, int32_t endY, uint32_t color, t_cubed *cubed);
+void	draw_floor_and_ceiling(t_cubed *cubed);
+void	drawPoint(t_cubed *cubed, double posX, double posY, uint32_t color, int thickness);
+void	get_player_to_grid(t_cubed *cubed, double *player_to_grid_x, double *player_to_grid_y);
+void 	draw_screen(t_cubed *cubed);
+void	reset_settings(t_cubed *cubed);
+int32_t start_cubed(void);
+void    draw_wall(t_cubed *cubed, size_t *wall_position);
+void	get_perp_wall_dist(t_cubed *cubed, bool x_ray_is_shortest);
+void	draw_player_mini_map(t_cubed *cubed);
+void	clean_screen(t_cubed *cubed);
 
 #endif

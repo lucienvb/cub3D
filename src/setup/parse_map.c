@@ -72,7 +72,6 @@ static int	find_start_map(char **file, int i)
 	}
 	return (start);
 }
-
 int	parse_map(t_cubed *cubed)
 {
 	int	start;

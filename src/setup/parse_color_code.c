@@ -1,27 +1,27 @@
 #include "../../include/cubed.h"
 
-static int	cb_isnum(char a)
+static int	cd_isnum(char a)
 {
 	if (a >= '0' && a <= '9')
 		return (FOUND);
 	return (NOT_FOUND);
 }
 
-static int	cb_atoi(const char *str)
+static int	cd_atoi(const char *str)
 {
 	int	i;
 	int	result;
 
 	i = 0;
 	result = 0;
-	while (cb_isnum(str[i]) == FOUND && str[i] && (i < 3))
+	while (cd_isnum(str[i]) == FOUND && str[i] && (i < 3))
 	{
 		result = result * 10;
 		result = (result + (str[i] - '0'));
 		i++;
 	}
 	if (result > 255)
-		return (FAILED);
+		return (FAILURE);
 	return (result);
 }
 
@@ -36,18 +36,18 @@ static int	get_color(t_cubed *cubed, char *line, char idf)
 	{
 		while (line[i])
 		{
-			while (cb_isnum(line[i]) == NOT_FOUND)
+			while (cd_isnum(line[i]) == NOT_FOUND)
 				i++;
 			if (idf == 'C')
-				cubed->ceiling[j] = cb_atoi(&line[i]);
+				cubed->ceiling[j] = cd_atoi(&line[i]);
 			else if (idf == 'F')
-				cubed->floor[j] = cb_atoi(&line[i]);
-			if (cubed->ceiling[j] == FAILED || cubed->floor[j] == FAILED)
-				return (FAILED);
+				cubed->floor[j] = cd_atoi(&line[i]);
+			if (cubed->ceiling[j] == FAILURE || cubed->floor[j] == FAILURE)
+				return (FAILURE);
 			if (j == 2)
 				return (FOUND);
 			j++;
-			while (cb_isnum(line[i]) == FOUND)
+			while (cd_isnum(line[i]) == FOUND)
 				i++;
 		}
 	}
