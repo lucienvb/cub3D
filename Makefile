@@ -11,7 +11,7 @@ rm		:= rm -rvf
 ################################################################################
 
 HEADERS	:= -I ./include -I $(LIBMLX)/include
-LIBS	:= $(LIBMLX)/build/libmlx42.a -ldl -lglfw -pthread -lm
+LIBS	:= $(LIBMLX)/build/libmlx42.a -ldl -L/opt/homebrew/Cellar/glfw/3.3.9/lib -lglfw -pthread -lm
 
 ################################################################################
 
@@ -66,7 +66,7 @@ $(NAME): $(OBJS)
 
 clean:
 	@$(RM) $(OBJS)
-	@$(RM) $(LIBMLX)/build
+	@rm -rf $(LIBMLX)/build
 
 debug:
 	$(MAKE) DEBUG=1
@@ -87,4 +87,4 @@ fclean: clean
 
 re: clean all
 
-.PHONY: all, clean, fclean, re, libmlx
+.PHONY: all, clean, fclean, re, libmlx%
