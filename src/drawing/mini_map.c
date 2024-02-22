@@ -185,7 +185,7 @@ void	mini_map(t_cubed *cubed)
 		int x = 0;
 		while (x < (int)cubed->total_row)
 		{
-			if (cubed->map_val[y][x] == 1)
+			if (cubed->map_val[y][x] == '1')
 			{
 				draw_color_stripe((int) startX + border, (int) endX - border, (int) startY + border, 
 					(int) endY - border, colorLightGrey, cubed);

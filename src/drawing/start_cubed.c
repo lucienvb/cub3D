@@ -38,10 +38,14 @@ static bool	initialize_cubed(t_cubed *cubed)
 	cubed->screen_height = 800;
 	cubed->map_width = (double)cubed->max_column;
 	cubed->map_height = (double)cubed->total_row;
+	// cubed->map_width = (double)cubed->max_column; // misschien omdraaien
+	// cubed->map_height = (double)cubed->total_row;
 	cubed->grid_width = 40;
 	cubed->grid_height = 40;
-	cubed->mini_map_width = (double)(cubed->total_row ) * cubed->grid_width;
-	cubed->mini_map_height = (double)(cubed->max_column )* cubed->grid_height;
+	cubed->mini_map_width = (double)cubed->total_row  * cubed->grid_width;
+	cubed->mini_map_height = (double)cubed->max_column * cubed->grid_height;
+	// cubed->mini_map_width = (double)cubed->total_row  * cubed->grid_width;
+	// cubed->mini_map_height = (double)cubed->max_column * cubed->grid_height; // misschien omdraaien
 	cubed->mini_map_start_y = cubed->screen_height - cubed->mini_map_height;
 	cubed->mini_map_size = 6;
 	cubed->mini_map_middle = cubed->mini_map_size * cubed->grid_width / 2;

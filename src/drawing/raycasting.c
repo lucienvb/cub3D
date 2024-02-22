@@ -108,7 +108,7 @@ static t_hit	is_hit(t_cubed *cubed, double player_to_grid_x, double player_to_gr
 	{
 		x = ((cubed->posX + player_to_grid_x) * cubed->grid_width);
 		y = ((cubed->posY + player_to_grid_x * sin(pa) / cos(pa)) * cubed->grid_height);
-		if (cubed->map_val[cubed->mapY][cubed->mapX + (int)cubed->dirX] == 1)
+		if (cubed->map_val[cubed->mapY][cubed->mapX + (int)cubed->dirX] == '1')
 		{
 			if (draw_ray_hit)
 				drawPoint(cubed, x, y, colorOrange, dot_thickness);
