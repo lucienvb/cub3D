@@ -53,8 +53,8 @@ typedef struct s_cubed
 	char		start_cardinal_point;
 	int			ceiling[3];
 	int			floor[3];
-	int			width;
-	int			height;
+	int			max_column;
+	int			total_row;
 	mlx_t		*mlx;
 	mlx_image_t	*image;
 	mlx_image_t	*image_game;
@@ -119,6 +119,7 @@ int		validate_map_char(int c);
 int		cb_isspace(int c);
 void	perror_exit(char *message);
 void	error_exit(char *message);
+void	print_map(char **map);
 
 //src/cleanup
 void	free_2d_array(char **array);

@@ -32,21 +32,19 @@ static int	parsing(t_cubed *cubed)
 	{
 		close(cubed->fd);
 		free_2d_array(cubed->file);
-		ft_printf("Error\n");
-		ft_printf("File is incorrect\n");
+		ft_printf("Error: File is incorrect\n");
 		exit(EXIT_FAILURE);
 	}
 	if (parse_color_code(cubed) == FAILURE)
 		return (FAILURE);
 	if (parse_texture(cubed) == FAILURE)
 		return (FAILURE);
-	if (parse_start_pos(cubed) == FAILURE)
-		return (FAILURE);
-	if (parse_map_dimensions(cubed) == FAILURE)
-	{
-		ft_printf("invalid or no start position(s)\n");
+	if (parse_start_pos(cubed) == FAILURE){
+		printf("Error: Incorrect start positions(s)\n");
 		return (FAILURE);
 	}
+	// cubed->intMap = create_intMap(cubed); // todo: protect
+	// printIntArray(cubed);
 	return (SUCCESS);
 }
 
@@ -60,6 +58,7 @@ int	input_parsing(t_cubed *cubed, char *argv)
 		error_exit("Failed to parse map to 2d array\n");
 	if (parsing(cubed) == FAILURE)
 		return (FAILURE);
+	print_map(cubed->map_val);
 	if (validate_map(cubed, cubed->start_pos[Y], cubed->start_pos[X])
 		== FAILURE)
 	{

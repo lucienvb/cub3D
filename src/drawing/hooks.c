@@ -30,17 +30,17 @@ void hooks(void* param)
 	}
 	if (mlx_is_key_down(cubed->mlx, MLX_KEY_A))
 	{
-		if (cubed->posX + cubed->stepXctrlA > 1 && cubed->posX + cubed->stepXctrlA < (double)row - 1)
+		if (cubed->posX + cubed->stepXctrlA > 1 && cubed->posX + cubed->stepXctrlA < (double)cubed->total_row - 1)
 			cubed->posX += cubed->stepXctrlA;
-		if (cubed->posY + cubed->stepYctrlA > 1 && cubed->posY + cubed->stepYctrlA < (double)column - 1)
+		if (cubed->posY + cubed->stepYctrlA > 1 && cubed->posY + cubed->stepYctrlA < (double)cubed->max_column - 1)
 			cubed->posY	+= cubed->stepYctrlA;	
 		reset_settings(cubed);
 	}
 	if (mlx_is_key_down(cubed->mlx, MLX_KEY_D))
 	{
-		if (cubed->posX + cubed->stepXctrlD > 1 && cubed->posX + cubed->stepXctrlD < (double)row - 1)
+		if (cubed->posX + cubed->stepXctrlD > 1 && cubed->posX + cubed->stepXctrlD < (double)cubed->total_row - 1)
 			cubed->posX += cubed->stepXctrlD;
-		if (cubed->posY + cubed->stepYctrlD > 1 && cubed->posY + cubed->stepYctrlD < (double)column - 1)
+		if (cubed->posY + cubed->stepYctrlD > 1 && cubed->posY + cubed->stepYctrlD < (double)cubed->max_column - 1)
 			cubed->posY += cubed->stepYctrlD;
 		reset_settings(cubed);
 	}

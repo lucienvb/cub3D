@@ -30,3 +30,21 @@ int	cb_isspace(int c)
 	else
 		return (NOT_FOUND);
 }
+void	print_map(char **map)
+{
+	int	y;
+	int	x;
+
+	y = 0;
+	while(map[y])
+	{
+		x = 0;
+		while(map[y][x])
+		{
+			ft_printf("%c", map[y][x]);
+			x++;
+		}
+		ft_printf("\n");
+		y++;
+	}
+}

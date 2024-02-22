@@ -20,8 +20,8 @@ static void	init_cubed(t_cubed *cubed, char *argv)
 	cubed->floor[0] = 0;
 	cubed->floor[1] = 0;
 	cubed->floor[2] = 0;
-	cubed->width = 0;
-	cubed->height = 0;
+	cubed->max_column = 0;
+	cubed->total_row = 0;
 }
 
 void	input_init(t_cubed *cubed, char *argv)

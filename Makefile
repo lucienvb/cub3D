@@ -71,6 +71,7 @@ all: libmlx $(NAME)
 
 clone_submodule:
 	git clone https://github.com/codam-coding-college/MLX42.git ./libs/MLX42
+	git clone 
 
 libmlx:
 	@cmake $(PATH_MLX) -B $(PATH_MLX)/build && make -C $(PATH_MLX)/build -j4
