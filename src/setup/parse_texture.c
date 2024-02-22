@@ -1,47 +1,48 @@
 #include "../../include/cubed.h"
 
-static char	*remove_space(char *line)
-{
-	int	index;
+// static char	*remove_space(char *line)
+// {
+// 	int	index;
 
-	index = 0;
-	while (cb_isspace(line[index]) == FOUND && line[index])
-		index++;
-	return (&line[index]);
-}
+// 	index = 0;
+// 	while (cb_isspace(line[index]) == FOUND && line[index])
+// 		index++;
+// 	return (&line[index]);
+// }
 
 int	save_texture(t_cubed *cubed, char *line)
 {
 	int		found;
-	char	*line_nospace;
+	(void)cubed;
+	// char	*line_nospace;
 
 	found = 0;
 	if (ft_strncmp(line, "NO ", 3) == FOUND)
 	{
-		line_nospace = remove_space(&line[2]);
-		printf("%s\n", line_nospace);
+		// line_nospace = remove_space(&line[2]);
+		// printf("%s\n", line_nospace);
 		found++;
 	}
 	if (ft_strncmp(line, "EA ", 3) == FOUND)
 	{
-		line_nospace = remove_space(&line[2]);
-		printf("%s\n", line_nospace);
+		// line_nospace = remove_space(&line[2]);
+		// printf("%s\n", line_nospace);
 		found++;
 	}
 	if (ft_strncmp(line, "SO ", 3) == FOUND)
 	{
-		line_nospace = remove_space(&line[2]);
-		printf("%s\n", line_nospace);
+		// line_nospace = remove_space(&line[2]);
+		// printf("%s\n", line_nospace);
 		found++;
 	}
 	if (ft_strncmp(line, "WE ", 3) == FOUND)
 	{
-		line_nospace = remove_space(&line[2]);
-		printf("%s\n", line_nospace);
+		// line_nospace = remove_space(&line[2]);
+		// printf("%s\n", line_nospace);
 		found++;
 	}
-	if (found == 1000)
-		printf("%i", cubed->start_cardinal_point);
+	// if (found == 1000)
+	// 	printf("%i", cubed->start_cardinal_point);
 	return (found);
 }
 

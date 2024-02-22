@@ -12,7 +12,7 @@ int	main(int argc, char **argv)
 		free_allocations(&cubed);
 		return (FAILURE);
 	}
-	status = start_cubed();
+	status = start_cubed(&cubed);
 	free_allocations(&cubed);
     return (status);
 }

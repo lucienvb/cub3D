@@ -163,7 +163,8 @@ static void	draw_black_background(t_cubed *cubed)
 
 void	mini_map(t_cubed *cubed)
 {
-	uint32_t colorLightGrey = ft_pixel(218, 223, 225, 0xFF);
+	printf("test\n");
+	int32_t colorLightGrey = ft_pixel(218, 223, 225, 0xFF);
 	int	y;
 	int	border;
 	double	stepX;
@@ -178,14 +179,19 @@ void	mini_map(t_cubed *cubed)
 	startY = 0;
 	endY = startY + stepY;
 	draw_black_background(cubed);
-	while (y < (int)column)
+	print_map(cubed->map);
+	// while (y < cubed->total_row)
+	while (cubed->map[y])
 	{
 		int	startX = 0;
 		int endX = stepX;
 		int x = 0;
-		while (x < (int)cubed->total_row)
+				printf("??");
+
+		// while (x < cubed->total_row)
+		while (cubed->map[y][x])
 		{
-			if (cubed->map_val[y][x] == '1')
+			if (cubed->map[y][x] == '1')
 			{
 				draw_color_stripe((int) startX + border, (int) endX - border, (int) startY + border, 
 					(int) endY - border, colorLightGrey, cubed);

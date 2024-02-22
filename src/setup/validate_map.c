@@ -6,6 +6,7 @@ static int	save_pos(t_cubed *cubed, char pos, int x, int y)
 	cubed->start_pos[X] = x;
 	cubed->start_cardinal_point = pos;
 	cubed->map_val[y][x] = '0';
+	cubed->map[y][x] = '0';
 	return (1);
 }
 
@@ -24,15 +25,16 @@ int	parse_start_pos(t_cubed *cubed)
 
 	count = 0;
 	y = 0;
-	while (cubed->map_val[y])
+	while (cubed->map[y])
 	{
 		x = 0;
-		while (cubed->map_val[y][x])
+		while (cubed->map[y][x])
 		{
-			while(cubed->map_val[y][x] == ' ' || cubed->map_val[y][x] == '1')
+			while((cubed->map[y][x] == ' ' || cubed->map[y][x] == '1') &&
+				cubed->map[y][x] != '\0')
 					x++;
-			if (is_cardinal_point(cubed->map_val[y][x]) == TRUE)
-				count += save_pos(cubed, cubed->map_val[y][x], x, y);
+			if (is_cardinal_point(cubed->map[y][x]) == TRUE)
+				count += save_pos(cubed, cubed->map[y][x], x, y);
 			x++;
 		}
 		y++;

@@ -62,8 +62,8 @@ typedef struct s_cubed
 	double		screen_height;
 	double		map_width;
 	double		map_height;
-	double		mini_map_width;
-	double		mini_map_height;
+	double			mini_map_width;
+	double			mini_map_height;
 	double		mini_map_start_y;
 	double		mini_map_size;
 	double		mini_map_middle;
@@ -137,7 +137,7 @@ void	drawPoint(t_cubed *cubed, double posX, double posY, uint32_t color, int thi
 void	get_player_to_grid(t_cubed *cubed, double *player_to_grid_x, double *player_to_grid_y);
 void 	draw_screen(t_cubed *cubed);
 void	reset_settings(t_cubed *cubed);
-int32_t start_cubed(void);
+int32_t start_cubed(t_cubed *cubed);
 void    draw_wall(t_cubed *cubed, size_t *wall_position);
 void	get_perp_wall_dist(t_cubed *cubed, bool x_ray_is_shortest);
 void	draw_player_mini_map(t_cubed *cubed);
