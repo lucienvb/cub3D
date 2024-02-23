@@ -24,7 +24,6 @@ void	copy_map(t_cubed *cubed, char **map, int start, int end)
 {
 	int		index;
 
-	// map[end - start] = NULL;
 	index = 0;
 	while (start < end)
 	{
@@ -32,35 +31,7 @@ void	copy_map(t_cubed *cubed, char **map, int start, int end)
 		start++;
 		index++;
 	}
-	// fill_map(cubed, map);
 }
-
-// int **create_intMap(t_cubed *cubed)
-// {
-// 	int	**map;
-// 	int x;
-
-//     map = ft_calloc((cubed->total_row + 1) * sizeof(int *), sizeof(int));
-// 	if(!map)
-// 		return(NULL);
-//     int y = 0;
-//     while (y < cubed->total_row + 2)
-// 	{
-//         map[y] = cd_xalloc((cubed->max_column + 1) * sizeof(int), sizeof(int));
-// 		if (!map[y])
-// 			return(NULL);
-//         x = 0;
-//         while (x < cubed->max_column + 2)
-// 		{
-//             map[y][x] = cubed->map_val[y][x] - '0';
-//             x++;
-//         }
-// 		map[y][x] = '\0';
-//         y++;
-//     }
-// 	map[y] = NULL;
-// 	return(map);
-// }
 
 static int	find_start_end(char **file, int i)
 {

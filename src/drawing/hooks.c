@@ -5,7 +5,6 @@ void hooks(void* param)
 	t_cubed	*cubed;
 
 	cubed = param;
-
 	if (mlx_is_key_down(cubed->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(cubed->mlx);
 	if (mlx_is_key_down(cubed->mlx, MLX_KEY_W))
