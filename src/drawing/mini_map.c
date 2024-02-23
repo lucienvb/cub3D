@@ -110,7 +110,6 @@ void	mini_map(t_cubed *cubed)
 	startY = 0;
 	endY = startY + stepY;
 	draw_black_background(cubed);
-	print_map(cubed->map);
 	while (cubed->map[y])
 	{
 		int	startX = 0;

@@ -27,11 +27,12 @@ int	parse_start_pos(t_cubed *cubed)
 	y = 0;
 	while (cubed->map[y])
 	{
+		printf("%i ", y);
 		x = 0;
 		while (cubed->map[y][x])
 		{
-			while((cubed->map[y][x] == ' ' || cubed->map[y][x] == '1') &&
-				cubed->map[y][x] != '\0')
+			while(cubed->map[y][x] && (cubed->map[y][x] == ' ' || 
+				cubed->map[y][x] == '1'))
 					x++;
 			if (is_cardinal_point(cubed->map[y][x]) == TRUE)
 				count += save_pos(cubed, cubed->map[y][x], x, y);

@@ -2,22 +2,32 @@
 
 static char	**create_map(t_cubed *cubed)
 {
-	int	y;
-	char **map;
+    int y;
+    char **map;
 
-	y = 0;
-	map = ft_calloc((cubed->total_row + 1) * sizeof(char*), sizeof(char));
-	if (!map)
-		return (NULL);
-	while(y < cubed->total_row)
-	{
-		map[y] = ft_calloc((cubed->max_column + 2) * sizeof(char), sizeof(char));
-		if (!map[y])
-			return (NULL);
-		y++;
-	}
+    y = 0;
+	printf("%i = total_row + 1\n", cubed->total_row + 1 );
+    // map = malloc((cubed->total_row + 1) * sizeof(char*));
+    map = ft_calloc((cubed->total_row + 1), sizeof(char*));
+    if (!map)
+        return (NULL);
+    while (y < cubed->total_row)
+    {
+        map[y] = ft_calloc((cubed->max_column + 1), sizeof(char));
+        // map[y] = malloc((cubed->max_column + 1) * sizeof(char));
+        if (!map[y])
+        {
+            while (--y >= 0)
+                free(map[y]);
+            free(map);
+            return (NULL);
+        }
+		map[y][cubed->max_column + 1] = '\0';
+        y++;
+    }
+	printf("%i = y\n", y);
 	map[y] = NULL;
-	return (map);
+    return (map);
 }
 
 void	copy_map(t_cubed *cubed, char **map, int start, int end)

@@ -5,8 +5,8 @@ static void	position_mini_map(t_cubed *cubed)
 	double	distanceX;
 	double	distanceY;
 	
-	distanceX = -(cubed->posX - (cubed->mini_map_size / 2));
-	distanceY = -(cubed->posY - (cubed->mini_map_size / 2));
+	distanceX = - (cubed->posX - (cubed->mini_map_size / 2));
+	distanceY = - (cubed->posY - (cubed->mini_map_size / 2));
 	cubed->image->instances[0].x = distanceX * cubed->grid_width;
 	cubed->image->instances[0].y = distanceY * cubed->grid_height;
 	// mlx_set_instance_depth(cubed->image->instances, 1);
@@ -38,19 +38,18 @@ static bool	initialize_cubed(t_cubed *cubed)
 	cubed->screen_height = 800;
 	printf("%i = cubed->max_column\n", cubed->max_column);
 	printf("%i = cubed->total_row\n", cubed->total_row);
-	cubed->map_width = cubed->max_column; // misschien omdraaien
+	cubed->map_width = cubed->max_column;// misschien omdraaien
 	cubed->map_height = cubed->total_row;
 	cubed->grid_width = 40;
 	cubed->grid_height = 40;
 	printf("%f grid width\n", cubed->grid_width);
-	cubed->mini_map_width = cubed->total_row  * cubed->grid_width;
+	cubed->mini_map_width = cubed->max_column  * cubed->grid_width;
 	printf("%f = mini_map_width\n", cubed->mini_map_width);
-	cubed->mini_map_height = cubed->max_column * cubed->grid_height; // misschien omdraaien
+	cubed->mini_map_height = cubed->total_row * cubed->grid_height; // misschien omdraaien
 	cubed->mini_map_start_y = cubed->screen_height - cubed->mini_map_height;
 	cubed->mini_map_size = 6;
 	cubed->mini_map_middle = cubed->mini_map_size * cubed->grid_width / 2;
 	cubed->draw_screen = true;
-
 	cubed->stepXctrlA = 0;
 	cubed->stepYctrlA = 0;
 	cubed->stepXctrlD = 0;
@@ -78,7 +77,6 @@ static bool	initialize_cubed(t_cubed *cubed)
 	cubed->player_to_grid_y = 5;
 	cubed->mapX = (int)cubed->posX;
 	cubed->mapY = (int)cubed->posY;
-
 	return (true);
 }
 
