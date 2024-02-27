@@ -1,51 +1,49 @@
 #include "../../include/cubed.h"
 
-static char *remove_space(char *line)
+char *load_path(char *line)
 {
-	int start;
-	int     end;
-	char *tex;
+    char *path;
+    int start = 0;
+    int end = 0;
 
-	start = 0;
-	end = 0;
-	while (cb_isspace(line[start]) == FOUND && line[start])
-		start++;
-	end = start;
-	while(!cb_isspace(line[end] == NOT_FOUND) && line[end])
-		end++;
-	tex = cd_strndup(&line[start], end -1);
-	return (tex);
+    while (cb_isspace(line[start]) == FOUND && line[start])
+        start++;
+    end = start;
+    while (!cb_isspace(line[end] == NOT_FOUND) && line[end])
+        end++;
+    path = cd_strndup(&line[start], end - 1);
+    return (path);
 }
 
 int save_texture(t_cubed *cubed, char *line)
 {
-	mlx_texture_t	*texture;
-	char *tex;
+    char *path;
+	
+	path =  load_path(&line[2]);
+    if (!path)
+    {
+        free(path);
+        return NOT_FOUND;
+    }
+    if (ft_strncmp(line, "NO ", 3) == FOUND)
+        cubed->n_texture = mlx_load_png(path);
+    else if (ft_strncmp(line, "EA ", 3) == FOUND)
+        cubed->e_texture = mlx_load_png(path);
+    else if (ft_strncmp(line, "SO ", 3) == FOUND)
+        cubed->s_texture = mlx_load_png(path);
+    else if (ft_strncmp(line, "WE ", 3) == FOUND)
+        cubed->w_texture = mlx_load_png(path);
+    else
+    {
+        free(path);
+        return NOT_FOUND;
+    }
 
-	tex = remove_space(&line[2]);
-	if (!tex){
-		free (tex);
-		return (NOT_FOUND);
-	}
-	printf("%s\n", tex);
-	texture = mlx_load_png(tex); 
-	free(tex);
-	if (!texture)
-		return (FAILURE);
-	if (ft_strncmp(line, "NO ", 3) == FOUND)
-		cubed->n_texture = texture;
-	else if (ft_strncmp(line, "EA ", 3) == FOUND)
-		cubed->e_texture = texture;  
-	else if (ft_strncmp(line, "SO ", 3) == FOUND)
-		cubed->s_texture = texture; 
-	else if (ft_strncmp(line, "WE ", 3) == FOUND)
-		cubed->w_texture = texture;
-	else
-		return (NOT_FOUND);
-	return (FOUND);
+    free(path);
+    return FOUND;
 }
 
-int	parse_texture(t_cubed *cubed) // todo: Does not check if path is correct!!
+int	parse_texture(t_cubed *cubed)
 {
 	int	i;
 	int	j;
@@ -58,6 +56,7 @@ int	parse_texture(t_cubed *cubed) // todo: Does not check if path is correct!!
 		j = 0;
 		while (cb_isspace(cubed->file[i][j]) == FOUND && cubed->file[i][j])
 			j++;
+
 		if (save_texture(cubed, &cubed->file[i][j]) == FOUND)
 			total_found += 1;
 		i++;

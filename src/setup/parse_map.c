@@ -7,14 +7,12 @@ static char	**create_map(t_cubed *cubed)
 
     y = 0;
 	printf("%i = total_row + 1\n", cubed->total_row + 1 );
-    // map = malloc((cubed->total_row + 1) * sizeof(char*));
     map = ft_calloc((cubed->total_row + 1), sizeof(char*));
     if (!map)
         return (NULL);
     while (y < cubed->total_row)
     {
         map[y] = ft_calloc((cubed->max_column + 1), sizeof(char));
-        // map[y] = malloc((cubed->max_column + 1) * sizeof(char));
         if (!map[y])
         {
             while (--y >= 0)
