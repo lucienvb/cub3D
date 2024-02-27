@@ -36,16 +36,14 @@ static bool	initialize_cubed(t_cubed *cubed)
 	// screen variables
 	cubed->screen_width = 800;
 	cubed->screen_height = 800;
-	printf("%i = cubed->max_column\n", cubed->max_column);
+	printf("\n%i = cubed->max_column\n", cubed->max_column);
 	printf("%i = cubed->total_row\n", cubed->total_row);
-	cubed->map_width = cubed->max_column;// misschien omdraaien
+	cubed->map_width = cubed->max_column;
 	cubed->map_height = cubed->total_row;
 	cubed->grid_width = 40;
 	cubed->grid_height = 40;
-	printf("%f grid width\n", cubed->grid_width);
 	cubed->mini_map_width = cubed->max_column  * cubed->grid_width;
-	printf("%f = mini_map_width\n", cubed->mini_map_width);
-	cubed->mini_map_height = cubed->total_row * cubed->grid_height; // misschien omdraaien
+	cubed->mini_map_height = cubed->total_row * cubed->grid_height; 
 	cubed->mini_map_start_y = cubed->screen_height - cubed->mini_map_height;
 	cubed->mini_map_size = 6;
 	cubed->mini_map_middle = cubed->mini_map_size * cubed->grid_width / 2;
@@ -56,8 +54,6 @@ static bool	initialize_cubed(t_cubed *cubed)
 	cubed->stepYctrlD = 0;
 
 	// player variables
-	printf("%i = start x\n", cubed->start_pos[X]);
-	printf("%i = start y\n", cubed->start_pos[Y]);
 	cubed->posX = cubed->start_pos[X];
 	cubed->posY = cubed->start_pos[Y];
 	cubed->mapX = 0;

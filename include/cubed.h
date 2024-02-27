@@ -93,10 +93,10 @@ typedef struct s_cubed
 	double		diff;
 	int			mapX;
 	int			mapY;
-	// mlx_texture_t	*n_texture;
-	// mlx_texture_t	*e_texture;
-	// mlx_texture_t	*s_texture;
-	// mlx_texture_t	*w_texture;
+	mlx_texture_t	*n_texture;
+	mlx_texture_t	*e_texture;
+	mlx_texture_t	*s_texture;
+	mlx_texture_t	*w_texture;
 }	t_cubed;
 
 // src/setup/input
@@ -120,6 +120,7 @@ int		cb_isspace(int c);
 void	perror_exit(char *message);
 void	error_exit(char *message);
 void	print_map(char **map);
+char	*cd_strndup(const char *str, size_t n);
 
 //src/cleanup
 void	free_2d_array(char **array);
