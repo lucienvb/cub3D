@@ -3,7 +3,7 @@
 
 // check if everything is initialized correctly
 
-static void	init_cubed(t_cubed *cubed, char *argv)
+void	input_init(t_cubed *cubed, char *argv)
 {
 	bzero(cubed, sizeof(*cubed));
 	cubed->fd = -1;
@@ -22,9 +22,4 @@ static void	init_cubed(t_cubed *cubed, char *argv)
 	cubed->floor[2] = 0;
 	cubed->max_column = 0;
 	cubed->total_row = 0;
-}
-
-void	input_init(t_cubed *cubed, char *argv)
-{
-	init_cubed(cubed, argv);
 }

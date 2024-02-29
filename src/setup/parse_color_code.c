@@ -75,8 +75,7 @@ int	parse_color_code(t_cubed *cubed)
 	}
 	if (total_found != 2)
 	{
-		ft_printf("Error\n");
-		ft_printf("Color code(s) incorrect\n");
+		ft_printf("Error:\nColor code(s) incorrect\n");
 		return (FAILURE);
 	}
 	return (SUCCESS);

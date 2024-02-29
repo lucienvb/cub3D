@@ -21,10 +21,10 @@ INCLUDES	= -I $(PATH_LIBFT) -I $(PATH_PRINTF) -I $(PATH_MLX)/include/
 
 
 # Libraries
-# ARCHIVE_MLX		:= $(PATH_MLX)/build/libmlx42.a -ldl -lglfw -pthread -lm
-ARCHIVE_MLX		:= $(PATH_MLX)/build/libmlx42.a -L/opt/homebrew/lib -lglfw -ldl -pthread -lm
-ARCHIVE_PRINTF	:= $(PATH_PRINTF)/libftprintf.a
-ARCHIVE_LIBFT	:= $(PATH_LIBFT)/libft.a
+# ARCHIVE_MLX_LINUX		:= $(PATH_MLX)/build/libmlx42.a -ldl -lglfw -pthread -lm
+ARCHIVE_MLX_MAC			:= $(PATH_MLX)/build/libmlx42.a -L/opt/homebrew/lib -lglfw -ldl -pthread -lm
+ARCHIVE_PRINTF			:= $(PATH_PRINTF)/libftprintf.a
+ARCHIVE_LIBFT			:= $(PATH_LIBFT)/libft.a
 
 
 # Compiler Flags
@@ -58,7 +58,7 @@ SRC =	src/main.c \
 		src/setup/validate_map.c \
 		src/setup/get_next_line/get_next_line.c \
 		src/setup/get_next_line/get_next_line_utils.c \
-		src/cleanup/free_allocations.c
+		src/cleanup/exit_free.c
 
 
 # Object files
@@ -80,7 +80,7 @@ libmlx:
 $(NAME): $(OBJS) $(MAIN_OBJ)
 	$(MAKE) -C $(PATH_LIBFT)
 	$(MAKE) -C $(PATH_PRINTF)
-	$(CC) $(CFLAGS) $^ $(INCLUDE_FLAGS) $(ARCHIVE_LIBFT) $(ARCHIVE_PRINTF) $(ARCHIVE_MLX) -o $(NAME)
+	$(CC) $(CFLAGS) $^ $(INCLUDE_FLAGS) $(ARCHIVE_LIBFT) $(ARCHIVE_PRINTF) $(ARCHIVE_MLX_MAC) -o $(NAME)
 	@printf "$(BLUE_FG)$(NAME)$(RESET_COLOR) created_archive\n"
 
 $(MAIN_OBJ) $(OBJS): $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c | $(HEADERS)

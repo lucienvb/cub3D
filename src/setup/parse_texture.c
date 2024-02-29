@@ -38,7 +38,6 @@ int save_texture(t_cubed *cubed, char *line)
         free(path);
         return NOT_FOUND;
     }
-
     free(path);
     return FOUND;
 }
@@ -63,8 +62,7 @@ int	parse_texture(t_cubed *cubed)
 	}
 	if (total_found != 4)
 	{
-		printf("%i = total_found\n", total_found);
-		ft_printf("Error: Incorrect path(s)\n");
+		ft_printf("Error:\nIncorrect path(s)\n");
 		return (FAILURE);
 	}
 	return (SUCCESS);

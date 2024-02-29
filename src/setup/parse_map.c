@@ -2,30 +2,30 @@
 
 static char	**create_map(t_cubed *cubed)
 {
-    int y;
-    char **map;
+	int y;
+	char **map;
 
-    y = 0;
+	y = 0;
 	printf("%i = total_row + 1\n", cubed->total_row + 1 );
-    map = ft_calloc((cubed->total_row + 1), sizeof(char*));
-    if (!map)
-        return (NULL);
-    while (y < cubed->total_row)
-    {
-        map[y] = ft_calloc((cubed->max_column + 1), sizeof(char));
-        if (!map[y])
-        {
-            while (--y >= 0)
-                free(map[y]);
-            free(map);
-            return (NULL);
-        }
-		map[y][cubed->max_column + 1] = '\0';
-        y++;
-    }
+	map = ft_calloc((cubed->total_row + 1), sizeof(char*));
+	if (!map)
+		return (NULL);
+	while (y < cubed->total_row)
+	{
+		map[y] = ft_calloc((cubed->max_column + 1), sizeof(char));
+		if (!map[y])
+		{
+			while (--y >= 0)
+				free(map[y]);
+			free(map);
+			return (NULL);
+		}
+		map[y][cubed->max_column] = '\0';
+		y++;
+	}
 	printf("%i = y\n", y);
 	map[y] = NULL;
-    return (map);
+	return (map);
 }
 
 void	copy_map(t_cubed *cubed, char **map, int start, int end)
@@ -83,7 +83,7 @@ int	find_max_width(t_cubed *cubed, int start, int end)
 	printf("%i = cubed->max_column\n", cubed->max_column);
 	if (cubed->max_column == 0)
 	{
-		ft_printf("Error: Incorrect map\n");
+		ft_printf("Error:\nIncorrect map\n");
 		return (FAILURE);
 	}
 	return (SUCCESS);
@@ -96,22 +96,20 @@ int	parse_map(t_cubed *cubed)
 
 	end = 0;
 	start = find_start_end(cubed->file, 0);
-	if (start == 0)
-		return (FAILURE);
 	end = find_start_end(cubed->file, start + 1) + 1;
-	if (cubed->file[end] != NULL)
-		return (FAILURE);
 	cubed->total_row = end - start;
-	printf("%i = cubed->total_row\n", cubed->total_row);
 	if (find_max_width(cubed, start, end) == FAILURE)
 		return (FAILURE);
 	cubed->map = create_map(cubed);
-	if (cubed->map == NULL)
+	if (cubed->map == NULL){
+		free_2d_array(cubed->file);
 		return (FAILURE);
+	}
 	cubed->map_val = create_map(cubed);
 	if (cubed->map_val == NULL)
 	{
 		free_2d_array(cubed->map);
+		free_2d_array(cubed->file);
 		return (FAILURE);
 	}
 	copy_map(cubed, cubed->map, start, end);

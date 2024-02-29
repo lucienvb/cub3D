@@ -36,7 +36,8 @@ int	parse_start_pos(t_cubed *cubed)
 					x++;
 			if (is_cardinal_point(cubed->map[y][x]) == TRUE)
 				count += save_pos(cubed, cubed->map[y][x], x, y);
-			x++;
+			if(cubed->map[y][x])
+				x++;
 		}
 		y++;
 	}

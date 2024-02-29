@@ -33,5 +33,5 @@ void	input_error_handling(int argc, char **argv)
 		exit(EXIT_FAILURE);
 	}
 	if (check_file_type(argv[1]) == FAILURE)
-		error_exit("wrong file type");
+		error_exit("Error\nWrong file type\n");
 }

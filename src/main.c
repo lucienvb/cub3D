@@ -2,6 +2,9 @@
 // minimap klopt niet.
 // wanneer je met A & D toets begint kun out of bound lopen.
 
+// void f(){
+// 	system("leaks cub3d");
+// }
 
 int	main(int argc, char **argv)
 {
@@ -17,8 +20,6 @@ int	main(int argc, char **argv)
 	}
 	status = start_cubed(&cubed);
 	free_allocations(&cubed);
+	// atexit(f);
     return (status);
 }
-
-
-

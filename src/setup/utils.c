@@ -22,20 +22,6 @@ char	*cd_strndup(const char *str, size_t n)
 	return (dup);
 }
 
-void	error_exit(char *message)
-{
-	ft_printf("Error \n");
-	ft_printf("%s \n", message);
-	exit(EXIT_FAILURE);
-}
-
-void	perror_exit(char *message)
-{
-	ft_printf("Error \n");
-	perror(message);
-	exit(EXIT_FAILURE);
-}
-
 int	validate_map_char(int c)
 {
 	if (((c == 'N') || (c == 'E') || (c == 'S')
