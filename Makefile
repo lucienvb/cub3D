@@ -28,7 +28,8 @@ ARCHIVE_LIBFT			:= $(PATH_LIBFT)/libft.a
 
 
 # Compiler Flags
-CFLAGS			= -Wall -Wextra -Werror -Wunreachable-code -Ofast
+CFLAGS			= 
+# CFLAGS			= -Wall -Wextra -Werror -Wunreachable-code -Ofast
 INCLUDE_FLAGS	:= $(addprefix -I, $(sort $(dir $(HEADERS))))
 
 ifdef DEBUG

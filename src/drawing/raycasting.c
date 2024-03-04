@@ -68,7 +68,7 @@ static void	ray_loop(t_cubed *cubed, double player_to_grid_x, double player_to_g
 {
 	bool		xRay_is_shortest_bool;
 	t_hit		is_hit_result;
-	(void)wall_position;
+	(void)		wall_position;
 
 	bool		draw_walls = true;
 
