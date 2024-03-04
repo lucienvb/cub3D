@@ -36,8 +36,6 @@ static bool	initialize_cubed(t_cubed *cubed)
 	// screen variables
 	cubed->screen_width = 800;
 	cubed->screen_height = 800;
-	printf("\n%i = cubed->max_column\n", cubed->max_column);
-	printf("%i = cubed->total_row\n", cubed->total_row);
 	cubed->map_width = cubed->max_column;
 	cubed->map_height = cubed->total_row;
 	cubed->grid_width = 40;

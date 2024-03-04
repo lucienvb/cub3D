@@ -56,7 +56,6 @@ int	input_parsing(t_cubed *cubed, char *argv)
 		error_exit("Error:\nFailed to parse map to 2d array\n");
 	if (parsing(cubed) == FAILURE)
 		return (FAILURE);
-	print_map(cubed->map_val);
 	if (validate_map(cubed, cubed->start_pos[Y], cubed->start_pos[X])
 		== FAILURE)
 	{

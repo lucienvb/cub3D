@@ -6,7 +6,6 @@ static char	**create_map(t_cubed *cubed)
 	char **map;
 
 	y = 0;
-	printf("%i = total_row + 1\n", cubed->total_row + 1 );
 	map = ft_calloc((cubed->total_row + 1), sizeof(char*));
 	if (!map)
 		return (NULL);
@@ -23,7 +22,6 @@ static char	**create_map(t_cubed *cubed)
 		map[y][cubed->max_column] = '\0';
 		y++;
 	}
-	printf("%i = y\n", y);
 	map[y] = NULL;
 	return (map);
 }
@@ -80,7 +78,6 @@ int	find_max_width(t_cubed *cubed, int start, int end)
 		start++;
 	}
 	cubed->max_column = max_i;
-	printf("%i = cubed->max_column\n", cubed->max_column);
 	if (cubed->max_column == 0)
 	{
 		ft_printf("Error:\nIncorrect map\n");
