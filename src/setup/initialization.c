@@ -21,18 +21,33 @@ static void	init_screen(t_cubed *cubed)
 	cubed->stepYctrlA = 0;
 	cubed->stepXctrlD = 0;
 	cubed->stepYctrlD = 0;
-	cubed->color_transparent = ft_pixel(0, 0, 0, 0);
+	cubed->colorTransparent = ft_pixel(0, 0, 0, 0);
+	cubed->colorOrange = ft_pixel(255, 140, 0, 0xFF);
+	cubed->colorBlue = ft_pixel(0, 0, 255, 0xFF);
 }
 
+static double	set_pa(t_cubed *cubed)
+{
+	printf("\n%c = pa", cubed->start_cardinal_point);
+	if (cubed->start_cardinal_point == 'W')
+		return (1 * M_PI);
+	if (cubed->start_cardinal_point == 'E')
+		return (0 * M_PI);
+	if (cubed->start_cardinal_point == 'S')
+		return (0.5 * M_PI);
+	if (cubed->start_cardinal_point == 'N')
+		return (1.5 * M_PI);
+	return (0);
+}
 static void	init_player(t_cubed *cubed)
 {
 	cubed->posX = cubed->start_pos[X];
 	cubed->posY = cubed->start_pos[Y];
 	cubed->mapX = 0;
 	cubed->mapY = 0;
-	cubed->dirX = 0.0; // if dirX = -1 W, 1 = E
-	cubed->dirY = 0.0; // if dirY = -1 N, 1 = Z
-	cubed->pa = 0; // player angle 0 = E, 0,5 * M_PI = Z, 1 *M_PI = W, 1,5 * M_PI N
+	cubed->dirX = 0.0;
+	cubed->dirY = 0.0;
+	cubed->pa = set_pa(cubed);
 	cubed->fov = 0;
 	cubed->stepX = 0;
 	cubed->stepY = 0;

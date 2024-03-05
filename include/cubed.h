@@ -81,7 +81,9 @@ typedef struct s_cubed
 	double		grid_width;
 	double		grid_height;
 	bool		draw_screen;
-	uint32_t	color_transparent;
+	uint32_t	colorTransparent;
+	uint32_t	colorOrange;
+	uint32_t	colorBlue;
 	double		posX;
 	double		posY;
 	double		dirX;
@@ -109,7 +111,6 @@ typedef struct s_cubed
 	mlx_texture_t	*e_texture;
 	mlx_texture_t	*s_texture;
 	mlx_texture_t	*w_texture;
-
 }	t_cubed;
 
 // src/setup/input

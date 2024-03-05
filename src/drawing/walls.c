@@ -79,7 +79,7 @@ void draw_wall(t_cubed *cubed, size_t *wall_position)
 		if (*wall_position >= cubed->screen_width)
 			break;
 		if (*wall_position < cubed->mini_map_surface && y < cubed->mini_map_surface)
-			mlx_put_pixel(cubed->image_game, *wall_position, y, cubed->color_transparent);
+			mlx_put_pixel(cubed->image_game, *wall_position, y, cubed->colorTransparent);
 		else
 			get_texture(cubed, wall_position, y, wall_height, wall_width);
 		y++;

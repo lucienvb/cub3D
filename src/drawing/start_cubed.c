@@ -20,6 +20,7 @@ void draw_screen(t_cubed *cubed)
 	position_mini_map(cubed);
 	clean_screen(cubed);
 	draw_player_mini_map(cubed);
+	reset_settings(cubed);
 }
 
 void	reset_settings(t_cubed *cubed)

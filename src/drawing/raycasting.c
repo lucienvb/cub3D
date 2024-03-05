@@ -20,18 +20,13 @@ static bool	x_ray_is_shortest(t_cubed *cubed, double player_to_grid_x, double pl
 
 static t_hit	is_hit(t_cubed *cubed, double player_to_grid_x, double player_to_grid_y, bool x_ray_is_shortest)
 {
-	double		dot_thickness;
-	double		draw_ray_hit;
-	uint32_t	colorOrange;
-	uint32_t	colorBlue;
-	double		pa;
-	double		x;
-	double		y;
-	
-	draw_ray_hit = false;
+	double	dot_thickness;
+	double	draw_ray_hit;
+	double	pa;
+	double	x;
+	double	y;
 
-	colorOrange = ft_pixel(255, 140, 0, 0xFF);
-	colorBlue = ft_pixel(0, 0, 255, 0xFF);
+	draw_ray_hit = false;
 	pa = cubed->pa + cubed->fov;
 	dot_thickness = 2;
 	x = 0;
@@ -43,7 +38,7 @@ static t_hit	is_hit(t_cubed *cubed, double player_to_grid_x, double player_to_gr
 		if (cubed->map[cubed->mapY][cubed->mapX + (int)cubed->dirX] == '1')
 		{
 			if (draw_ray_hit)
-				drawPoint(cubed, x, y, colorOrange, dot_thickness);
+				drawPoint(cubed, x, y, cubed->colorOrange, dot_thickness);
 			cubed->side = true;
 			return (x_ray_hit);
 		}
@@ -55,7 +50,7 @@ static t_hit	is_hit(t_cubed *cubed, double player_to_grid_x, double player_to_gr
 		if (cubed->map[cubed->mapY + (int)cubed->dirY][cubed->mapX] == '1')
 		{
 			if (draw_ray_hit)
-				drawPoint(cubed, x, y, colorBlue, dot_thickness);
+				drawPoint(cubed, x, y, cubed->colorBlue, dot_thickness);
 			cubed->side = false;
 			return (y_ray_hit);
 		}
