@@ -29,7 +29,7 @@ ARCHIVE_LIBFT			:= $(PATH_LIBFT)/libft.a
 
 # Compiler Flags
 CFLAGS			= 
-# CFLAGS			= -Wall -Wextra -Werror -Wunreachable-code -Ofast
+CFLAGS			= -Wall -Wextra -Werror -Wunreachable-code -Ofast
 INCLUDE_FLAGS	:= $(addprefix -I, $(sort $(dir $(HEADERS))))
 
 ifdef DEBUG
@@ -46,11 +46,14 @@ SRC =	src/main.c \
 		src/drawing/screen.c \
 		src/drawing/mini_map.c \
 		src/drawing/hooks.c \
+		src/drawing/init_mlx.c \
+		src/drawing/raycasting.c \
 		src/drawing/raycasting.c \
 		src/drawing/getters.c \
 		src/drawing/start_cubed.c \
+		src/drawing/walls.c \
 		src/setup/input_error_handling.c \
-		src/setup/input_initialization.c \
+		src/setup/initialization.c \
 		src/setup/parsing.c \
 		src/setup/parse_map.c \
 		src/setup/parse_color_code.c \

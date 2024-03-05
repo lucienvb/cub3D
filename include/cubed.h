@@ -40,7 +40,17 @@ typedef struct s_intersections
 	double	x;
 	double	y;
 	double	ray_length;
-}			t_intersections;
+}	t_intersections;
+
+typedef struct s_screen
+{
+
+}	s_screen;
+
+typedef struct s_player
+{
+
+}	t_player;
 
 typedef struct s_cubed
 {
@@ -67,9 +77,11 @@ typedef struct s_cubed
 	double		mini_map_start_y;
 	double		mini_map_size;
 	double		mini_map_middle;
+	double		mini_map_surface;
 	double		grid_width;
 	double		grid_height;
 	bool		draw_screen;
+	uint32_t	color_transparent;
 	double		posX;
 	double		posY;
 	double		dirX;
@@ -97,11 +109,12 @@ typedef struct s_cubed
 	mlx_texture_t	*e_texture;
 	mlx_texture_t	*s_texture;
 	mlx_texture_t	*w_texture;
+
 }	t_cubed;
 
 // src/setup/input
 void	input_error_handling(int argc, char **argv);
-void	input_init(t_cubed *cubed, char *argv);
+void	init_setup(t_cubed *cubed, char *argv);
 char	*get_next_line(int fd);
 
 // src/setup/parsing
@@ -111,7 +124,6 @@ int		parse_start_pos(t_cubed *cubed);
 int		parse_color_code(t_cubed *cubed);
 int		parse_texture(t_cubed *cubed);
 int		validate_map(t_cubed *cubed, int x, int y);
-int		parse_map_dimensions(t_cubed *cubed);
 
 // src/setup/utils
 void	free_2d_array(char **array);
@@ -122,10 +134,13 @@ void	error_exit(char *message);
 void	print_map(char **map);
 char	*cd_strndup(const char *str, size_t n);
 
-//src/cleanup
+// src/cleanup
 void	free_2d_array(char **array);
 void	free_allocations(t_cubed *cubed);
 
+int		create_image_mlx(t_cubed *cubed);
+int		image_to_window_mlx(t_cubed *cubed);
+void	init_drawing(t_cubed *cubed);
 int32_t	ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a);
 void	draw_color_stripe(int32_t startX, int32_t endX, int32_t startY, int32_t endY, uint32_t color, t_cubed *cubed);
 void	mini_map(t_cubed *cubed);
@@ -133,7 +148,6 @@ void	hooks(void* param);
 void	reset_settings(t_cubed *cubed);
 void	raycasting(t_cubed *cubed);
 void 	draw_color_stripe(int32_t startX, int32_t endX, int32_t startY, int32_t endY, uint32_t color, t_cubed *cubed);
-void	draw_floor_and_ceiling(t_cubed *cubed);
 void	drawPoint(t_cubed *cubed, double posX, double posY, uint32_t color, int thickness);
 void	get_player_to_grid(t_cubed *cubed, double *player_to_grid_x, double *player_to_grid_y);
 void 	draw_screen(t_cubed *cubed);

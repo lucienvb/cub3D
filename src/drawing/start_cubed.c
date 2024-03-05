@@ -28,88 +28,17 @@ void	reset_settings(t_cubed *cubed)
 	clean_screen(cubed);
 	raycasting(cubed);
 	draw_player_mini_map(cubed);
-
-}
-
-static bool	initialize_cubed(t_cubed *cubed)
-{
-	// screen variables
-	cubed->screen_width = 800;
-	cubed->screen_height = 800;
-	cubed->map_width = cubed->max_column;
-	cubed->map_height = cubed->total_row;
-	cubed->grid_width = 40;
-	cubed->grid_height = 40;
-	cubed->mini_map_width = cubed->max_column  * cubed->grid_width;
-	cubed->mini_map_height = cubed->total_row * cubed->grid_height; 
-	cubed->mini_map_start_y = cubed->screen_height - cubed->mini_map_height;
-	cubed->mini_map_size = 6;
-	cubed->mini_map_middle = cubed->mini_map_size * cubed->grid_width / 2;
-	cubed->draw_screen = true;
-	cubed->stepXctrlA = 0;
-	cubed->stepYctrlA = 0;
-	cubed->stepXctrlD = 0;
-	cubed->stepYctrlD = 0;
-
-	// player variables
-	cubed->posX = cubed->start_pos[X];
-	cubed->posY = cubed->start_pos[Y];
-	cubed->mapX = 0;
-	cubed->mapY = 0;
-	cubed->dirX = 0.0; // if dirX = -1 W, 1 = E
-	cubed->dirY = 0.0; // if dirY = -1 N, 1 = Z
-	cubed->pa = 0; // player angle 0 = E, 0,5 * M_PI = Z, 1 *M_PI = W, 1,5 * M_PI N
-	cubed->fov = 0;
-	cubed->stepX = 0;
-	cubed->stepY = 0;
-	cubed->raycasting_is_done = false;
-	cubed->x_ray_length = 0;
-	cubed->y_ray_length = 0;
-	cubed->shortest_ray_length = 1000;
-	cubed->side = false;
-	cubed->player_to_grid_x = 5;
-	cubed->player_to_grid_y = 5;
-	cubed->mapX = (int)cubed->posX;
-	cubed->mapY = (int)cubed->posY;
-	return (true);
 }
 
 int32_t start_cubed(t_cubed *cubed)
 {
-	if (!initialize_cubed(cubed))
-		return (1);
-	if (!(cubed->mlx = mlx_init((int32_t)cubed->screen_width, (int32_t)cubed->screen_height, "MLX42", true)))
-	{
-		puts(mlx_strerror(mlx_errno));
-		return(EXIT_FAILURE);
-	}
-	if (!(cubed->image = mlx_new_image(cubed->mlx, (int32_t)cubed->mini_map_width, (int32_t)cubed->mini_map_height)))
-	{
-		mlx_close_window(cubed->mlx);
-		puts(mlx_strerror(mlx_errno));
-		return(EXIT_FAILURE);
-	}
-	if (!(cubed->image_game = mlx_new_image(cubed->mlx, (int32_t)cubed->screen_width, (int32_t)cubed->screen_height)))
-	{
-		mlx_close_window(cubed->mlx);
-		puts(mlx_strerror(mlx_errno));
-		return(EXIT_FAILURE);
-	}
-	if (mlx_image_to_window(cubed->mlx, cubed->image, 0, 0) == -1)
-	{
-		mlx_close_window(cubed->mlx);
-		puts(mlx_strerror(mlx_errno));
-		return(EXIT_FAILURE);
-	}
-	if (mlx_image_to_window(cubed->mlx, cubed->image_game, 0, 0) == -1)
-	{
-		mlx_close_window(cubed->mlx);
-		puts(mlx_strerror(mlx_errno));
-		return(EXIT_FAILURE);
-	}
+	if (create_image_mlx(cubed) == FAILURE)
+		return (FAILURE);
+	if (image_to_window_mlx(cubed) == FAILURE)
+		return (FAILURE);
 	draw_screen(cubed);
 	mlx_loop_hook(cubed->mlx, hooks, cubed);
 	mlx_loop(cubed->mlx);
 	mlx_terminate(cubed->mlx);
-	return (EXIT_SUCCESS);
+	return (SUCCESS);
 }

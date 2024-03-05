@@ -9,17 +9,21 @@
 int	main(int argc, char **argv)
 {
 	t_cubed		cubed;
-	uint32_t	status;
 
 	input_error_handling(argc, argv);
-	input_init(&cubed, argv[1]);
+	init_setup(&cubed, argv[1]);
 	if (input_parsing(&cubed, argv[1]) == FAILURE)
 	{
 		free_allocations(&cubed);
 		return (FAILURE);
 	}
-	status = start_cubed(&cubed);
+	init_drawing(&cubed);
+	if (start_cubed(&cubed) == FAILURE)
+	{
+		free_allocations(&cubed);
+		return (EXIT_FAILURE);
+	}
 	free_allocations(&cubed);
 	// atexit(f);
-    return (status);
+    return (EXIT_SUCCESS);
 }
