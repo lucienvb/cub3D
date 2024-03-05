@@ -10,7 +10,8 @@ static void	draw_visor(int x, int y, t_cubed *cubed)
 	line = 15;
 	while (line > 0)
 	{
-		mlx_put_pixel(cubed->image_game, x + cos(pa) * line, y + sin(pa) * line, colorPurple);
+		mlx_put_pixel(cubed->image_game, x + cos(pa) *
+			line, y + sin(pa) * line, colorPurple);
 		line--;
 	}
 }
@@ -58,8 +59,10 @@ void	draw_player_mini_map(t_cubed *cubed)
 		{
 			mlx_put_pixel(cubed->image_game, x, y, colorGreen);
 			double	visor_thickness = 1.5;
-			if ((x > cubed->mini_map_middle - visor_thickness && x < cubed->mini_map_middle + visor_thickness) &&
-					(y > cubed->mini_map_middle - visor_thickness && y < cubed->mini_map_middle + visor_thickness))
+			if ((x > cubed->mini_map_middle - visor_thickness &&
+				x < cubed->mini_map_middle + visor_thickness) &&
+					(y > cubed->mini_map_middle - visor_thickness &&
+						y < cubed->mini_map_middle + visor_thickness))
 					draw_visor(x, y, cubed);
 			x++;
 		}
