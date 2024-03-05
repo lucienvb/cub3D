@@ -39,7 +39,7 @@ int save_texture(t_cubed *cubed, char *line)
         return NOT_FOUND;
     }
     free(path);
-    return FOUND;
+    return (FOUND);
 }
 
 int	parse_texture(t_cubed *cubed)

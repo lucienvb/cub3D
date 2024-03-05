@@ -39,7 +39,8 @@ static int	parsing(t_cubed *cubed)
 		return (FAILURE);
 	if (parse_texture(cubed) == FAILURE)
 		return (FAILURE);
-	if (parse_start_pos(cubed) == FAILURE){
+	if (parse_start_pos(cubed) == FAILURE)
+	{
 		printf("Error:\nIncorrect start positions(s)\n");
 		return (FAILURE);
 	}

@@ -4,7 +4,7 @@ static void	draw_visor(int x, int y, t_cubed *cubed)
 {
 	uint32_t	colorPurple = ft_pixel(106, 90, 205, 0xFF);
 	double		pa;
-	int	line;
+	int			line;
 	
 	pa = cubed->pa;
 	line = 15;
@@ -45,10 +45,10 @@ void	clean_screen(t_cubed *cubed)
 
 void	draw_player_mini_map(t_cubed *cubed)
 {
-	size_t	x;
-	size_t	y;
-	double	player_size = 4;
-	uint32_t colorGreen;
+	size_t		x;
+	size_t		y;
+	double		player_size = 4;
+	uint32_t	colorGreen;
 	
 	colorGreen = ft_pixel(60, 179, 113, 0xFF);
 	y = cubed->mini_map_middle - player_size;

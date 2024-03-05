@@ -14,9 +14,7 @@ static char	**create_map(t_cubed *cubed)
 		map[y] = ft_calloc((cubed->max_column + 1), sizeof(char));
 		if (!map[y])
 		{
-			while (--y >= 0)
-				free(map[y]);
-			free(map);
+			free_2d_array(map);
 			return (NULL);
 		}
 		map[y][cubed->max_column] = '\0';
@@ -98,7 +96,8 @@ int	parse_map(t_cubed *cubed)
 	if (find_max_width(cubed, start, end) == FAILURE)
 		return (FAILURE);
 	cubed->map = create_map(cubed);
-	if (cubed->map == NULL){
+	if (cubed->map == NULL)
+	{
 		free_2d_array(cubed->file);
 		return (FAILURE);
 	}

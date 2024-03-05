@@ -21,7 +21,7 @@ static void	get_ray_direction(t_cubed *cubed, double pa)
 {
 	if (pa > 2 * M_PI)
 		pa -= 2 * M_PI;
-	if (pa >= (M_PI / 2) && pa < (M_PI * 3/2)) 
+	if (pa >= (M_PI / 2) && pa < (M_PI * 3/2))
 		cubed->dirX = -1;
 	else
 		cubed->dirX = 1;
