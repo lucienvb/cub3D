@@ -51,23 +51,28 @@ void	get_texture(t_cubed *cubed, size_t *wall_position, int y, double wall_heigh
 // deze functie is totale onzin
 double get_wall_width(t_cubed *cubed, size_t *wall_position)
 {
-    double wall_width = 1;
-    double wall_end_pos = (*wall_position) + 1;
+    // double wall_width = 1;
+    // double wall_end_pos = (*wall_position) + 1;
 
-    if (wall_end_pos < cubed->screen_width)
-        wall_width = wall_end_pos - (*wall_position);
-    else
-        wall_width = cubed->screen_width - (*wall_position);
-    return (wall_width);
+    // if (wall_end_pos < cubed->screen_width)
+    //     wall_width = wall_end_pos - (*wall_position);
+    // else
+    //     wall_width = cubed->screen_width - (*wall_position);
+    // return (wall_width);
+
+	(void)cubed;
+	(void)wall_position;
+	return 1;
 }
 
-void draw_wall(t_cubed *cubed, size_t *wall_position)
+void draw_wall(t_cubed *cubed, size_t *wall_position, bool xray_is_shortest)
 {
 	double	wall_height;
 	int		y;
 	double	end_y;
 	double	wall_width;
 
+	get_perp_wall_dist(cubed, xray_is_shortest);
 	wall_height = (cubed->screen_height / cubed->perp_wall_dist) * 0.5;
 	if (wall_height > cubed->screen_height)
 		wall_height = cubed->screen_height;

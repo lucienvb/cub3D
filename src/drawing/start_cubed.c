@@ -7,8 +7,8 @@ static void	position_mini_map(t_cubed *cubed)
 	
 	distanceX = - (cubed->posX - (cubed->mini_map_size / 2));
 	distanceY = - (cubed->posY - (cubed->mini_map_size / 2));
-	cubed->image->instances[0].x = distanceX * cubed->grid_width;
-	cubed->image->instances[0].y = distanceY * cubed->grid_height;
+	cubed->image->instances[0].x = distanceX * cubed->grid_size;
+	cubed->image->instances[0].y = distanceY * cubed->grid_size;
 	// mlx_set_instance_depth(cubed->image->instances, 1);
 	// mlx_set_instance_depth(cubed->image_game->instances, 2);
 }
