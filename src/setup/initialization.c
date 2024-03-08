@@ -24,6 +24,8 @@ static void	init_screen(t_cubed *cubed)
 	cubed->colorTransparent = ft_pixel(0, 0, 0, 0);
 	cubed->colorOrange = ft_pixel(255, 140, 0, 0xFF);
 	cubed->colorBlue = ft_pixel(0, 0, 255, 0xFF);
+	cubed->percentage_wall_width = 0;
+
 }
 
 static double	set_pa(t_cubed *cubed)

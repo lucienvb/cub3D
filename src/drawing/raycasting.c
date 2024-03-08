@@ -37,6 +37,7 @@ static t_hit	is_hit(t_cubed *cubed, double player_to_grid_x, double player_to_gr
 		y = ((cubed->posY + player_to_grid_x * sin(pa) / cos(pa)) * cubed->grid_height);
 		if (cubed->map[cubed->mapY][cubed->mapX + (int)cubed->dirX] == '1')
 		{
+			cubed->percentage_wall_width = fmod(x, 40) / 40;
 			if (draw_ray_hit)
 				drawPoint(cubed, x, y, cubed->colorOrange, dot_thickness);
 			cubed->side = true;
@@ -49,6 +50,7 @@ static t_hit	is_hit(t_cubed *cubed, double player_to_grid_x, double player_to_gr
 		y = ((cubed->posY + player_to_grid_y) * cubed->grid_height);
 		if (cubed->map[cubed->mapY + (int)cubed->dirY][cubed->mapX] == '1')
 		{
+			cubed->percentage_wall_width = fmod(x, 40) / 40;
 			if (draw_ray_hit)
 				drawPoint(cubed, x, y, cubed->colorBlue, dot_thickness);
 			cubed->side = false;
