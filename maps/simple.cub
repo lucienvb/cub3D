@@ -9,13 +9,19 @@ SO ./pictures/other_textures/gold.png
 WE ./pictures/other_textures/stone.png
 
 
-EA ./pictures/other_textures/wood.png
+EA ./pictures/animal_print/cow.png
 
 F 0,0,255
 C 255,0,0
 
-111111
-1S0101
-101001
-100001
-111111
+1111111
+1N00001
+1000001
+1111111
+
+
+
+
+
+
+

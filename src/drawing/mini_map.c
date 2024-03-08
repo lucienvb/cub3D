@@ -1,82 +1,17 @@
 #include "../../include/cubed.h"
 
-// static int worldMap[column][row]=
-// {
-// 	{1, 1, 1, 1, 1, 1, 1, 1},
-// 	{1, 0, 0, 0, 0, 0, 0, 1},
-// 	{1, 0, 0, 0, 0, 0, 0, 1},
-// 	{1, 0, 0, 0, 1, 0, 0, 1},
-// 	{1, 0, 0, 0, 0, 0, 0, 1},
-// 	{1, 0, 0, 0, 0, 1, 0, 1},
-// 	{1, 0, 0, 0, 0, 1, 0, 1},
-// 	{1, 0, 1, 0, 0, 0, 0, 1},
-// 	{1, 0, 1, 1, 0, 0, 0, 1},
-// 	{1, 0, 0, 1, 1, 0, 0, 1},
-// 	{1, 0, 0, 0, 1, 0, 0, 1},
-// 	{1, 0, 0, 0, 0, 0, 0, 1},
-// 	{1, 1, 1, 1, 1, 1, 1, 1}
-// };
-
-// static int worldMap[column][row]=
-// {
-// 	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-// 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-// 	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
-// };
-
-// static int worldMap[column][row]=
-// {
-// 	{1, 1, 1, 1, 1, 1, 1, 1},
-// 	{1, 0, 0, 0, 0, 0, 0, 1},
-// 	{1, 0, 0, 0, 1, 1, 0, 1},
-// 	{1, 0, 0, 0, 0, 1, 0, 1},
-// 	{1, 0, 0, 0, 0, 1, 0, 1},
-// 	{1, 0, 1, 1, 0, 0, 0, 1},
-// 	{1, 0, 0, 0, 0, 0, 0, 1},
-// 	{1, 1, 1, 1, 1, 1, 1, 1}
-// };
-
-static int worldMap[column][row]=
-{
-  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,1,1,1,1,1,0,0,0,0,1,0,1,0,1,0,0,0,1},
-  {1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,1,0,0,0,1,0,0,0,1},
-  {1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,1,1,0,1,1,0,0,0,0,1,0,1,0,1,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,1,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,1,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,1,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,1,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
-};
-
 static void	draw_visor(int x, int y, t_cubed *cubed)
 {
 	uint32_t	colorPurple = ft_pixel(106, 90, 205, 0xFF);
 	double		pa;
-	int	line;
+	int			line;
 	
 	pa = cubed->pa;
 	line = 15;
 	while (line > 0)
 	{
-		mlx_put_pixel(cubed->image_game, x + cos(pa) * line, y + sin(pa) * line, colorPurple);
+		mlx_put_pixel(cubed->image_game, x + cos(pa) *
+			line, y + sin(pa) * line, colorPurple);
 		line--;
 	}
 }
@@ -110,13 +45,12 @@ void	clean_screen(t_cubed *cubed)
 
 void	draw_player_mini_map(t_cubed *cubed)
 {
-	size_t	x;
-	size_t	y;
-	double	player_size = 4;
-	uint32_t colorGreen;
+	size_t		x;
+	size_t		y;
+	double		player_size = 4;
+	uint32_t	colorGreen;
 	
 	colorGreen = ft_pixel(60, 179, 113, 0xFF);
-
 	y = cubed->mini_map_middle - player_size;
 	while (y < cubed->mini_map_middle + player_size)
 	{
@@ -125,8 +59,10 @@ void	draw_player_mini_map(t_cubed *cubed)
 		{
 			mlx_put_pixel(cubed->image_game, x, y, colorGreen);
 			double	visor_thickness = 1.5;
-			if ((x > cubed->mini_map_middle - visor_thickness && x < cubed->mini_map_middle + visor_thickness) &&
-					(y > cubed->mini_map_middle - visor_thickness && y < cubed->mini_map_middle + visor_thickness))
+			if ((x > cubed->mini_map_middle - visor_thickness &&
+				x < cubed->mini_map_middle + visor_thickness) &&
+					(y > cubed->mini_map_middle - visor_thickness &&
+						y < cubed->mini_map_middle + visor_thickness))
 					draw_visor(x, y, cubed);
 			x++;
 		}
@@ -143,7 +79,6 @@ static void	draw_black_background(t_cubed *cubed)
 	
 	colorBlack = ft_pixel(0, 0, 0, 0xFF);
 	colorBlue = ft_pixel(52, 126, 133, 0xFF);
-
 	y = 0;
 	while (y < cubed->mini_map_height)
 	{
@@ -163,7 +98,7 @@ static void	draw_black_background(t_cubed *cubed)
 
 void	mini_map(t_cubed *cubed)
 {
-	uint32_t colorLightGrey = ft_pixel(218, 223, 225, 0xFF);
+	int32_t colorLightGrey = ft_pixel(218, 223, 225, 0xFF);
 	int	y;
 	int	border;
 	double	stepX;
@@ -178,14 +113,14 @@ void	mini_map(t_cubed *cubed)
 	startY = 0;
 	endY = startY + stepY;
 	draw_black_background(cubed);
-	while (y < (int)column)
+	while (cubed->map[y])
 	{
 		int	startX = 0;
 		int endX = stepX;
 		int x = 0;
-		while (x < (int)row)
+		while (cubed->map[y][x])
 		{
-			if (worldMap[y][x] == 1)
+			if (cubed->map[y][x] == '1')
 			{
 				draw_color_stripe((int) startX + border, (int) endX - border, (int) startY + border, 
 					(int) endY - border, colorLightGrey, cubed);

@@ -23,3 +23,16 @@ void	free_allocations(t_cubed *cubed)
 	free_2d_array(cubed->map_val);
 	close(cubed->fd);
 }
+void	error_exit(char *message)
+{
+	ft_printf("Error:\n");
+	ft_printf("%s \n", message);
+	exit(EXIT_FAILURE);
+}
+
+void	perror_exit(char *message)
+{
+	ft_printf("Error: \n");
+	perror(message);
+	exit(EXIT_FAILURE);
+}

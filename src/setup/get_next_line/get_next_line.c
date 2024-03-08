@@ -6,7 +6,7 @@
 /*   By: cter-maa <cter-maa@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/23 13:34:53 by cter-maa      #+#    #+#                 */
-/*   Updated: 2023/12/15 09:34:13 by chavertterm   ########   odam.nl         */
+/*   Updated: 2024/02/29 11:38:48 by chavertterm   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,27 +56,3 @@ char	*get_next_line(int fd)
 	clean_buffer(buffer);
 	return (line);
 }
-
-// int	main(void)
-// {
-// 	int		fd1;
-// 	char	*line;
-// 	int		nb;
-
-// 	fd1 = open("file", O_RDONLY);
-// 	if (fd1 == -1)
-// 		{
-// 			printf("open() failded");
-// 			return (1);
-// 		}
-// 	nb = 1;
-// 	while ((line = get_next_line(fd1)))
-// 	{
-// 		printf("line %i = %s", nb, line);
-// 		if (line)
-// 			free(line);
-// 		nb++;
-// 	}
-// 	close(fd1);
-// 	return (0);
-// }
