@@ -107,6 +107,7 @@ typedef struct s_cubed
 	double		diff;
 	int			mapX;
 	int			mapY;
+	double		percentage_wall_width;
 	mlx_texture_t	*n_texture;
 	mlx_texture_t	*e_texture;
 	mlx_texture_t	*s_texture;
