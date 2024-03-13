@@ -1,124 +1,94 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   raycasting.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lvan-bus <lvan-bus@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/08 13:30:48 by lvan-bus          #+#    #+#             */
+/*   Updated: 2024/03/08 14:52:15 by lvan-bus         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/cubed.h"
 
-static bool	x_ray_is_shortest(t_cubed *cubed, double player_to_grid_x, double player_to_grid_y)
+static bool	x_ray_is_shortest(t_cubed *cubed, double player_to_grid_x,
+	double player_to_grid_y)
 {
 	double	pa;
 	double	y_calc_x_ray;
 	double	x_calc_y_ray;
 
 	pa = cubed->pa + cubed->fov;
-
 	y_calc_x_ray = player_to_grid_x * sin(pa) / cos(pa);
 	x_calc_y_ray = player_to_grid_y * cos(pa) / sin(pa);
-
-	cubed->x_ray_length = sqrt(player_to_grid_x * player_to_grid_x + y_calc_x_ray * y_calc_x_ray);
-	cubed->y_ray_length = sqrt(x_calc_y_ray * x_calc_y_ray + player_to_grid_y * player_to_grid_y);
+	cubed->x_ray_length = sqrt(player_to_grid_x * player_to_grid_x
+			+ y_calc_x_ray * y_calc_x_ray);
+	cubed->y_ray_length = sqrt(x_calc_y_ray * x_calc_y_ray
+			+ player_to_grid_y * player_to_grid_y);
 	if (cubed->x_ray_length < cubed->y_ray_length)
 		return (true);
 	return (false);
 }
 
-static t_hit	is_hit(t_cubed *cubed, double player_to_grid_x, double player_to_grid_y, bool x_ray_is_shortest)
+static void	ray_loop_increase(t_cubed *cubed, double *player_to_grid_x,
+	double *player_to_grid_y, bool xray_is_shortest)
 {
-	double	dot_thickness;
-	double	draw_ray_hit;
-	double	pa;
-	double	x;
-	double	y;
-
-	draw_ray_hit = false;
-	pa = cubed->pa + cubed->fov;
-	dot_thickness = 2;
-	x = 0;
-	y = 0;
-	if (x_ray_is_shortest)
+	if (xray_is_shortest && cubed->dirX == 1)
 	{
-		x = ((cubed->posX + player_to_grid_x) * cubed->grid_width);
-		y = ((cubed->posY + player_to_grid_x * sin(pa) / cos(pa)) * cubed->grid_height);
-		if (cubed->map[cubed->mapY][cubed->mapX + (int)cubed->dirX] == '1')
-		{
-			cubed->percentage_wall_width = fmod(x, 40) / 40;
-			if (draw_ray_hit)
-				drawPoint(cubed, x, y, cubed->colorOrange, dot_thickness);
-			cubed->side = true;
-			return (x_ray_hit);
-		}
+		*player_to_grid_x += 1;
+		cubed->mapX++;
 	}
-	else
+	else if (xray_is_shortest && cubed->dirX != 1)
 	{
-		x = ((cubed->posX + player_to_grid_y * cos(pa) / sin(pa)) * cubed->grid_width);
-		y = ((cubed->posY + player_to_grid_y) * cubed->grid_height);
-		if (cubed->map[cubed->mapY + (int)cubed->dirY][cubed->mapX] == '1')
-		{
-			cubed->percentage_wall_width = fmod(x, 40) / 40;
-			if (draw_ray_hit)
-				drawPoint(cubed, x, y, cubed->colorBlue, dot_thickness);
-			cubed->side = false;
-			return (y_ray_hit);
-		}
+		*player_to_grid_x -= 1;
+		cubed->mapX--;
 	}
-	return (no_hit);
+	else if (!xray_is_shortest && cubed->dirY == 1)
+	{
+		*player_to_grid_y += 1;
+		cubed->mapY++;
+	}
+	else if (!xray_is_shortest && cubed->dirY != 1)
+	{
+		*player_to_grid_y -= 1;
+		cubed->mapY--;
+	}
 }
 
-static void	ray_loop(t_cubed *cubed, double player_to_grid_x, double player_to_grid_y, size_t *wall_position)
+static void	ray_loop(t_cubed *cubed, double player_to_grid_x,
+	double player_to_grid_y, size_t *wall_position)
 {
-	bool	xRay_is_shortest_bool;
+	bool	xray_is_shortest;
 	t_hit	is_hit_result;
-	(void)	wall_position;
-	bool	draw_walls = true;
-	xRay_is_shortest_bool = false;
+
+	xray_is_shortest = false;
 	is_hit_result = no_hit;
 	while (1)
 	{
-		xRay_is_shortest_bool = x_ray_is_shortest(cubed, player_to_grid_x, player_to_grid_y);
-		is_hit_result = is_hit(cubed, player_to_grid_x, player_to_grid_y, xRay_is_shortest_bool);
-		if (!xRay_is_shortest_bool && is_hit_result == y_ray_hit)
+		xray_is_shortest = x_ray_is_shortest(cubed, player_to_grid_x,
+				player_to_grid_y);
+		is_hit_result = is_hit(cubed, player_to_grid_x, player_to_grid_y,
+				xray_is_shortest);
+		if (!xray_is_shortest && is_hit_result == y_ray_hit)
 		{
-			get_perp_wall_dist(cubed, 0);
-			if (draw_walls)
-				draw_wall(cubed, wall_position);
+			draw_wall(cubed, wall_position, xray_is_shortest);
 			return ;
 		}
-		else if (xRay_is_shortest_bool && is_hit_result == x_ray_hit)
+		else if (xray_is_shortest && is_hit_result == x_ray_hit)
 		{
-			get_perp_wall_dist(cubed, 1);
-			if (draw_walls)
-				draw_wall(cubed, wall_position);
+			draw_wall(cubed, wall_position, xray_is_shortest);
 			return ;
 		}
-		if (xRay_is_shortest_bool)
-		{
-			if (cubed->dirX == 1)
-			{
-				player_to_grid_x += 1;
-				cubed->mapX++;
-			}
-			else
-			{
-				player_to_grid_x -= 1;
-				cubed->mapX--;
-			}
-		}
-		else
-		{
-			if (cubed->dirY == 1)
-			{
-				player_to_grid_y += 1;
-				cubed->mapY++;
-			}
-			else
-			{
-				player_to_grid_y -= 1;
-				cubed->mapY--;
-			}
-		}
+		ray_loop_increase(cubed, &player_to_grid_x, &player_to_grid_y,
+			xray_is_shortest);
 	}
 }
 
 void	raycasting(t_cubed *cubed)
 {
-	size_t  wall_position;
-	double 	iterations;
+	size_t	wall_position;
+	double	iterations;
 
 	iterations = 1 / cubed->screen_width;
 	cubed->fov = M_PI / -6;
@@ -128,8 +98,10 @@ void	raycasting(t_cubed *cubed)
 	{
 		cubed->mapX = (int)cubed->posX;
 		cubed->mapY = (int)cubed->posY;
-		get_player_to_grid(cubed, &cubed->player_to_grid_x, &cubed->player_to_grid_y);
-		ray_loop(cubed, cubed->player_to_grid_x, cubed->player_to_grid_y, &wall_position);
+		get_player_to_grid(cubed, &cubed->player_to_grid_x,
+			&cubed->player_to_grid_y);
+		ray_loop(cubed, cubed->player_to_grid_x, cubed->player_to_grid_y,
+			&wall_position);
 		cubed->fov += iterations;
 	}
 }

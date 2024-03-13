@@ -47,6 +47,7 @@ SRC =	src/main.c \
 		src/drawing/mini_map.c \
 		src/drawing/hooks.c \
 		src/drawing/init_mlx.c \
+		src/drawing/is_hit.c \
 		src/drawing/raycasting.c \
 		src/drawing/raycasting.c \
 		src/drawing/getters.c \
