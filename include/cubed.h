@@ -52,6 +52,20 @@ typedef struct s_player
 
 }	t_player;
 
+typedef struct s_mini_map
+{
+	int32_t	color;
+	double	stepX;
+	double	stepY;
+	double	startY;
+	double	startX;
+	double	endY;
+	double	endX;
+	int		border;
+	int		x;
+	int		y;
+}	t_minimap;
+
 typedef struct s_cubed
 {
 	int			fd;
@@ -80,6 +94,7 @@ typedef struct s_cubed
 	double		mini_map_surface;
 	double		grid_width;
 	double		grid_height;
+	double		grid_size;
 	bool		draw_screen;
 	uint32_t	colorTransparent;
 	uint32_t	colorOrange;
@@ -155,9 +170,11 @@ void	get_player_to_grid(t_cubed *cubed, double *player_to_grid_x, double *player
 void 	draw_screen(t_cubed *cubed);
 void	reset_settings(t_cubed *cubed);
 int32_t start_cubed(t_cubed *cubed);
-void    draw_wall(t_cubed *cubed, size_t *wall_position);
+void    draw_wall(t_cubed *cubed, size_t *wall_position, bool xray_is_shortets);
 void	get_perp_wall_dist(t_cubed *cubed, bool x_ray_is_shortest);
 void	draw_player_mini_map(t_cubed *cubed);
 void	clean_screen(t_cubed *cubed);
+t_hit	is_hit(t_cubed *cubed, double player_to_grid_x,
+	double player_to_grid_y, bool x_ray_is_shortest);
 
 #endif

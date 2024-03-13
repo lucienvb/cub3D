@@ -42,31 +42,24 @@ void	get_texture(t_cubed *cubed, size_t *wall_position, int y, double wall_heigh
 	double texture_y;
 	double wall_int = *wall_position;
 
-	// if (wall_int == 790)
-	// 	exit(1); 
-	// texture_x = wall_int * cubed->percentage_wall_width;
-	// printf("%f = percentage_wall_width", cubed->percentage_wall_width);
-	// printf("%f = texture_x\n", texture_x);
-	// printf("%f = wall_pos    |    %f = percentage_wall_width      |     %f = texture_x\n\n", wall_int, cubed->percentage_wall_width, texture_x);
-	// texture_x = ((double)(wall_int)) / 94;
 	texture_x = cubed->percentage_wall_width;
 	texture_y = (double)(y - (cubed->screen_height / 2) + (wall_height / 2)) / wall_height;
 	// printf("%f = percentage_wall_width", cubed->percentage_wall_width);
 	// texture_y = (double)(y - (cubed->screen_height / 2) + (wall_height / 2)) / wall_height;
 	if (texture_y <= 0)
 		texture_y = 0;
-	// printf("%f = texture_y\n", texture_y);
 	mlx_texture_t *texture = set_tex_direction(cubed);
 	uint32_t texture_color = get_tex_color(texture, texture_x, texture_y);
-	mlx_put_pixel(cubed->image_game, wall_int, y, texture_color);
-	}
+	mlx_put_pixel(cubed->image_game, *wall_position, y, texture_color);
+}
 
-void draw_wall(t_cubed *cubed, size_t *wall_position)
+void draw_wall(t_cubed *cubed, size_t *wall_position, bool xray_is_shortest)
 {
 	double	wall_height;
 	int		y;
 	double	end_y;
 
+	get_perp_wall_dist(cubed, xray_is_shortest);
 	wall_height = (cubed->screen_height / cubed->perp_wall_dist) * 0.5;
 	if (wall_height > cubed->screen_height)
 		wall_height = cubed->screen_height;
@@ -85,21 +78,3 @@ void draw_wall(t_cubed *cubed, size_t *wall_position)
 	}
 	*wall_position += 1;
 }
-
-// static uint32_t get_color(t_cubed *cubed)
-// {
-// 	if (cubed->side == true)
-// 	{
-// 		if (cubed->dirX > 0)
-// 			return (ft_pixel(250, 150, 10, 0xFF)); // Red (cubed->e_texture);
-// 		else
-// 			return (ft_pixel(0, 255, 0, 0xFF)); // Green (cubed->w_texture);
-// 	}
-// 	else
-// 	{
-// 		if (cubed->dirY > 0)
-// 			return (ft_pixel(0, 0, 255, 0xFF)); // Blue (cubed->s_texture);
-// 		else
-// 			return (ft_pixel(255, 255, 0, 0xFF)); // Yellow (cubed->n_texture);
-// 	}
-// }
