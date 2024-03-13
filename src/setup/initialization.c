@@ -1,7 +1,6 @@
 #include "../../include/cubed.h"
 #include <string.h>
 
-// check if everything is initialized correctly
 static void	init_screen(t_cubed *cubed)
 {
 	cubed->screen_width = 800;
@@ -29,7 +28,6 @@ static void	init_screen(t_cubed *cubed)
 
 static double	set_pa(t_cubed *cubed)
 {
-	printf("\n%c = pa", cubed->start_cardinal_point);
 	if (cubed->start_cardinal_point == 'W')
 		return (1 * M_PI);
 	if (cubed->start_cardinal_point == 'E')

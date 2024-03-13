@@ -21,8 +21,8 @@ INCLUDES	= -I $(PATH_LIBFT) -I $(PATH_PRINTF) -I $(PATH_MLX)/include/
 
 
 # Libraries
-# ARCHIVE_MLX_LINUX		:= $(PATH_MLX)/build/libmlx42.a -ldl -lglfw -pthread -lm
-ARCHIVE_MLX_MAC			:= $(PATH_MLX)/build/libmlx42.a -L/opt/homebrew/lib -lglfw -ldl -pthread -lm
+ARCHIVE_MLX_LINUX		:= $(PATH_MLX)/build/libmlx42.a -ldl -lglfw -pthread -lm
+# ARCHIVE_MLX_MAC			:= $(PATH_MLX)/build/libmlx42.a -L/opt/homebrew/lib -lglfw -ldl -pthread -lm
 ARCHIVE_PRINTF			:= $(PATH_PRINTF)/libftprintf.a
 ARCHIVE_LIBFT			:= $(PATH_LIBFT)/libft.a
 
@@ -75,8 +75,8 @@ MAIN_OBJ    = $(addprefix $(BUILD_DIR)/, $(MAIN:%.c=%.o))
 all: libmlx $(NAME)
 
 clone_submodule:
-	git clone https://github.com/codam-coding-college/MLX42.git ./libs/MLX42
-	git clone 
+	git clone https://github.com/codam-coding-college/MLX42.git ./libs/MLX42/.
+	git clone git@github.com:Chavert-ter-Maat/libft.git ./libs/libft/.
 
 libmlx:
 	@cmake $(PATH_MLX) -B $(PATH_MLX)/build && make -C $(PATH_MLX)/build -j4
@@ -85,7 +85,7 @@ libmlx:
 $(NAME): $(OBJS) $(MAIN_OBJ)
 	$(MAKE) -C $(PATH_LIBFT)
 	$(MAKE) -C $(PATH_PRINTF)
-	$(CC) $(CFLAGS) $^ $(INCLUDE_FLAGS) $(ARCHIVE_LIBFT) $(ARCHIVE_PRINTF) $(ARCHIVE_MLX_MAC) -o $(NAME)
+	$(CC) $(CFLAGS) $^ $(INCLUDE_FLAGS) $(ARCHIVE_LIBFT) $(ARCHIVE_PRINTF) $(ARCHIVE_MLX_LINUX) -o $(NAME)
 	@printf "$(BLUE_FG)$(NAME)$(RESET_COLOR) created_archive\n"
 
 $(MAIN_OBJ) $(OBJS): $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c | $(HEADERS)

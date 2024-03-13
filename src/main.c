@@ -1,6 +1,4 @@
 #include "../include/cubed.h"
-// minimap klopt niet.
-// wanneer je met A & D toets begint kun out of bound lopen.
 
 // void f(){
 // 	system("leaks cub3d");
