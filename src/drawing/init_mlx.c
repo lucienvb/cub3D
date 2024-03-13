@@ -1,43 +1,57 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   init_mlx.c                                         :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: cter-maa <cter-maa@student.42.fr>            +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2024/03/13 14:55:31 by cter-maa      #+#    #+#                 */
+/*   Updated: 2024/03/13 16:16:22 by cter-maa      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/cubed.h"
 
-int	create_image_mlx(t_cubed *cubed)
+int	create_image_mlx(t_cubed *c)
 {
-if (!(cubed->mlx = mlx_init((int32_t)cubed->screen_width,
-	(int32_t)cubed->screen_height, "MLX42", true)))
+	c->mlx = mlx_init((int32_t)c->screenW, (int32_t)c->screenH, "MLX42", true);
+	if (!c->mlx)
 	{
 		puts(mlx_strerror(mlx_errno));
-		return(FAILURE);
+		return (FAILURE);
 	}
-	if (!(cubed->image = mlx_new_image(cubed->mlx,
-		(int32_t)cubed->mini_map_width, (int32_t)cubed->mini_map_height)))
+	c->image = mlx_new_image(c->mlx, (int32_t)
+			c->miniMapH, (int32_t)c->miniMapH);
+	if (!c->image)
 	{
-		mlx_close_window(cubed->mlx);
+		mlx_close_window(c->mlx);
 		puts(mlx_strerror(mlx_errno));
-		return(FAILURE);
+		return (FAILURE);
 	}
-	if (!(cubed->image_game = mlx_new_image(cubed->mlx,
-		(int32_t)cubed->screen_width, (int32_t)cubed->screen_height)))
+	c->image_game = mlx_new_image(c->mlx,
+			(int32_t)c->screenW, (int32_t)c->screenH);
+	if (!c->image_game)
 	{
-		mlx_close_window(cubed->mlx);
+		mlx_close_window(c->mlx);
 		puts(mlx_strerror(mlx_errno));
-		return(FAILURE);
+		return (FAILURE);
 	}
 	return (SUCCESS);
 }
 
-int	image_to_window_mlx(t_cubed *cubed)
+int	image_to_window_mlx(t_cubed *c)
 {
-	if (mlx_image_to_window(cubed->mlx, cubed->image, 0, 0) == -1)
+	if (mlx_image_to_window(c->mlx, c->image, 0, 0) == -1)
 	{
-		mlx_close_window(cubed->mlx);
+		mlx_close_window(c->mlx);
 		puts(mlx_strerror(mlx_errno));
-		return(FAILURE);
+		return (FAILURE);
 	}
-	if (mlx_image_to_window(cubed->mlx, cubed->image_game, 0, 0) == -1)
+	if (mlx_image_to_window(c->mlx, c->image_game, 0, 0) == -1)
 	{
-		mlx_close_window(cubed->mlx);
+		mlx_close_window(c->mlx);
 		puts(mlx_strerror(mlx_errno));
-		return(FAILURE);
+		return (FAILURE);
 	}
 	return (SUCCESS);
 }

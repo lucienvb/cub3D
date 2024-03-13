@@ -1,12 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   parse_map.c                                        :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: cter-maa <cter-maa@student.42.fr>            +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2024/03/13 14:57:34 by cter-maa      #+#    #+#                 */
+/*   Updated: 2024/03/13 15:15:33 by cter-maa      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/cubed.h"
 
 static char	**create_map(t_cubed *cubed)
 {
-	int y;
-	char **map;
+	int		y;
+	char	**map;
 
 	y = 0;
-	map = ft_calloc((cubed->total_row + 1), sizeof(char*));
+	map = ft_calloc((cubed->total_row + 1), sizeof(char *));
 	if (!map)
 		return (NULL);
 	while (y < cubed->total_row)
@@ -26,7 +38,7 @@ static char	**create_map(t_cubed *cubed)
 
 void	copy_map(t_cubed *cubed, char **map, int start, int end)
 {
-	int		index;
+	int	index;
 
 	index = 0;
 	while (start < end)
@@ -47,7 +59,7 @@ static int	find_start_end(char **file, int i)
 	while (file[i])
 	{
 		j = 0;
-		while (file[i][j] == '1' || file[i][j] == ' ' || file[i][j] == '	') // todo: isspace
+		while (file[i][j] == '1' || file[i][j] == ' ' || file[i][j] == '	')
 			j++;
 		if (file[i][j] == '\0')
 		{
@@ -62,7 +74,7 @@ static int	find_start_end(char **file, int i)
 int	find_max_width(t_cubed *cubed, int start, int end)
 {
 	int	i;
-	int max_i;
+	int	max_i;
 
 	i = 0;
 	max_i = 0;

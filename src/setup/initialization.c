@@ -1,19 +1,30 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   initialization.c                                   :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: cter-maa <cter-maa@student.42.fr>            +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2024/03/13 14:57:04 by cter-maa      #+#    #+#                 */
+/*   Updated: 2024/03/13 15:45:21 by cter-maa      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/cubed.h"
-#include <string.h>
 
 static void	init_screen(t_cubed *cubed)
 {
-	cubed->screen_width = 800;
-	cubed->screen_height = 800;
+	cubed->screenW = 800;
+	cubed->screenH = 800;
 	cubed->map_width = cubed->max_column;
 	cubed->map_height = cubed->total_row;
 	cubed->grid_size = 40;
-	cubed->mini_map_width = cubed->max_column  * cubed->grid_size;
-	cubed->mini_map_height = cubed->total_row * cubed->grid_size; 
-	cubed->mini_map_start_y = cubed->screen_height - cubed->mini_map_height;
+	cubed->miniMapH = cubed->max_column * cubed->grid_size;
+	cubed->miniMapH = cubed->total_row * cubed->grid_size;
+	cubed->mini_map_start_y = cubed->screenH - cubed->miniMapH;
 	cubed->mini_map_size = 6;
 	cubed->mini_map_middle = cubed->mini_map_size * cubed->grid_size / 2;
-	cubed->mini_map_surface = cubed->mini_map_size * cubed->grid_size;;
+	cubed->mini_map_surface = cubed->mini_map_size * cubed->grid_size;
 	cubed->draw_screen = true;
 	cubed->stepXctrlA = 0;
 	cubed->stepYctrlA = 0;
@@ -23,7 +34,6 @@ static void	init_screen(t_cubed *cubed)
 	cubed->colorOrange = ft_pixel(255, 140, 0, 0xFF);
 	cubed->colorBlue = ft_pixel(0, 0, 255, 0xFF);
 	cubed->percentage_wall_width = 0;
-
 }
 
 static double	set_pa(t_cubed *cubed)
@@ -38,6 +48,7 @@ static double	set_pa(t_cubed *cubed)
 		return (1.5 * M_PI);
 	return (0);
 }
+
 static void	init_player(t_cubed *cubed)
 {
 	cubed->posX = cubed->start_pos[X];

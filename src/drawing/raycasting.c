@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   raycasting.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: lvan-bus <lvan-bus@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/08 13:30:48 by lvan-bus          #+#    #+#             */
-/*   Updated: 2024/03/08 14:52:15 by lvan-bus         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   raycasting.c                                       :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: cter-maa <cter-maa@student.42.fr>            +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2024/03/08 13:30:48 by lvan-bus      #+#    #+#                 */
+/*   Updated: 2024/03/13 15:45:03 by cter-maa      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	raycasting(t_cubed *cubed)
 	size_t	wall_position;
 	double	iterations;
 
-	iterations = 1 / cubed->screen_width;
+	iterations = 1 / cubed->screenW;
 	cubed->fov = M_PI / -6;
 	wall_position = 0;
 	clean_screen(cubed);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   mini_map.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: lvan-bus <lvan-bus@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/08 14:53:13 by lvan-bus          #+#    #+#             */
-/*   Updated: 2024/03/08 15:26:00 by lvan-bus         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   mini_map.c                                         :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: cter-maa <cter-maa@student.42.fr>            +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2024/03/08 14:53:13 by lvan-bus      #+#    #+#                 */
+/*   Updated: 2024/03/13 15:44:28 by cter-maa      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,13 @@ static void	draw_black_background(t_cubed *c)
 	color_black = ft_pixel(0, 0, 0, 0xFF);
 	color_blue = ft_pixel(52, 126, 133, 0xFF);
 	y = 0;
-	while (y < c->mini_map_height)
+	while (y < c->miniMapH)
 	{
 		x = 0;
-		while (x < c->mini_map_width)
+		while (x < c->miniMapH)
 		{
-			if (x == 0 || x == c->mini_map_width -1
-				|| y == 0 || y == c->mini_map_height -1)
+			if (x == 0 || x == c->miniMapH -1
+				|| y == 0 || y == c->miniMapH -1)
 				mlx_put_pixel(c->image, x, y, color_blue);
 			else
 				mlx_put_pixel(c->image, x, y, color_black);
