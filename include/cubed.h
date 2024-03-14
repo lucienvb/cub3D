@@ -80,6 +80,7 @@ typedef struct s_cubed
 	double		mini_map_surface;
 	double		grid_width;
 	double		grid_height;
+	double		grid_size;
 	bool		draw_screen;
 	uint32_t	colorTransparent;
 	uint32_t	colorOrange;
@@ -159,5 +160,7 @@ void    draw_wall(t_cubed *cubed, size_t *wall_position);
 void	get_perp_wall_dist(t_cubed *cubed, bool x_ray_is_shortest);
 void	draw_player_mini_map(t_cubed *cubed);
 void	clean_screen(t_cubed *cubed);
+t_hit   is_hit(t_cubed *cubed, double player_to_grid_x,
+    double player_to_grid_y, bool x_ray_is_shortest);
 
 #endif

@@ -40,9 +40,11 @@ void	get_texture(t_cubed *cubed, size_t *wall_position, int y, double wall_heigh
 	(void)wall_width;
 	double texture_x;
 	double texture_y;
-	// texture_x = ((double)(*wall_position)) / wall_width;
-	texture_x = ((double)(*wall_position)) / 64;
+
+	texture_x = cubed->percentage_wall_width;
 	texture_y = (double)(y - (cubed->screen_height / 2) + (wall_height / 2)) / wall_height;
+	if (texture_y < 0)
+		texture_y = 0;
 	mlx_texture_t *texture = set_tex_direction(cubed);
 	uint32_t texture_color = get_tex_color(texture, texture_x, texture_y);
 	mlx_put_pixel(cubed->image_game, *wall_position, y, texture_color);

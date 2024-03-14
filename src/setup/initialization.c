@@ -10,6 +10,7 @@ static void	init_screen(t_cubed *cubed)
 	cubed->map_height = cubed->total_row;
 	cubed->grid_width = 40;
 	cubed->grid_height = 40;
+	cubed->grid_size = 40;
 	cubed->mini_map_width = cubed->max_column  * cubed->grid_width;
 	cubed->mini_map_height = cubed->total_row * cubed->grid_height; 
 	cubed->mini_map_start_y = cubed->screen_height - cubed->mini_map_height;

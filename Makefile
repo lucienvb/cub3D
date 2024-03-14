@@ -44,6 +44,7 @@ endif
 # Source files
 SRC =	src/main.c \
 		src/drawing/screen.c \
+		src/drawing/is_hit.c \
 		src/drawing/mini_map.c \
 		src/drawing/hooks.c \
 		src/drawing/init_mlx.c \
