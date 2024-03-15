@@ -1,4 +1,3 @@
-
 #include "../../include/cubed.h"
 
 static bool x_ray_is_shortest(t_cubed *c, double player_to_grid_x,
@@ -93,5 +92,3 @@ while (c->fov <= M_PI / 6)
 	c->fov += iterations;
 }
 }
-
-

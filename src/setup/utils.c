@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   utils.c                                            :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: cter-maa <cter-maa@student.42.fr>            +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2024/03/13 14:57:53 by cter-maa      #+#    #+#                 */
+/*   Updated: 2024/03/13 15:10:57 by cter-maa      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/cubed.h"
 
 char	*cd_strndup(const char *str, size_t n)
@@ -38,16 +50,17 @@ int	cb_isspace(int c)
 	else
 		return (NOT_FOUND);
 }
+
 void	print_map(char **map)
 {
 	int	y;
 	int	x;
 
 	y = 0;
-	while(map[y])
+	while (map[y])
 	{
 		x = 0;
-		while(map[y][x])
+		while (map[y][x])
 		{
 			ft_printf("%c", map[y][x]);
 			x++;

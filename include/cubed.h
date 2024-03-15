@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   cubed.h                                            :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: cter-maa <cter-maa@student.42.fr>            +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2024/03/13 16:13:40 by cter-maa      #+#    #+#                 */
+/*   Updated: 2024/03/13 16:14:09 by cter-maa      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef CUBED_H
 # define CUBED_H
 
@@ -19,8 +31,8 @@
 # define TRUE			1
 # define FALSE			0
 # define CRASH			-1
-# define SCREEN_WIDTH	640
-# define SCREEN_HEIGHT	480
+# define screenWidth	640
+# define screenHeigth	480
 # define Y				0
 # define X				1
 #define row 24
@@ -52,6 +64,20 @@ typedef struct s_player
 
 }	t_player;
 
+typedef struct s_mini_map
+{
+	int32_t	color;
+	double	stepX;
+	double	stepY;
+	double	startY;
+	double	startX;
+	double	endY;
+	double	endX;
+	int		border;
+	int		x;
+	int		y;
+}	t_minimap;
+
 typedef struct s_cubed
 {
 	int			fd;
@@ -68,12 +94,12 @@ typedef struct s_cubed
 	mlx_t		*mlx;
 	mlx_image_t	*image;
 	mlx_image_t	*image_game;
-	double		screen_width;
-	double		screen_height;
+	double		screenW;
+	double		screenH;
 	double		map_width;
 	double		map_height;
-	double			mini_map_width;
-	double			mini_map_height;
+	double		miniMapW;
+	double		miniMapH;
 	double		mini_map_start_y;
 	double		mini_map_size;
 	double		mini_map_middle;
@@ -156,11 +182,11 @@ void	get_player_to_grid(t_cubed *cubed, double *player_to_grid_x, double *player
 void 	draw_screen(t_cubed *cubed);
 void	reset_settings(t_cubed *cubed);
 int32_t start_cubed(t_cubed *cubed);
-void    draw_wall(t_cubed *cubed, size_t *wall_position);
+void    draw_wall(t_cubed *cubed, size_t *wall_position, bool xray_is_shortets);
 void	get_perp_wall_dist(t_cubed *cubed, bool x_ray_is_shortest);
 void	draw_player_mini_map(t_cubed *cubed);
 void	clean_screen(t_cubed *cubed);
-t_hit is_hit(t_cubed *cubed, double player_to_grid_x,
-double player_to_grid_y, bool x_ray_is_shortest);
+t_hit	is_hit(t_cubed *cubed, double player_to_grid_x,
+	double player_to_grid_y, bool x_ray_is_shortest);
 
 #endif

@@ -1,68 +1,100 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   hooks.c                                            :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: cter-maa <cter-maa@student.42.fr>            +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2024/03/13 14:55:23 by cter-maa      #+#    #+#                 */
+/*   Updated: 2024/03/13 16:17:08 by cter-maa      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/cubed.h"
 
-void hooks(void* param)
+void	s_w_key(t_cubed *c)
 {
-	t_cubed	*cubed;
+	if (mlx_is_key_down(c->mlx, MLX_KEY_W))
+	{
+		if (c->map[(int)(c->posY)][(int)(c->posX + c->stepX)] == '0')
+			c->posX += c->stepX;
+		if (c->map[(int)(c->posY + c->stepY)][(int)(c->posX)] == '0')
+			c->posY += c->stepY;
+		reset_settings(c);
+	}
+	if (mlx_is_key_down(c->mlx, MLX_KEY_S))
+	{
+		if (c->map[(int)(c->posY)][(int)(c->posX - c->stepX)] == '0')
+			c->posX -= c->stepX;
+		if (c->map[(int)(c->posY - c->stepY)][(int)(c->posX)] == '0')
+			c->posY -= c->stepY;
+		reset_settings(c);
+	}
+}
 
-	cubed = param;
-	if (mlx_is_key_down(cubed->mlx, MLX_KEY_ESCAPE))
-		mlx_close_window(cubed->mlx);
-	if (mlx_is_key_down(cubed->mlx, MLX_KEY_W))
+void	a_d_key(t_cubed *c)
+{
+	if (mlx_is_key_down(c->mlx, MLX_KEY_A))
 	{
-		if(cubed->map[(int)(cubed->posY)][(int)(cubed->posX + cubed->stepX)] == '0')
-			cubed->posX += cubed->stepX;
-		if(cubed->map[(int)(cubed->posY + cubed->stepY)][(int)(cubed->posX)] == '0')
-			cubed->posY += cubed->stepY;
-		reset_settings(cubed);
+		if (c->map[(int)(c->posY)][(int)(c->posX + c->stepXctrlA)] == '0')
+			c->posX += c->stepXctrlA;
+		if (c->map[(int)(c->posY + c->stepYctrlA)][(int)(c->posX)] == '0')
+			c->posY += c->stepYctrlA;
+		reset_settings(c);
 	}
-	if (mlx_is_key_down(cubed->mlx, MLX_KEY_S))
+	if (mlx_is_key_down(c->mlx, MLX_KEY_D))
 	{
-		if(cubed->map[(int)(cubed->posY)][(int)(cubed->posX - cubed->stepX)] == '0')
-			cubed->posX -= cubed->stepX;
-		if(cubed->map[(int)(cubed->posY - cubed->stepY)][(int)(cubed->posX)] == '0')
-			cubed->posY -= cubed->stepY;
-		reset_settings(cubed);
+		if (c->map[(int)(c->posY)][(int)(c->posX + c->stepXctrlD)] == '0')
+			c->posX += c->stepXctrlD;
+		if (c->map[(int)(c->posY + c->stepYctrlD)][(int)(c->posX)] == '0')
+			c->posY += c->stepYctrlD;
+		reset_settings(c);
 	}
-	if (mlx_is_key_down(cubed->mlx, MLX_KEY_A))
+}
+
+void	left_key(t_cubed *c)
+{
+	if (mlx_is_key_down(c->mlx, MLX_KEY_LEFT))
 	{
-		if(cubed->map[(int)(cubed->posY)][(int)(cubed->posX + cubed->stepXctrlA)] == '0')
-			cubed->posX += cubed->stepXctrlA;
-		if(cubed->map[(int)(cubed->posY + cubed->stepYctrlA)][(int)(cubed->posX)] == '0')
-			cubed->posY += cubed->stepYctrlA;
-		reset_settings(cubed);
+		c->pa -= 0.03;
+		if (c->pa < 0)
+			c->pa += 2 * M_PI;
+		c->stepX = cos(c->pa) * 0.05;
+		c->stepY = sin(c->pa) * 0.05;
+		c->stepXctrlA = cos(c->pa - 0.5 * M_PI) * 0.05;
+		c->stepYctrlA = sin(c->pa - 0.5 * M_PI) * 0.05;
+		c->stepXctrlD = cos(c->pa + 0.5 * M_PI) * 0.05;
+		c->stepYctrlD = sin(c->pa + 0.5 * M_PI) * 0.05;
+		reset_settings(c);
 	}
-	if (mlx_is_key_down(cubed->mlx, MLX_KEY_D))
+}
+
+void	right_key(t_cubed *c)
+{
+	if (mlx_is_key_down(c->mlx, MLX_KEY_RIGHT))
 	{
-		if(cubed->map[(int)(cubed->posY)][(int)(cubed->posX + cubed->stepXctrlD)] == '0')
-			cubed->posX += cubed->stepXctrlD;
-		if(cubed->map[(int)(cubed->posY + cubed->stepYctrlD)][(int)(cubed->posX)] == '0')
-			cubed->posY += cubed->stepYctrlD;
-		reset_settings(cubed);
+		c->pa += 0.03;
+		if (c->pa > 2 * M_PI)
+			c->pa -= 2 * M_PI;
+		c->stepX = cos(c->pa) * 0.05;
+		c->stepY = sin(c->pa) * 0.05;
+		c->stepXctrlA = cos(c->pa - 0.5 * M_PI) * 0.05;
+		c->stepYctrlA = sin(c->pa - 0.5 * M_PI) * 0.05;
+		c->stepXctrlD = cos(c->pa + 0.5 * M_PI) * 0.05;
+		c->stepYctrlD = sin(c->pa + 0.5 * M_PI) * 0.05;
+		reset_settings(c);
 	}
-	if (mlx_is_key_down(cubed->mlx, MLX_KEY_LEFT))
-	{
-		cubed->pa -= 0.03;
-		if (cubed->pa < 0)
-			cubed->pa += 2 * M_PI;
-		cubed->stepX = cos(cubed->pa) * 0.05;
-		cubed->stepY = sin(cubed->pa) * 0.05;
-		cubed->stepXctrlA = cos(cubed->pa - 0.5 * M_PI) * 0.05;
-		cubed->stepYctrlA = sin(cubed->pa - 0.5 * M_PI) * 0.05;
-		cubed->stepXctrlD = cos(cubed->pa + 0.5 * M_PI) * 0.05;
-		cubed->stepYctrlD = sin(cubed->pa + 0.5 * M_PI) * 0.05;
-		reset_settings(cubed);
-	}
-	if (mlx_is_key_down(cubed->mlx, MLX_KEY_RIGHT))
-	{
-		cubed->pa += 0.03;
-		if (cubed->pa > 2 * M_PI)
-			cubed->pa -= 2 * M_PI;
-		cubed->stepX = cos(cubed->pa) * 0.05;
-		cubed->stepY = sin(cubed->pa) * 0.05;
-		cubed->stepXctrlA = cos(cubed->pa - 0.5 * M_PI) * 0.05;
-		cubed->stepYctrlA = sin(cubed->pa - 0.5 * M_PI) * 0.05;
-		cubed->stepXctrlD = cos(cubed->pa + 0.5 * M_PI) * 0.05;
-		cubed->stepYctrlD = sin(cubed->pa + 0.5 * M_PI) * 0.05;
-		reset_settings(cubed);
-	}
+}
+
+void	hooks(void *param)
+{
+	t_cubed	*c;
+
+	c = param;
+	if (mlx_is_key_down(c->mlx, MLX_KEY_ESCAPE))
+		mlx_close_window(c->mlx);
+	s_w_key(c);
+	a_d_key(c);
+	left_key(c);
+	right_key(c);
 }
