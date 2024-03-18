@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   parsing.c                                          :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: chaverttermaat <chaverttermaat@student.      +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2024/03/18 11:04:17 by chavertterm   #+#    #+#                 */
+/*   Updated: 2024/03/18 11:04:18 by chavertterm   ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/cubed.h"
 #include "./get_next_line/get_next_line.h"
 #include <fcntl.h>

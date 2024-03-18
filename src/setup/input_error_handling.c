@@ -1,5 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   input_error_handling.c                             :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: chaverttermaat <chaverttermaat@student.      +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2024/03/18 11:04:06 by chavertterm   #+#    #+#                 */
+/*   Updated: 2024/03/18 11:04:07 by chavertterm   ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/cubed.h"
-#include <string.h> //remove
 
 static void	print_input_info(void)
 {

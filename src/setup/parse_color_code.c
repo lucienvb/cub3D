@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   parse_color_code.c                                 :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: chaverttermaat <chaverttermaat@student.      +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2024/03/18 09:57:33 by chavertterm   #+#    #+#                 */
+/*   Updated: 2024/03/18 09:57:34 by chavertterm   ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/cubed.h"
 
 static int	cd_isnum(char a)

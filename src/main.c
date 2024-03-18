@@ -1,12 +1,20 @@
-#include "../include/cubed.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   main.c                                             :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: chaverttermaat <chaverttermaat@student.      +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2024/03/18 09:56:04 by chavertterm   #+#    #+#                 */
+/*   Updated: 2024/03/18 09:56:19 by chavertterm   ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
 
-// void f(){
-// 	system("leaks cub3d");
-// }
+#include "../include/cubed.h"
 
 int	main(int argc, char **argv)
 {
-	t_cubed		cubed;
+	t_cubed	cubed;
 
 	input_error_handling(argc, argv);
 	init_setup(&cubed, argv[1]);
@@ -22,6 +30,5 @@ int	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	}
 	free_allocations(&cubed);
-	// atexit(f);
-    return (EXIT_SUCCESS);
+	return (EXIT_SUCCESS);
 }

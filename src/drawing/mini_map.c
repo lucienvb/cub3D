@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   mini_map.c                                         :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: chaverttermaat <chaverttermaat@student.      +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2024/03/18 11:18:29 by chavertterm   #+#    #+#                 */
+/*   Updated: 2024/03/18 11:18:30 by chavertterm   ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/cubed.h"
 
 static void	draw_visor(int x, int y, t_cubed *cubed)
