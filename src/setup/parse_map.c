@@ -6,7 +6,7 @@
 /*   By: chaverttermaat <chaverttermaat@student.      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/03/18 11:02:28 by chavertterm   #+#    #+#                 */
-/*   Updated: 2024/03/18 11:03:29 by chavertterm   ########   odam.nl         */
+/*   Updated: 2024/03/18 14:31:26 by chavertterm   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,10 +90,7 @@ int	find_max_width(t_cubed *cubed, int start, int end)
 	}
 	cubed->max_column = max_i;
 	if (cubed->max_column == 0)
-	{
-		ft_printf("Error:\nIncorrect map\n");
 		return (FAILURE);
-	}
 	return (SUCCESS);
 }
 

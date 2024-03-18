@@ -6,7 +6,7 @@
 /*   By: chaverttermaat <chaverttermaat@student.      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/03/18 09:56:04 by chavertterm   #+#    #+#                 */
-/*   Updated: 2024/03/18 09:56:19 by chavertterm   ########   odam.nl         */
+/*   Updated: 2024/03/18 13:09:41 by chavertterm   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,12 @@ int	main(int argc, char **argv)
 	init_setup(&cubed, argv[1]);
 	if (input_parsing(&cubed, argv[1]) == FAILURE)
 	{
-		free_allocations(&cubed);
 		return (FAILURE);
 	}
 	init_drawing(&cubed);
 	if (start_cubed(&cubed) == FAILURE)
 	{
-		free_allocations(&cubed);
 		return (EXIT_FAILURE);
 	}
-	free_allocations(&cubed);
 	return (EXIT_SUCCESS);
 }

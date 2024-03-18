@@ -6,7 +6,7 @@
 /*   By: chaverttermaat <chaverttermaat@student.      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/03/18 09:56:27 by chavertterm   #+#    #+#                 */
-/*   Updated: 2024/03/18 10:01:48 by chavertterm   ########   odam.nl         */
+/*   Updated: 2024/03/18 14:33:00 by chavertterm   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ int	parse_start_pos(t_cubed *cubed)
 	y = 0;
 	while (cubed->map[y])
 	{
-		printf("%i ", y);
 		x = 0;
 		while (cubed->map[y][x])
 		{
