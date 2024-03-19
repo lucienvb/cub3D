@@ -42,15 +42,19 @@ typedef struct s_intersections
 	double	ray_length;
 }	t_intersections;
 
-typedef struct s_screen
+typedef struct s_mini_map
 {
-
-}	s_screen;
-
-typedef struct s_player
-{
-
-}	t_player;
+int32_t color;
+double stepX;
+double stepY;
+double startY;
+double startX;
+double endY;
+double endX;
+int border;
+int x;
+int y;
+}	t_minimap;
 
 typedef struct s_cubed
 {

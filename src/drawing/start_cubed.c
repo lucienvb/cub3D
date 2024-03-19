@@ -1,19 +1,29 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   start_cubed.c                                      :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: chaverttermaat <chaverttermaat@student.      +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2024/03/18 11:48:28 by chavertterm   #+#    #+#                 */
+/*   Updated: 2024/03/18 11:49:20 by chavertterm   ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/cubed.h"
 
 static void	position_mini_map(t_cubed *cubed)
 {
-	double	distanceX;
-	double	distanceY;
-	
-	distanceX = - (cubed->posX - (cubed->mini_map_size / 2));
-	distanceY = - (cubed->posY - (cubed->mini_map_size / 2));
-	cubed->image->instances[0].x = distanceX * cubed->grid_width;
-	cubed->image->instances[0].y = distanceY * cubed->grid_height;
-	// mlx_set_instance_depth(cubed->image->instances, 1);
-	// mlx_set_instance_depth(cubed->image_game->instances, 2);
+	double	distance_x;
+	double	distance_y;
+
+	distance_x = - (cubed->posX - (cubed->mini_map_size / 2));
+	distance_y = - (cubed->posY - (cubed->mini_map_size / 2));
+	cubed->image->instances[0].x = distance_x * cubed->grid_width;
+	cubed->image->instances[0].y = distance_y * cubed->grid_height;
 }
 
-void draw_screen(t_cubed *cubed)
+void	draw_screen(t_cubed *cubed)
 {
 	mini_map(cubed);
 	raycasting(cubed);
@@ -31,7 +41,7 @@ void	reset_settings(t_cubed *cubed)
 	draw_player_mini_map(cubed);
 }
 
-int32_t start_cubed(t_cubed *cubed)
+int32_t	start_cubed(t_cubed *cubed)
 {
 	if (create_image_mlx(cubed) == FAILURE)
 		return (FAILURE);

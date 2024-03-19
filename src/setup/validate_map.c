@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   validate_map.c                                     :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: chaverttermaat <chaverttermaat@student.      +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2024/03/18 09:56:27 by chavertterm   #+#    #+#                 */
+/*   Updated: 2024/03/18 14:33:00 by chavertterm   ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/cubed.h"
 
 static int	save_pos(t_cubed *cubed, char pos, int x, int y)
@@ -27,16 +39,15 @@ int	parse_start_pos(t_cubed *cubed)
 	y = 0;
 	while (cubed->map[y])
 	{
-		printf("%i ", y);
 		x = 0;
 		while (cubed->map[y][x])
 		{
-			while(cubed->map[y][x] && (cubed->map[y][x] == ' ' || 
+			while (cubed->map[y][x] && (cubed->map[y][x] == ' ' ||
 				cubed->map[y][x] == '1'))
-					x++;
+				x++;
 			if (is_cardinal_point(cubed->map[y][x]) == TRUE)
 				count += save_pos(cubed, cubed->map[y][x], x, y);
-			if(cubed->map[y][x])
+			if (cubed->map[y][x])
 				x++;
 		}
 		y++;
@@ -58,7 +69,8 @@ int	validate_map(t_cubed *cubed, int y, int x)
 	if (y >= cubed->total_row || x >= cubed->max_column
 		|| cubed->map_val[y][x] == wall || cubed->map_val[y][x] == flag)
 		return (0);
-	if (x == 0 || y == 0 || y == cubed->total_row - 1 || x == cubed->max_column - 1)
+	if (x == 0 || y == 0 || y == cubed->total_row - 1
+		|| x == cubed->max_column - 1)
 		return (1);
 	if (cubed->map_val[y][x] && cubed->map_val[y][x] != '0')
 		return (1);
