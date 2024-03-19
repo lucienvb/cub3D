@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   parse_texture.c                                    :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: chaverttermaat <chaverttermaat@student.      +#+                     */
+/*   By: cter-maa <cter-maa@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/03/18 10:29:42 by chavertterm   #+#    #+#                 */
-/*   Updated: 2024/03/18 11:01:28 by chavertterm   ########   odam.nl         */
+/*   Updated: 2024/03/19 09:12:01 by cter-maa      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static char	*remove_spaces_from_line(char *line)
 	end = start;
 	while (cb_isspace(line[end]) == NOT_FOUND && line[end])
 		end++;
-	path = cd_strndup(&line[start], end - 1);
+	path = cd_strndup(&line[start], end - start);
 	return (path);
 }
 

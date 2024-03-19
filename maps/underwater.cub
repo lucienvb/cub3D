@@ -1,8 +1,8 @@
 
-EA      ./pictures/underwater/seaweed.png																									
-WE      ./pictures/underwater/underwater2.png  
-NO  ./pictures/underwater/shark.png			 
-SO  ./pictures/underwater/starfish.png  
+EA          ./pictures/underwater/seaweed.png																									
+WE    ./pictures/underwater/underwater2.png  
+NO ./pictures/underwater/shark.png			 
+SO    ./pictures/underwater/starfish.png  
 
      		F 38  ,163 ,247  
   C 38	,	247,  231			
