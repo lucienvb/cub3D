@@ -54,6 +54,8 @@ SRC =	src/main.c \
 		src/drawing/start_cubed.c \
 		src/drawing/walls.c \
 		src/setup/input_error_handling.c \
+		src/setup/parse_map_utils.c \
+		src/setup/open_file.c \
 		src/setup/initialization.c \
 		src/setup/parsing.c \
 		src/setup/parse_map.c \

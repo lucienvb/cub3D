@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   start_cubed.c                                      :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: chaverttermaat <chaverttermaat@student.      +#+                     */
+/*   By: cter-maa <cter-maa@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/03/18 11:48:28 by chavertterm   #+#    #+#                 */
-/*   Updated: 2024/03/18 11:49:20 by chavertterm   ########   odam.nl         */
+/*   Updated: 2024/03/19 12:15:19 by cter-maa      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ int32_t	start_cubed(t_cubed *cubed)
 	draw_screen(cubed);
 	mlx_loop_hook(cubed->mlx, hooks, cubed);
 	mlx_loop(cubed->mlx);
+	mlx_delete_image(cubed->mlx, cubed->image);
 	mlx_terminate(cubed->mlx);
 	return (SUCCESS);
 }

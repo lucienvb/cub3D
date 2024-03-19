@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   parse_map.c                                        :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: chaverttermaat <chaverttermaat@student.      +#+                     */
+/*   By: cter-maa <cter-maa@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2024/03/18 11:02:28 by chavertterm   #+#    #+#                 */
-/*   Updated: 2024/03/18 14:31:26 by chavertterm   ########   odam.nl         */
+/*   Created: 2024/03/19 15:08:08 by cter-maa      #+#    #+#                 */
+/*   Updated: 2024/03/19 15:09:35 by cter-maa      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,59 +49,14 @@ void	copy_map(t_cubed *cubed, char **map, int start, int end)
 	}
 }
 
-static int	find_start_end(char **file, int i)
-{
-	int	j;
-	int	start;
-
-	j = 0;
-	start = 0;
-	while (file[i])
-	{
-		j = 0;
-		while (file[i][j] == '1' || file[i][j] == ' ' ||
-		file[i][j] == '	')
-			j++;
-		if (file[i][j] == '\0')
-		{
-			start = i;
-			break ;
-		}
-		i++;
-	}
-	return (start);
-}
-
-int	find_max_width(t_cubed *cubed, int start, int end)
-{
-	int	i;
-	int	max_i;
-
-	i = 0;
-	max_i = 0;
-	while (start < end)
-	{
-		i = 0;
-		while (cubed->file[start][i])
-			i++;
-		if (i >= max_i)
-			max_i = i;
-		start++;
-	}
-	cubed->max_column = max_i;
-	if (cubed->max_column == 0)
-		return (FAILURE);
-	return (SUCCESS);
-}
-
 int	parse_map(t_cubed *cubed)
 {
 	int	start;
 	int	end;
 
 	end = 0;
-	start = find_start_end(cubed->file, 0);
-	end = find_start_end(cubed->file, start + 1) + 1;
+	start = find_start(cubed->file, 0);
+	end = find_end(cubed, cubed->file, start + 1) + 1;
 	cubed->total_row = end - start;
 	if (find_max_width(cubed, start, end) == FAILURE)
 		return (FAILURE);

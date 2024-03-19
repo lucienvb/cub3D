@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   walls.c                                            :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: chaverttermaat <chaverttermaat@student.      +#+                     */
+/*   By: cter-maa <cter-maa@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/03/18 11:43:57 by chavertterm   #+#    #+#                 */
-/*   Updated: 2024/03/18 11:47:49 by chavertterm   ########   odam.nl         */
+/*   Updated: 2024/03/19 15:15:12 by cter-maa      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ uint32_t	get_tex_color(mlx_texture_t *texture, double x, double y)
 	tex_x = (uint32_t)(x * texture->width);
 	tex_y = (uint32_t)(y * texture->height);
 	pixel_index = (tex_y * texture->width + tex_x) * texture->bytes_per_pixel;
-	color = (uint32_t)(texture->pixels[pixel_index] << 24)
-		| (uint32_t)(texture->pixels[pixel_index + 1] << 16)
-		| (uint32_t)(texture->pixels[pixel_index + 2] << 8)
-		| (uint32_t)(texture->pixels[pixel_index + 3]);
+	color = ((uint32_t)texture->pixels[pixel_index] << 24)
+		| ((uint32_t)texture->pixels[pixel_index + 1] << 16)
+		| ((uint32_t)texture->pixels[pixel_index + 2] << 8)
+		| ((uint32_t)texture->pixels[pixel_index + 3]);
 	return (color);
 }
 
