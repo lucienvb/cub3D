@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   start_cubed.c                                      :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: cter-maa <cter-maa@student.42.fr>            +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2024/03/18 11:48:28 by chavertterm   #+#    #+#                 */
-/*   Updated: 2024/03/19 12:15:19 by cter-maa      ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   start_cubed.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lvan-bus <lvan-bus@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/18 11:48:28 by chavertterm       #+#    #+#             */
+/*   Updated: 2024/03/21 10:16:29 by lvan-bus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,9 @@ void	draw_screen(t_cubed *cubed)
 	clean_screen(cubed);
 	draw_player_mini_map(cubed);
 	reset_settings(cubed);
+	hooks(cubed);
+	reset_settings(cubed);
+	cubed->start = false;
 }
 
 void	reset_settings(t_cubed *cubed)
@@ -50,7 +53,6 @@ int32_t	start_cubed(t_cubed *cubed)
 	draw_screen(cubed);
 	mlx_loop_hook(cubed->mlx, hooks, cubed);
 	mlx_loop(cubed->mlx);
-	mlx_delete_image(cubed->mlx, cubed->image);
 	mlx_terminate(cubed->mlx);
 	return (SUCCESS);
 }

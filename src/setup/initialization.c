@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   initialization.c                                   :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: cter-maa <cter-maa@student.42.fr>            +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2024/03/18 11:04:38 by chavertterm   #+#    #+#                 */
-/*   Updated: 2024/03/19 09:48:01 by cter-maa      ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   initialization.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lvan-bus <lvan-bus@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/18 11:04:38 by chavertterm       #+#    #+#             */
+/*   Updated: 2024/03/21 09:54:16 by lvan-bus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static void	init_screen(t_cubed *cubed)
 {
+	cubed->start = true;
 	cubed->screen_width = 800;
 	cubed->screen_height = 800;
 	cubed->map_width = cubed->max_column;
