@@ -6,7 +6,7 @@
 /*   By: cter-maa <cter-maa@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/03/18 10:29:42 by chavertterm   #+#    #+#                 */
-/*   Updated: 2024/03/19 12:12:20 by cter-maa      ########   odam.nl         */
+/*   Updated: 2024/03/21 10:46:10 by cter-maa      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ int	parse_texture(t_cubed *cubed)
 	}
 	if (total_found != 4)
 	{
-		ft_printf("Error:\nIncorrect path(s)\n");
+		ft_printf("Error:\nIncorrect path(s) to textures\n");
 		return (FAILURE);
 	}
 	return (SUCCESS);

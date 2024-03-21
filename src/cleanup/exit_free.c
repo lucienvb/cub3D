@@ -6,7 +6,7 @@
 /*   By: cter-maa <cter-maa@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/03/18 09:58:40 by chavertterm   #+#    #+#                 */
-/*   Updated: 2024/03/19 15:15:33 by cter-maa      ########   odam.nl         */
+/*   Updated: 2024/03/21 10:43:06 by cter-maa      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ void	error_exit(char *message)
 
 void	perror_exit(char *message)
 {
-	ft_printf("Error: \n");
 	perror(message);
 	exit(EXIT_FAILURE);
 }

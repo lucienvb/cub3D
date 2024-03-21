@@ -6,7 +6,7 @@
 /*   By: cter-maa <cter-maa@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/03/18 11:04:17 by chavertterm   #+#    #+#                 */
-/*   Updated: 2024/03/19 14:17:32 by cter-maa      ########   odam.nl         */
+/*   Updated: 2024/03/21 10:43:33 by cter-maa      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	input_parsing(t_cubed *cubed, char *argv)
 {
 	cubed->fd = open(argv, O_RDONLY);
 	if (cubed->fd == -1)
-		perror_exit("Error\nFailed to open .cub");
+		perror_exit("Error:\nFailed to open .cub");
 	cubed->file = cub_to_double_array(cubed->fd);
 	if (cubed->file == NULL)
 	{

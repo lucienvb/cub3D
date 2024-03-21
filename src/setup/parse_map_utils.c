@@ -6,7 +6,7 @@
 /*   By: cter-maa <cter-maa@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/03/19 15:09:18 by cter-maa      #+#    #+#                 */
-/*   Updated: 2024/03/19 15:14:25 by cter-maa      ########   odam.nl         */
+/*   Updated: 2024/03/21 10:50:57 by cter-maa      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,9 @@ int	find_end(t_cubed *cubed, char **file, int i)
 		}
 		i++;
 	}
-	if (file[i + 1] && file[i + 1] != NULL)
+	if ((file[i + 1] && file[i + 1] != NULL) || end == 0)
 	{
+		free_2d_array(cubed->file);
 		close(cubed->fd);
 		error_exit("Error:\nIncorrect map\n");
 	}
