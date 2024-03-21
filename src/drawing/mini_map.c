@@ -1,148 +1,118 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   mini_map.c                                         :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: chaverttermaat <chaverttermaat@student.      +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2024/03/18 11:18:29 by chavertterm   #+#    #+#                 */
-/*   Updated: 2024/03/18 11:18:30 by chavertterm   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   mini_map.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lvan-bus <lvan-bus@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/18 11:18:29 by chavertterm       #+#    #+#             */
+/*   Updated: 2024/03/21 10:49:11 by lvan-bus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/cubed.h"
 
-static void	draw_visor(int x, int y, t_cubed *cubed)
+static void	draw_visor(int x, int y, t_cubed *c)
 {
-	uint32_t	colorPurple = ft_pixel(106, 90, 205, 0xFF);
-	double		pa;
+	uint32_t	color_purple;
 	int			line;
-	
-	pa = cubed->pa;
+	double		pa;
+
+	color_purple = ft_pixel(106, 90, 205, 0xFF);
+	pa = c->pa;
 	line = 15;
 	while (line > 0)
 	{
-		mlx_put_pixel(cubed->image_game, x + cos(pa) *
-			line, y + sin(pa) * line, colorPurple);
+		mlx_put_pixel(c->image_game, x + cos(pa)
+			* line, y + sin(pa) * line, color_purple);
 		line--;
 	}
 }
 
-void	clean_screen(t_cubed *cubed)
+void	draw_player_mini_map(t_cubed *c)
 {
-	double		mini_map_surface;
-	uint32_t	colorTransparent;
+	double		player_size;
+	uint32_t	color_green;
 	size_t		x;
 	size_t		y;
 
-	colorTransparent = ft_pixel(0, 0, 0, 0);
-	mini_map_surface = cubed->mini_map_size * cubed->grid_width;
+	color_green = ft_pixel(60, 179, 113, 0xFF);
+	player_size = 4;
+	y = c->mini_map_middle - player_size;
+	while (y < c->mini_map_middle + player_size)
+	{
+		x = c->mini_map_middle - player_size;
+		while (x < c->mini_map_middle + player_size)
+		{
+			mlx_put_pixel(c->image_game, x, y, color_green);
+			if ((x > c->mini_map_middle - 1.5
+					&& x < c->mini_map_middle + 1.5)
+				&& (y > c->mini_map_middle - 1.5
+					&& y < c->mini_map_middle + 1.5))
+				draw_visor(x, y, c);
+			x++;
+		}
+		y++;
+	}
+}
+
+static void	draw_black_background(t_cubed *c)
+{
+	uint32_t	color_black;
+	uint32_t	color_blue;
+	size_t		x;
+	size_t		y;
+
+	color_black = ft_pixel(0, 0, 0, 0xFF);
+	color_blue = ft_pixel(52, 126, 133, 0xFF);
 	y = 0;
-	while (y < cubed->screen_height)
+	while (y < c->mini_map_height)
 	{
 		x = 0;
-		while (x < cubed->screen_width)
+		while (x < c->mini_map_width)
 		{
-			if (x < mini_map_surface && y < mini_map_surface)
-				mlx_put_pixel(cubed->image_game, x, y, colorTransparent);
-			else if (x < cubed->screen_width - 1 && y < cubed->screen_height / 2 - 1)
-				mlx_put_pixel(cubed->image_game, x, y, ft_pixel(255, 243, 231, 0xFF));
+			if (x == 0 || x == c->mini_map_width -1
+				|| y == 0 || y == c->mini_map_height -1)
+				mlx_put_pixel(c->image, x, y, color_blue);
 			else
-				mlx_put_pixel(cubed->image_game, x, y, ft_pixel(255, 0, 0, 0xFF));
+				mlx_put_pixel(c->image, x, y, color_black);
 			x++;
 		}
 		y++;
 	}
 }
 
-void	draw_player_mini_map(t_cubed *cubed)
+void	initialize_mini_map(t_cubed *c, t_mini_map *m)
 {
-	size_t		x;
-	size_t		y;
-	double		player_size = 4;
-	uint32_t	colorGreen;
-	
-	colorGreen = ft_pixel(60, 179, 113, 0xFF);
-	y = cubed->mini_map_middle - player_size;
-	while (y < cubed->mini_map_middle + player_size)
-	{
-		x = cubed->mini_map_middle - player_size;
-		while (x < cubed->mini_map_middle + player_size)
-		{
-			mlx_put_pixel(cubed->image_game, x, y, colorGreen);
-			double	visor_thickness = 1.5;
-			if ((x > cubed->mini_map_middle - visor_thickness &&
-				x < cubed->mini_map_middle + visor_thickness) &&
-					(y > cubed->mini_map_middle - visor_thickness &&
-						y < cubed->mini_map_middle + visor_thickness))
-					draw_visor(x, y, cubed);
-			x++;
-		}
-		y++;
-	}
+	m->border = 1;
+	m->y = 0;
+	m->stepY = c->grid_width;
+	m->stepX = c->grid_height;
+	m->startY = 0;
+	m->endY = m->startY + m->stepY;
 }
 
-static void	draw_black_background(t_cubed *cubed)
+void	mini_map(t_cubed *c)
 {
-	uint32_t	colorBlack;
-	uint32_t	colorBlue;
-	size_t		x;
-	size_t		y;
-	
-	colorBlack = ft_pixel(0, 0, 0, 0xFF);
-	colorBlue = ft_pixel(52, 126, 133, 0xFF);
-	y = 0;
-	while (y < cubed->mini_map_height)
-	{
-		x = 0;
-		while (x < cubed->mini_map_width)
-		{
-			if (x == 0 || x == cubed->mini_map_width -1 || 
-				y == 0 || y == cubed->mini_map_height -1)
-				mlx_put_pixel(cubed->image, x, y, colorBlue);
-			else
-				mlx_put_pixel(cubed->image, x, y, colorBlack);
-			x++;
-		}
-		y++;
-	}
-}
+	t_mini_map	m;
 
-void	mini_map(t_cubed *cubed)
-{
-	int32_t colorLightGrey = ft_pixel(218, 223, 225, 0xFF);
-	int	y;
-	int	border;
-	double	stepX;
-	double	stepY;
-	double	startY;
-	double	endY;
-
-	border = 1;
-	y = 0;
-	stepY = cubed->grid_width;
-	stepX = cubed->grid_height;
-	startY = 0;
-	endY = startY + stepY;
-	draw_black_background(cubed);
-	while (cubed->map[y])
+	initialize_mini_map(c, &m);
+	draw_black_background(c);
+	while (c->map[m.y])
 	{
-		int	startX = 0;
-		int endX = stepX;
-		int x = 0;
-		while (cubed->map[y][x])
+		m.startX = 0;
+		m.endX = m.stepX;
+		m.x = 0;
+		while (c->map[m.y][m.x])
 		{
-			if (cubed->map[y][x] == '1')
-			{
-				draw_color_stripe((int) startX + border, (int) endX - border, (int) startY + border, 
-					(int) endY - border, colorLightGrey, cubed);
-			}
-			startX = endX;
-			endX += stepX;
-			x++;
+			if (c->map[m.y][m.x] == '1')
+				draw_color_stripe(c, m);
+			m.startX = m.endX;
+			m.endX += m.stepX;
+			m.x++;
 		}
-		startY = endY;
-		endY += stepY;
-		y++;
+		m.startY = m.endY;
+		m.endY += m.stepY;
+		m.y++;
 	}
 }

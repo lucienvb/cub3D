@@ -44,20 +44,21 @@ typedef struct s_intersections
 
 typedef struct s_mini_map
 {
-int32_t color;
-double stepX;
-double stepY;
-double startY;
-double startX;
-double endY;
-double endX;
-int border;
-int x;
-int y;
-}	t_minimap;
+	int32_t color;
+	double stepX;
+	double stepY;
+	double startY;
+	double startX;
+	double endY;
+	double endX;
+	int border;
+	int x;
+	int y;
+}	t_mini_map;
 
 typedef struct s_cubed
 {
+	bool		start;
 	int			fd;
 	char		**file;
 	char		**map;
@@ -154,13 +155,11 @@ int		create_image_mlx(t_cubed *cubed);
 int		image_to_window_mlx(t_cubed *cubed);
 void	init_drawing(t_cubed *cubed);
 int32_t	ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a);
-void	draw_color_stripe(int32_t startX, int32_t endX, int32_t startY, int32_t endY, uint32_t color, t_cubed *cubed);
+void	draw_color_stripe(t_cubed *c, t_mini_map m);
 void	mini_map(t_cubed *cubed);
 void	hooks(void* param);
 void	reset_settings(t_cubed *cubed);
 void	raycasting(t_cubed *cubed);
-void 	draw_color_stripe(int32_t startX, int32_t endX, int32_t startY, int32_t endY, uint32_t color, t_cubed *cubed);
-void	drawPoint(t_cubed *cubed, double posX, double posY, uint32_t color, int thickness);
 void	get_player_to_grid(t_cubed *cubed, double *player_to_grid_x, double *player_to_grid_y);
 void 	draw_screen(t_cubed *cubed);
 void	reset_settings(t_cubed *cubed);

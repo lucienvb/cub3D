@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   hooks.c                                            :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: chaverttermaat <chaverttermaat@student.      +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2024/03/18 11:36:29 by chavertterm   #+#    #+#                 */
-/*   Updated: 2024/03/18 11:39:25 by chavertterm   ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   hooks.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lvan-bus <lvan-bus@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/18 11:36:29 by chavertterm       #+#    #+#             */
+/*   Updated: 2024/03/21 09:57:05 by lvan-bus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	keys_w_s(t_cubed *cubed)
 {
-	if (mlx_is_key_down(cubed->mlx, MLX_KEY_W))
+	if (mlx_is_key_down(cubed->mlx, MLX_KEY_W) || cubed->start)
 	{
 		if (cubed->map[(int)(cubed->posY)][(int)
 		(cubed->posX + cubed->stepX)] == '0')
@@ -62,7 +62,7 @@ static void	keys_a_d(t_cubed *cubed)
 
 static void	key_right(t_cubed *cubed)
 {
-	if (mlx_is_key_down(cubed->mlx, MLX_KEY_RIGHT))
+	if (mlx_is_key_down(cubed->mlx, MLX_KEY_RIGHT) || cubed->start)
 	{
 		cubed->pa += 0.03;
 		if (cubed->pa > 2 * M_PI)
@@ -101,8 +101,8 @@ void	hooks(void *param)
 	cubed = param;
 	if (mlx_is_key_down(cubed->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(cubed->mlx);
-	keys_w_s(cubed);
-	keys_a_d(cubed);
 	key_left(cubed);
 	key_right(cubed);
+	keys_w_s(cubed);
+	keys_a_d(cubed);
 }
