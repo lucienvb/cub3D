@@ -69,15 +69,17 @@ void	clean_screen(t_cubed *c)
 	while (y < c->screen_height)
 	{
 		x = 0;
-		while (x < c->screen_width)
+		while (x <= c->screen_width)
 		{
 			if (x < mini_map_surface && y < mini_map_surface)
 				mlx_put_pixel(c->image_game, x, y, color_transparent);
 			else if (x < c->screen_width - 1 && y < c->screen_height / 2 - 1)
 				mlx_put_pixel(c->image_game, x, y,
 					ft_pixel(255, 243, 231, 0xFF));
-			else
+			else if (x < c->screen_height -1)
 				mlx_put_pixel(c->image_game, x, y, ft_pixel(255, 0, 0, 0xFF));
+			else
+				mlx_put_pixel(c->image_game, x, y, ft_pixel(0, 0, 0, 0xFF));
 			x++;
 		}
 		y++;
