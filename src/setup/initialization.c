@@ -54,8 +54,8 @@ static double	set_pa(t_cubed *cubed)
 
 static void	init_player(t_cubed *cubed)
 {
-	cubed->posX = cubed->start_pos[X];
-	cubed->posY = cubed->start_pos[Y];
+	cubed->posX = cubed->start_pos[X] + 0.5;
+	cubed->posY = cubed->start_pos[Y] + 0.5;
 	cubed->mapX = 0;
 	cubed->mapY = 0;
 	cubed->dirX = 0.0;
