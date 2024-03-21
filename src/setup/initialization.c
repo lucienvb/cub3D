@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   initialization.c                                   :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: chaverttermaat <chaverttermaat@student.      +#+                     */
+/*   By: cter-maa <cter-maa@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/03/18 11:04:38 by chavertterm   #+#    #+#                 */
-/*   Updated: 2024/03/18 11:05:31 by chavertterm   ########   odam.nl         */
+/*   Updated: 2024/03/19 09:48:01 by cter-maa      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,10 @@ void	init_setup(t_cubed *cubed, char *argv)
 	cubed->floor[2] = 0;
 	cubed->max_column = 0;
 	cubed->total_row = 0;
+	cubed->n_texture = NULL;
+	cubed->e_texture = NULL;
+	cubed->s_texture = NULL;
+	cubed->w_texture = NULL;
 }
 
 void	init_drawing(t_cubed *cubed)

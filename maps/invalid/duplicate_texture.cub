@@ -5,7 +5,12 @@ NO ./pictures/other_textures/diamond.png
 
 SO ./pictures/other_textures/wood.png
 
+EA ./pictures/other_textures/gold.png
 
+EA ./pictures/other_textures/gold.png
+EA ./pictures/other_textures/gold.png
+EA ./pictures/other_textures/gold.png
+EA ./pictures/other_textures/gold.png
 
 WE ./pictures/other_textures/stone.png
 

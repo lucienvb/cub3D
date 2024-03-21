@@ -131,6 +131,10 @@ int		parse_start_pos(t_cubed *cubed);
 int		parse_color_code(t_cubed *cubed);
 int		parse_texture(t_cubed *cubed);
 int		validate_map(t_cubed *cubed, int x, int y);
+char	**cub_to_double_array(int fd);
+int		find_start(char **file, int i);
+int		find_end(t_cubed *cubed, char **file, int i);
+int		find_max_width(t_cubed *cubed, int start, int end);
 
 // src/setup/utils
 void	free_2d_array(char **array);
@@ -144,6 +148,7 @@ char	*cd_strndup(const char *str, size_t n);
 // src/cleanup
 void	free_2d_array(char **array);
 void	free_allocations(t_cubed *cubed);
+void	free_png(t_cubed *cubed);
 
 int		create_image_mlx(t_cubed *cubed);
 int		image_to_window_mlx(t_cubed *cubed);

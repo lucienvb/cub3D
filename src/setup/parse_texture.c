@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   parse_texture.c                                    :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: chaverttermaat <chaverttermaat@student.      +#+                     */
+/*   By: cter-maa <cter-maa@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/03/18 10:29:42 by chavertterm   #+#    #+#                 */
-/*   Updated: 2024/03/18 11:01:28 by chavertterm   ########   odam.nl         */
+/*   Updated: 2024/03/19 12:12:20 by cter-maa      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,34 +25,34 @@ static char	*remove_spaces_from_line(char *line)
 	end = start;
 	while (cb_isspace(line[end]) == NOT_FOUND && line[end])
 		end++;
-	path = cd_strndup(&line[start], end - 1);
+	path = cd_strndup(&line[start], end - start);
 	return (path);
 }
 
-static int	save_texture_to_struct(t_cubed *cubed, char *line, char *path)
+static int	save_texture_to_struct(t_cubed *c, char *line, char *path)
 {
-	if (ft_strncmp(line, "NO ", 3) == FOUND)
+	if (ft_strncmp(line, "NO ", 3) == FOUND && c->n_texture == NULL)
 	{
-		cubed->n_texture = mlx_load_png(path);
-		if (cubed->n_texture == NULL)
+		c->n_texture = mlx_load_png(path);
+		if (c->n_texture == NULL)
 			return (FAILED);
 	}
-	else if (ft_strncmp(line, "EA ", 3) == FOUND)
+	else if (ft_strncmp(line, "EA ", 3) == FOUND && c->e_texture == NULL)
 	{
-		cubed->e_texture = mlx_load_png(path);
-		if (cubed->e_texture == NULL)
+		c->e_texture = mlx_load_png(path);
+		if (c->e_texture == NULL)
 			return (FAILED);
 	}
-	else if (ft_strncmp(line, "SO ", 3) == FOUND)
+	else if (ft_strncmp(line, "SO ", 3) == FOUND && c->s_texture == NULL)
 	{
-		cubed->s_texture = mlx_load_png(path);
-		if (cubed->s_texture == NULL)
+		c->s_texture = mlx_load_png(path);
+		if (c->s_texture == NULL)
 			return (FAILED);
 	}
-	else if (ft_strncmp(line, "WE ", 3) == FOUND)
+	else if (ft_strncmp(line, "WE ", 3) == FOUND && c->w_texture == NULL)
 	{
-		cubed->w_texture = mlx_load_png(path);
-		if (cubed->w_texture == NULL)
+		c->w_texture = mlx_load_png(path);
+		if (c->w_texture == NULL)
 			return (FAILED);
 	}
 	return (SUCCESS);
