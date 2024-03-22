@@ -75,9 +75,9 @@ void	clean_screen(t_cubed *c)
 				mlx_put_pixel(c->image_game, x, y, color_transparent);
 			else if (x < c->screen_width - 1 && y < c->screen_height / 2 - 1)
 				mlx_put_pixel(c->image_game, x, y,
-					ft_pixel(255, 243, 231, 0xFF));
+					ft_pixel(c->ceiling[0], c->ceiling[1], c->ceiling[2], 0xFF)); // ceiling
 			else if (x < c->screen_height -1)
-				mlx_put_pixel(c->image_game, x, y, ft_pixel(255, 0, 0, 0xFF));
+				mlx_put_pixel(c->image_game, x, y, ft_pixel(c->floor[0], c->floor[1], c->floor[2], 0xFF)); // floor
 			else
 				mlx_put_pixel(c->image_game, x, y, ft_pixel(0, 0, 0, 0xFF));
 			x++;
